@@ -67,22 +67,69 @@ function Account() {
   const disable = !!password && !!passwordConfirm && passwordConfirm == password;
 
   return (
-    <div className="flex flex-row items-start h-auto">
-      <div className="w-1/4 h-full bg-secondary fixed right-0 hidden lg:flex">
+    <div className="flex flex-row items-start justify-center h-auto ">
+      <div className="w-[300px] bg-red-500 h-full bg-secondary sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-3/4 max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex- flex-col items-center align-middle p-9 ">
+
+      {/* محتوای صفحه */}
+      <div className='flex-1 w-full h-full flex flex-col items-center justify-start px-6 py-8'>
+
+        {/* اطلاعات کاربر */}
+        <div className='user-datas grid grid-cols-12 gap-4 w-full min-h-max bg-white border border-1 border-gray-200 rounded-lg p-5'>
+
+          {/* نام و نام خانوادگی */}
+          <div className='xl:col-span-3 md:col-span-6 col-span-12'>
+            <div className='max-w-full h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
+              <span className='w-full block px-4 text-ellipsis'>نام و نام خانوادگی:  {userInfo?.realPerson?.firstName} {userInfo?.realPerson?.lastName}</span>
+            </div>
+          </div>
+
+          {/* محل تولد */}
+          <div className='xl:col-span-3 md:col-span-6 col-span-12'>
+            <div className='max-w-full h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
+              <span className='w-full block px-4 text-ellipsis'>محل تولد: {userInfo?.realPerson?.placeOfBirth}</span>
+            </div>
+          </div>
+
+          {/* تاریخ تولد */}
+          <div className='xl:col-span-3 md:col-span-6 col-span-12'>
+            <div className='max-w-full h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
+              <span className='w-full block px-4 text-ellipsis'>تاریخ تولد: {userInfo?.realPerson?.birthDate && getDate(userInfo?.realPerson?.birthDate)}</span>
+            </div>
+          </div>
+
+          {/* کدملی */}
+          <div className='xl:col-span-3 md:col-span-6 col-span-12'>
+            <div className='max-w-full h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
+              <span className='w-full block px-4 text-ellipsis'>کدملی: {userInfo?.realPerson?.shNumber}</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* <div className="flex-1 w-full flex flex-col items-center align-middle p-9 ">
         {userInfo ? (
-          <div className="flex flex-wrap justify-between gap-x-8 items-center gap-y-5 bg-gray-500 text-white rounded-lg p-5  font-normal">
-            <p className=" ">
-              نام و نام خانوادگی: {userInfo?.realPerson?.firstName} {userInfo?.realPerson?.lastName}
-            </p>
-            <p className=" ">محل تولد: {userInfo?.realPerson?.placeOfBirth}</p>
-            <p className=" ">
-              تاریخ تولد:{' '}
-              {userInfo?.realPerson?.birthDate && getDate(userInfo?.realPerson?.birthDate)}
-            </p>
-            <p className=" ">کدملی: {userInfo?.realPerson?.shNumber}</p>
+          <div className="grid grid-cols-12 w-full gap-x-8 gap-y-5 bg-white text-gray-800 border border-1 border-gray-200 rounded-lg p-5  font-normal">
+            <div className='xl:col-span-3 sm:col-span-6 col-span-8 max-w-max min-w-full py-2 px-4 rounded-md border border-1 border-gray-300'>
+              <p className="">
+                نام و نام خانوادگی: {userInfo?.realPerson?.firstName} {userInfo?.realPerson?.lastName} محمد قرانی
+              </p>
+            </div>
+            <div className='xl:col-span-3 sm:col-span-6 col-span-8 max-w-max min-w-full py-2 px-4 rounded-md border border-1 border-gray-300'>
+              <p className="text-ellipsis">محل تولد: {userInfo?.realPerson?.placeOfBirth} ایران ، آذربایجان شرقی ، شهرستان مرند ، شهر دیزج حسین بیگ</p>
+            </div>
+            <div className='xl:col-span-3 sm:col-span-6 col-span-8 max-w-max min-w-full py-2 px-4 rounded-md border border-1 border-gray-300'>
+              <p className="">
+                تاریخ تولد:{' '}
+                {userInfo?.realPerson?.birthDate && getDate(userInfo?.realPerson?.birthDate)}  1403/12/02
+              </p>
+            </div>
+            <div className='xl:col-span-3 sm:col-span-6 col-span-8 max-w-max min-w-full py-2 px-4 rounded-md border border-1 border-gray-300'>
+              <p className="">کدملی: {userInfo?.realPerson?.shNumber} 1570770761</p>
+            </div>
           </div>
         ) : (
           <p className="border-2 border-accent rounded-md text-dominant-500">
@@ -95,7 +142,7 @@ function Account() {
           <span className="w-full items-center justify-start text-white text-sm text-start">
             تغییر رمز عبور
           </span>
-          <div className="flex justify-between w-full items-center">
+          <div className="flex justify-between w-full items-end">
             <div className="w-[20%] flex items-center flex-col justify-center h-auto gap-y-1 ">
               <label
                 htmlFor="password "
@@ -103,11 +150,10 @@ function Account() {
                 رمز عبور جدید
               </label>
               <input
-                className={`focus:outline-none focus:ring-0 focus:border-none  text-sm rounded-lg h-[40px] w-full pr-3 bg-white ${
-                  passwordConfirm && password && password !== passwordConfirm
-                    ? ' borde border-red-600 text-red-600'
-                    : 'border-0 focus:border-none  text-gray-600 '
-                } `}
+                className={`focus:outline-none focus:ring-0 focus:border-none  text-sm rounded-lg h-[40px] w-full pr-3 bg-white ${passwordConfirm && password && password !== passwordConfirm
+                  ? ' borde border-red-600 text-red-600'
+                  : 'border-0 focus:border-none  text-gray-600 '
+                  } `}
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
               />
@@ -119,11 +165,10 @@ function Account() {
                 تکرار رمز{' '}
               </label>
               <input
-                className={`focus:outline-none focus:ring-0 focus:border-none w-full  text-sm rounded-lg pr-3 h-[40px] bg-white ${
-                  passwordConfirm && password && password !== passwordConfirm
-                    ? ' borde border-red-600 text-red-600'
-                    : 'border-0 focus:border-none  text-gray-600 '
-                } `}
+                className={`focus:outline-none focus:ring-0 focus:border-none w-full  text-sm rounded-lg pr-3 h-[40px] bg-white ${passwordConfirm && password && password !== passwordConfirm
+                  ? ' borde border-red-600 text-red-600'
+                  : 'border-0 focus:border-none  text-gray-600 '
+                  } `}
                 onChange={(e) => setPasswordConfirm(e.target.value)}
                 value={passwordConfirm}
               />
@@ -131,11 +176,9 @@ function Account() {
             <button
               onClick={ChangePassword}
               disabled={!disable}
-              className={`w-[20%]  text-white text-sm font-semibold ${
-                disable ? 'opacity-100' : 'opacity-50'
-              }  ${
-                isloadingReq ? ' border border-green-500' : 'bg-green-500'
-              } rounded-lg h-[40px]`}>
+              className={`w-[20%]  text-white text-sm font-semibold ${disable ? 'opacity-100' : 'opacity-50'
+                }  ${isloadingReq ? ' border border-green-500' : 'bg-green-500'
+                } rounded-lg h-[40px]`}>
               {isloadingReq ? <BouncingDotsLoader /> : 'ثبت'}
             </button>
           </div>
@@ -143,9 +186,9 @@ function Account() {
 
         <div className="flex w-full justify-center">
           <div className="border-b-2 border-gray-300  w-2/3 pt-10 px-5" />
-        </div>
-        {/* user logs table  */}
-        <div className="relative overflow-x-auto md:rounded-lg mt-8">
+        </div> */}
+      {/* user logs table  */}
+      {/* <div className="relative overflow-x-auto md:rounded-lg mt-8">
           <table className="table-auto  font-IRANYekanX w-full  rounded-md">
             <thead className="font-bold  shadow-xl bg-white text-base text-right text-dominant-500  ">
               <tr className=" ">
@@ -186,7 +229,7 @@ function Account() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

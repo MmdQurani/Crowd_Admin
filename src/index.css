@@ -136,6 +136,7 @@ code {
 .direction-ltr {
   direction: ltr;
 }
+
 .direction-rtl {
   direction: rtl;
 }
@@ -165,7 +166,25 @@ code {
 }
 
 .text-ellipsis {
-  white-space: nowrap;        /* جلوگیری از رفتن به خط بعدی */
-  overflow: hidden;           /* مخفی کردن قسمت اضافی متن */
-  text-overflow: ellipsis;    /* نمایش سه نقطه در پایان */
+  white-space: nowrap;
+  /* جلوگیری از رفتن به خط بعدی */
+  overflow: hidden;
+  /* مخفی کردن قسمت اضافی متن */
+  text-overflow: ellipsis;
+  /* نمایش سه نقطه در پایان */
+}
+
+/* ردیف‌های فرد سفید */
+.striped-rows tbody tr:nth-child(odd) {
+  background-color: #F9FAFB;
+}
+
+/* ردیف‌های زوج خاکستری روشن */
+.striped-rows tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+/* هاور روی کل ردیف */
+.striped-rows tbody tr:hover {
+  background-color: #E5E7EB;
 }

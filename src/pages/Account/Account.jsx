@@ -10,6 +10,8 @@ import { Pagination } from 'flowbite-react';
 import BouncingDotsLoader from 'component/Loading/BouncingDotsLoader';
 import { toast } from 'react-toastify';
 
+import { Table } from 'flowbite-react';
+
 import { IoMdClose } from "react-icons/io";
 
 function Account() {
@@ -162,6 +164,76 @@ function Account() {
 
           </div>
 
+          {/* جدول لاگ‌ها */}
+          <div
+            dir="rtl"
+            className="relative w-full overflow-x-auto shadow-md sm:rounded-lg mt-4 striped-rows"
+          >
+            <Table hoverable={false}>
+              {/* هدر با رنگ خاکستری ملایم و فاصله‌ی بالا */}
+              <Table.Head className="bg-gray-200 border-b border-gray-400">
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  ردیف
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  IP آدرس
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  تاریخ
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  ساعت
+                </Table.HeadCell>
+              </Table.Head>
+
+              <Table.Body className="divide-y">
+                {response?.data?.length > 0 ? (
+                  response.data.map((log, idx) => (
+                    <Table.Row key={idx}>
+                      <Table.Cell className="text-right">{idx + 1}</Table.Cell>
+                      <Table.Cell className="text-right">{log.ipAddress}</Table.Cell>
+                      <Table.Cell className="text-right">
+                        {getDate(log.time) || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {getTime(log.time) || '—'}
+                      </Table.Cell>
+                    </Table.Row>
+                  ))
+                ) : (
+                  <Table.Row>
+                    <Table.Cell colSpan={4} className="text-center text-gray-500 py-4">
+                      هیچ لاگی یافت نشد
+                    </Table.Cell>
+                  </Table.Row>
+                )}
+              </Table.Body>
+            </Table>
+          </div>
+
+
+
+          {isloading && (
+            <div className=" w-full flex-col flex items-center">
+              <BouncingDotsLoader />{' '}
+            </div>
+          )}
+
+          {response?.data?.length === 0 && isloading === false && (
+            <div className=" w-full flex-col flex items-center pt-5 text-caption font-medium text-dominant">
+              <p>تراکنشی برای شما یافت نشد </p>
+            </div>
+          )}
+
+          <div className=" relative flex justify-center p-8">
+            {' '}
+            <PaginationComponet
+              total={response?.pagination?.total}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+          </div>
+
         </div>
 
         {/* <div className="flex-1 w-full flex flex-col items-center align-middle p-9 ">
@@ -243,27 +315,7 @@ function Account() {
         </div> */}
         {/* user logs table  */}
         {/* <div className="relative overflow-x-auto md:rounded-lg mt-8">
-          <table className="table-auto  font-IRANYekanX w-full  rounded-md">
-            <thead className="font-bold  shadow-xl bg-white text-base text-right text-dominant-500  ">
-              <tr className=" ">
-                <th className="  border-gray-600  bg-secondary p-3">ردیف</th>
-                <th className="  border-gray-600  bg-secondary p-3">IP آدرس</th>
-                <th className="  border-gray-600  bg-secondary p-3">تاریخ</th>
-                <th className="  border-gray-600  bg-secondary p-3">ساعت </th>
-              </tr>
-            </thead>
-            <tbody>
-              {response &&
-                response?.data?.map((data, index) => (
-                  <tr key={index} className="  p-10  text-caption text-right text-dominant-500">
-                    <td className="p-3 font-semibold border-b border-gray-300 ">{index + 1}</td>
-                    <td className="p-3 border-b border-gray-300">{data?.ipAddress}</td>
-                    <td className="p-3 border-b border-gray-300 ">{getDate(data?.time) || '-'}</td>
-                    <td className="p-3 border-b border-gray-300 ">{getTime(data?.time) || '-'}</td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+
           {isloading && (
             <div className=" w-full flex-col flex items-center">
               <BouncingDotsLoader />{' '}
@@ -284,6 +336,7 @@ function Account() {
           </div>
         </div>
       </div> */}
+
       </div>
     </>
   );

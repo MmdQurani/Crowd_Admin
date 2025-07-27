@@ -11,6 +11,8 @@ import { jwtDecode } from 'jwt-decode';
 import { toast } from 'react-toastify';
 import BouncingDotsLoader from 'pages/Loading/BouncingDotsLoader';
 
+import img1 from '../../asset/image/login-bg-2.png'
+
 const Login = () => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -65,66 +67,77 @@ const Login = () => {
 
   const disable = Boolean(username) && Boolean(password);
   return (
-    <div className="flex justify-center h-screen w-full items-center ">
-      <form
-        className="flex flex-col w-[25%] relative items-center justify-center gap-y-5 shadow-2xl rounded-lg h-[600px] bg-slate-50 "
-        onSubmit={(e) => handleLogin(e)}>
-        <div className="flex justify-center flex-col items-center gap-y-5">
-          {/* <img src={logo} className=" " /> */}
-          <span className="text-lg  text-slate-600 font-bold">ادمین پنل تامین مالی جمعی</span>
+    <div className="bg-[#f9faff] flex justify-center h-screen w-full items-center ">
+
+      <div className='w-full h-full grid grid-cols-12'>
+
+        <div className='lg:col-span-6 col-span-12 flex justify-center items-center'>
+          <form className="bg-white flex flex-col w-[90%] max-w-[450px] min-h-[600px] mx-auto relative items-center justify-center gap-y-5 border border-[#465FF1]/10 shadow-md shadow-[#465FF1]/10 rounded-md" onSubmit={(e) => handleLogin(e)}>
+            <div className="flex justify-center flex-col items-center gap-y-5">
+              {/* <img src={logo} className=" " /> */}
+              <span className="text-lg  text-gray-700 font-bold">ادمین پنل تامین مالی جمعی</span>
+            </div>
+            <div className="flex flex-col w-[80%]">
+              <Input
+                value={username}
+                setvalue={setUsername}
+                label="نام کاربری"
+                width=" w-full text-center "
+              />
+              <Input
+                width=" w-full text-center "
+                value={password}
+                setvalue={setPassword}
+                label="کلمه عبور"
+                type={securityEye ? 'text' : 'password'}
+              />{' '}
+              <div className="w-full" style={{ direction: 'ltr' }}>
+                <img
+                  src={securityEye ? openeye : closeeye}
+                  onClick={() => setSecurityEye(!securityEye)}
+                  className="w-fit h-fit relative bottom-8 left-2 "
+                />
+              </div>
+            </div>
+
+            <div className="flex w-[80%] justify-between  gap-x-2 items-center  border border-[#465FF1]/30 rounded-md  ">
+              {' '}
+              <input
+                id="captcha"
+                maxLength={6}
+                value={captchavalue}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/,/g, ''); // Remove commas
+                  if (/^\d*$/.test(value)) {
+                    // Only allow digits (no other characters)
+                    setCaptchavalue(value); // Set the value only if it's numeric
+                  }
+                }}
+                inputMode="numeric"
+                className=" w-[60%] border-0  0 text-center   pr-2 text-sm focus:border-0 focus:ring-primary-500 focus:outline-none   h-[40px] rounded-md "
+              />
+              <div className="w-[40%] flex items-center justify-center ">
+                {' '}
+                <Captcha enternigStep={handlecaptcha} captcha={captcha} setCaptcha={setCaptcha} />
+              </div>
+            </div>
+            <div className="w-full flex justify-around pt-5">
+              {isLoading ? (
+                <BouncingDotsLoader />
+              ) : (
+                <Button type="submit" name="ورود " disable={disable} width="w-[80%]" />
+              )}
+            </div>
+          </form>
         </div>
-        <div className="flex flex-col w-[80%]">
-          <Input
-            value={username}
-            setvalue={setUsername}
-            label="نام کاربری"
-            width=" w-full text-center "
-          />
-          <Input
-            width=" w-full text-center "
-            value={password}
-            setvalue={setPassword}
-            label="کلمه عبور"
-            type={securityEye ? 'text' : 'password'}
-          />{' '}
-          <div className="w-full" style={{ direction: 'ltr' }}>
-            <img
-              src={securityEye ? openeye : closeeye}
-              onClick={() => setSecurityEye(!securityEye)}
-              className="w-fit h-fit relative bottom-8 left-2 "
-            />
+
+        <div className='col-span-6 lg:flex hidden p-8'>
+          <div className='w-full h-[93vh]'>
+            <img src={img1} className='w-full h-full object-fill rounded-lg' alt="" />
           </div>
         </div>
 
-        <div className="flex w-[80%] justify-between  gap-x-2 items-center  border border-neutral-400 rounded-md  ">
-          {' '}
-          <input
-            id="captcha"
-            maxLength={6}
-            value={captchavalue}
-            onChange={(e) => {
-              const value = e.target.value.replace(/,/g, ''); // Remove commas
-              if (/^\d*$/.test(value)) {
-                // Only allow digits (no other characters)
-                setCaptchavalue(value); // Set the value only if it's numeric
-              }
-            }}
-            inputMode="numeric"
-            className=" w-[60%] border-0  0 text-center   pr-2 text-sm focus:border-0 focus:ring-primary-500 focus:outline-none   h-[40px] rounded-md "
-          />
-          <div className="w-[40%] flex items-center justify-center ">
-            {' '}
-            <Captcha enternigStep={handlecaptcha} captcha={captcha} setCaptcha={setCaptcha} />
-          </div>
-        </div>
-        <div className="w-full flex justify-around pt-5">
-          {isLoading ? (
-            <BouncingDotsLoader />
-          ) : (
-            <Button type="submit" name="ورود " disable={disable} width="w-[80%]" />
-          )}
-        </div>
-      </form>
+      </div>
     </div>
   );
 };

@@ -198,8 +198,8 @@ const PaginationComponet = ({ total, currentPage, onPageChange, showCount = 10 }
               key={index}
               onClick={() => page !== '...' && onPageChange(page)}
               className={`w-12 px-3 py-1 border-0 focus:outline-none focus:border-0 rounded-md text-gray-500   focus:right-0 ${page === currentPage
-                  ? 'lg:bg-green-500 shadow-md lg:text-lg bg-red-200  text-white text-base '
-                  : 'bg-transparent lg:text-base text-sm '
+                ? 'lg:bg-green-500 shadow-md lg:text-lg bg-green-500  text-white text-base '
+                : 'bg-transparent lg:text-base text-sm '
                 }`}
               disabled={page === '...'}>
               {page}

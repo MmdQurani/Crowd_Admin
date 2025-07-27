@@ -13,35 +13,39 @@ import { toast } from 'react-toastify';
 import { Table } from 'flowbite-react';
 
 import { IoMdClose } from "react-icons/io";
+import UserInfoCard from 'component/UserInfoCard/UserInfoCard';
 
 function Account() {
-  const { userInfo } = useContext(DataContext);
-  const [currentPage, setCurrentPage] = useState(1);
+  const { userInfo } = useContext(DataContext); // اطلاعات کاربر
+  const [currentPage, setCurrentPage] = useState(1); // صفحه جاری
   const [password, setPassword] = useState();
-  const [passwordConfirm, setPasswordConfirm] = useState();
+  const [passwordConfirm, setPasswordConfirm] = useState(); // تکرار رمز
   const [isloading, setIsloading] = useState();
-  const [isloadingReq, setIsloadingReq] = useState(false);
-  const [response, setResponse] = useState();
+  const [isloadingReq, setIsloadingReq] = useState(false); // بارگزاری درخواست
+  const [response, setResponse] = useState(); // نتیجه درخواست
 
-  useEffect(() => {
-    GetUserLogs();
+  const isFormValid = password?.length > 0 && passwordConfirm === password; // بررسی صحت فرم
+  const [isModalOpen, setIsModalOpen] = useState(false); // بارگزاری مدال
+
+  useEffect(() => { // در صورتی که صفحه جاری تغییر کند
+    GetUserLogs(); // درخواست اطلاعات
   }, [currentPage]);
 
-  const handlePageChange = (page) => {
+  const handlePageChange = (page) => { // تغییر صفحه
     setCurrentPage(page);
   };
 
-  const GetUserLogs = async () => {
+  const GetUserLogs = async () => { // درخواست اطلاعات
     setIsloading(true);
 
-    const Skip = currentPage === 1 ? 0 : 10 * (currentPage - 1);
+    const Skip = currentPage === 1 ? 0 : 10 * (currentPage - 1); // محاسبه شماره صفحه
 
     const res = await GetUserLogsReq({
       pagination: {
         take: 10,
         skip: Skip
       }
-    });
+    }); // درخواست اطلاعات
     setIsloading(false);
     setResponse(res);
   };
@@ -69,8 +73,6 @@ function Account() {
     }
   };
 
-  const isFormValid = password?.length > 0 && passwordConfirm === password; // بررسی صحت فرم
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
@@ -119,6 +121,7 @@ function Account() {
 
 
       <div className="flex flex-row items-start justify-center h-auto ">
+        {/* سایدبار */}
         <div className="w-[350px] bg-white h-full bg-secondary sticky top-0 right-0 border-0 hidden lg:flex">
           <Sidebar />
         </div>
@@ -127,42 +130,10 @@ function Account() {
         <div className='flex-1 w-full h-full flex flex-col items-center justify-start px-6 py-8'>
 
           {/* اطلاعات کاربر */}
-          <div className='user-datas grid grid-cols-12 gap-4 w-full min-h-max bg-white border border-1 border-gray-200 rounded-lg p-5'>
-
-            {/* نام و نام خانوادگی */}
-            <div className='xl:col-span-3 md:col-span-6 col-span-12'>
-              <div className='max-w-full text-sm h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
-                <span className='w-full block px-4 text-ellipsis'>نام و نام خانوادگی:  {userInfo?.realPerson?.firstName} {userInfo?.realPerson?.lastName}</span>
-              </div>
-            </div>
-
-            {/* محل تولد */}
-            <div className='xl:col-span-3 md:col-span-6 col-span-12'>
-              <div className='max-w-full text-sm h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
-                <span className='w-full block px-4 text-ellipsis'>محل تولد: {userInfo?.realPerson?.placeOfBirth}</span>
-              </div>
-            </div>
-
-            {/* تاریخ تولد */}
-            <div className='xl:col-span-3 md:col-span-6 col-span-12'>
-              <div className='max-w-full text-sm h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
-                <span className='w-full block px-4 text-ellipsis'>تاریخ تولد: {userInfo?.realPerson?.birthDate && getDate(userInfo?.realPerson?.birthDate)}</span>
-              </div>
-            </div>
-
-            {/* کدملی */}
-            <div className='xl:col-span-3 md:col-span-6 col-span-12'>
-              <div className='max-w-full text-sm h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
-                <span className='w-full block px-4 text-ellipsis'>کدملی: {userInfo?.realPerson?.shNumber}</span>
-              </div>
-            </div>
-
-            {/* تغییر رمز عبور */}
-            <div className='change-password col-span-12 flex justify-center items-center mt-2.5'>
-              <button onClick={() => setIsModalOpen(true)} className='md:w-1/2 w-full py-2 rounded-md bg-green-500 text-white'>تغییر رمز عبور</button>
-            </div>
-
-          </div>
+          <UserInfoCard
+            userInfo={userInfo}
+            onChangePassword={() => setIsModalOpen(true)} // اکتیو کننده مودال
+          />
 
           {/* جدول لاگ‌ها */}
           <div
@@ -211,7 +182,15 @@ function Account() {
             </Table>
           </div>
 
-
+          {/* صفحه بندی */}
+          <div className=" relative flex justify-center p-8">
+            {' '}
+            <PaginationComponet
+              total={response?.pagination?.total}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+          </div>
 
           {isloading && (
             <div className=" w-full flex-col flex items-center">
@@ -224,15 +203,6 @@ function Account() {
               <p>تراکنشی برای شما یافت نشد </p>
             </div>
           )}
-
-          <div className=" relative flex justify-center p-8">
-            {' '}
-            <PaginationComponet
-              total={response?.pagination?.total}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-            />
-          </div>
 
         </div>
 

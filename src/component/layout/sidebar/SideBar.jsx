@@ -243,25 +243,22 @@ function Sidebar() {
       {menu.map(
         (item, i) =>
           item?.show && (
-            <div className="flex flex-col w-full" key={i}>
+            <div className="flex flex-col w-full items-center" key={i}>
               {/* Show Menu item  */}
               <div
-                className={` flex justify-between  ${
-                  pathname?.includes(item?.link) ? 'bg-gray-500 rounded  ' : ''
-                } flex flex-row items-center py-[5px]  justify-between mb-6 pr-2 mr-10 ml-[42px]`}>
+                className={`w-2/3 mx-auto flex justify-between  ${pathname?.includes(item?.link) ? 'bg-gray-500 rounded  ' : ''
+                  } flex flex-row items-center py-[5px]  justify-between mb-6 pr-2 mr-10 ml-[42px]`}>
                 <Link
                   to={item?.link}
-                  className={` ${
-                    pathname?.includes(item?.link) ? 'text-white' : ''
-                  } flex flex-row items-center justify-start`}>
+                  className={`py-1 px-2  ${pathname?.includes(item?.link) ? 'text-white' : ''
+                    } flex flex-row items-center justify-start`}>
                   <InlineSVG
                     src={item.icon}
-                    className={` ${
-                      pathname?.includes(item?.link) ? 'fill-white filter brightness-0 invert' : ''
-                    } ml-1 cursor-pointer`}
+                    className={` ${pathname?.includes(item?.link) ? 'fill-white filter brightness-0 invert' : ''
+                      } ml-1 cursor-pointer`}
                   />
 
-                  <div className="text-6 cursor-pointer mr-4">{item?.name} </div>
+                  <div className="text-6 cursor-pointer mr-2">{item?.name} </div>
                 </Link>
               </div>
               {/* Show Submenu */}
@@ -292,10 +289,12 @@ function Sidebar() {
 
       {/* Log out */}
       <button
-        className="px-4 py-2 font-medium text-caption text-gray-500  border w-max border-gray-500 rounded mx-auto"
-        onClick={(e) => LogOutHandler(e)}>
+        className="px-4 py-2 font-medium text-caption text-gray-500 border w-max border-gray-500 hover:bg-gray-500 hover:text-white rounded mx-auto transition-colors duration-300 ease-in-out"
+        onClick={(e) => LogOutHandler(e)}
+      >
         خروج از حساب کاربری
       </button>
+
     </div>
   );
 }

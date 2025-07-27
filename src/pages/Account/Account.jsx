@@ -73,6 +73,7 @@ function Account() {
   return (
     <>
 
+      {/* مدال تغییر رمز */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
           <div className="bg-white rounded-lg shadow-lg p-6 w-max lg:w-[400px] h-max min-h-[350px] flex flex-col items-start justify-around relative px-4">
@@ -116,7 +117,7 @@ function Account() {
 
 
       <div className="flex flex-row items-start justify-center h-auto ">
-        <div className="w-[300px] bg-red-500 h-full bg-secondary sticky top-0 right-0 hidden lg:flex">
+        <div className="w-[350px] bg-white h-full bg-secondary sticky top-0 right-0 border-0 hidden lg:flex">
           <Sidebar />
         </div>
 

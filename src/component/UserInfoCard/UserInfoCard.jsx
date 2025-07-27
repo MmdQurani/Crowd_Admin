@@ -9,28 +9,28 @@ export default function UserInfoCard({ userInfo, onChangePassword }) {
     <div className="user-datas grid grid-cols-12 gap-4 w-full bg-white border border-gray-200 rounded-lg p-5">
       {/* نام و نام خانوادگی */}
       <div className="xl:col-span-3 md:col-span-6 col-span-12">
-        <div className="text-sm h-10 flex justify-center items-center border border-gray-200 rounded-lg px-4">
-          نام و نام خانوادگی: {firstName} {lastName}
+        <div className="text-sm h-10 flex justify-start items-center border border-gray-200 rounded-lg px-4">
+          نام و نام خانوادگی: {firstName || '-'} {lastName || '-' }
         </div>
       </div>
 
       {/* محل تولد */}
       <div className="xl:col-span-3 md:col-span-6 col-span-12">
-        <div className="text-sm h-10 flex justify-center items-center border border-gray-200 rounded-lg px-4">
+        <div className="text-sm h-10 flex justify-start items-center border border-gray-200 rounded-lg px-4">
           محل تولد: {placeOfBirth || '-'}
         </div>
       </div>
 
       {/* تاریخ تولد */}
       <div className="xl:col-span-3 md:col-span-6 col-span-12">
-        <div className="text-sm h-10 flex justify-center items-center border border-gray-200 rounded-lg px-4">
+        <div className="text-sm h-10 flex justify-start items-center border border-gray-200 rounded-lg px-4">
           تاریخ تولد: {birthDate ? getDate(birthDate) : '-'}
         </div>
       </div>
 
       {/* کدملی */}
       <div className="xl:col-span-3 md:col-span-6 col-span-12">
-        <div className="text-sm h-10 flex justify-center items-center border border-gray-200 rounded-lg px-4">
+        <div className="text-sm h-10 flex justify-start items-center border border-gray-200 rounded-lg px-4">
           کدملی: {shNumber || '-'}
         </div>
       </div>

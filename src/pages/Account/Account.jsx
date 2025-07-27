@@ -12,8 +12,10 @@ import { toast } from 'react-toastify';
 
 import { Table } from 'flowbite-react';
 
-import { IoMdClose } from "react-icons/io";
+// import { IoMdClose } from "react-icons/io";
 import UserInfoCard from 'component/UserInfoCard/UserInfoCard';
+
+import { IoMdClose, IoMdMenu } from 'react-icons/io';
 
 function Account() {
   const { userInfo } = useContext(DataContext); // اطلاعات کاربر
@@ -73,6 +75,7 @@ function Account() {
     }
   };
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
 
   return (
     <>
@@ -122,12 +125,43 @@ function Account() {
 
       <div className="flex flex-row items-start justify-center h-auto ">
         {/* سایدبار */}
-        <div className="w-[350px] bg-white h-full bg-secondary sticky top-0 right-0 border-0 hidden lg:flex">
+        <div className="w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
           <Sidebar />
         </div>
 
+        {/* سایدبار برای اندازه های کوچکتر از لارج */}
+        <div
+          className={`lg:hidden fixed inset-0 z-40 transition-opacity ${isDrawerOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            }`}
+        >
+          {/* بک‌درپ */}
+          <div
+            className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+            onClick={() => setIsDrawerOpen(false)}
+          />
+
+          {/* سایدبار */}
+          <div className={`absolute inset-y-0 right-0 w-[350px] bg-white shadow-lg transform transition-transform duration-300 ${isDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+            <div className="flex justify-start p-4">
+              <IoMdClose
+                className="text-2xl cursor-pointer"
+                onClick={() => setIsDrawerOpen(false)}
+              />
+            </div>
+            <Sidebar />
+          </div>
+        </div>
+
         {/* محتوای صفحه */}
-        <div className='flex-1 w-full h-full flex flex-col items-center justify-start px-6 py-8'>
+        <div className='flex-1 w-full h-full flex flex-col items-center justify-start p-6'>
+
+          {/* باز کردن سایدبار */}
+          <button
+            className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+            onClick={() => setIsDrawerOpen(true)}
+          >
+            <IoMdMenu className="text-2xl" />
+          </button>
 
           {/* اطلاعات کاربر */}
           <UserInfoCard

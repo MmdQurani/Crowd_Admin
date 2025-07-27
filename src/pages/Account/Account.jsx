@@ -10,6 +10,8 @@ import { Pagination } from 'flowbite-react';
 import BouncingDotsLoader from 'component/Loading/BouncingDotsLoader';
 import { toast } from 'react-toastify';
 
+import { IoMdClose } from "react-icons/io";
+
 function Account() {
   const { userInfo } = useContext(DataContext);
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,21 +44,22 @@ function Account() {
     setResponse(res);
   };
 
+  // تغییر رمز
   const ChangePassword = async () => {
     setIsloadingReq(true);
     try {
-      const res = await ChangePasswordReq({
+      const res = await ChangePasswordReq({ // ارسال درخواست تغییر رمز
         userId: userInfo?.id,
         password: password
       });
-      if (res) {
+      if (res) { // در صورتی که درخواست با موفقیت انجام شود
         toast.success('رمز عبور با موفقیت تغییر کرد ');
         setPassword('');
         setPasswordConfirm('');
       } else {
         toast.error('خطا ! درخواست شما انجام نشد .');
       }
-    } catch (error) {
+    } catch (error) { // در صورتی که درخواست با خطا مواجه شود
       console.error('Error in ChangePassword:', error);
       toast.error('خطا در پردازش درخواست.');
     } finally {
@@ -64,53 +67,103 @@ function Account() {
     }
   };
 
-  const disable = !!password && !!passwordConfirm && passwordConfirm == password;
+  const isFormValid = password?.length > 0 && passwordConfirm === password; // بررسی صحت فرم
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="flex flex-row items-start justify-center h-auto ">
-      <div className="w-[300px] bg-red-500 h-full bg-secondary sticky top-0 right-0 hidden lg:flex">
-        <Sidebar />
-      </div>
+    <>
 
-      {/* محتوای صفحه */}
-      <div className='flex-1 w-full h-full flex flex-col items-center justify-start px-6 py-8'>
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-max lg:w-[400px] h-max min-h-[350px] flex flex-col items-start justify-around relative px-4">
 
-        {/* اطلاعات کاربر */}
-        <div className='user-datas grid grid-cols-12 gap-4 w-full min-h-max bg-white border border-1 border-gray-200 rounded-lg p-5'>
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-xl"
+            >
+              <IoMdClose />
+            </button>
 
-          {/* نام و نام خانوادگی */}
-          <div className='xl:col-span-3 md:col-span-6 col-span-12'>
-            <div className='max-w-full h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
-              <span className='w-full block px-4 text-ellipsis'>نام و نام خانوادگی:  {userInfo?.realPerson?.firstName} {userInfo?.realPerson?.lastName}</span>
-            </div>
+            <h2 className="text-lg font-semibold mb-4">تغییر رمز عبور</h2>
+
+            <input
+              type="password"
+              placeholder="رمز عبور جدید"
+              className="w-full mb-2 p-2 border border-gray-300 rounded"
+              value={password || ''}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="تکرار رمز عبور"
+              className="w-full mb-4 p-2 border border-gray-300 rounded"
+              value={passwordConfirm || ''}
+              onChange={(e) => setPasswordConfirm(e.target.value)}
+            />
+
+            <button
+              onClick={ChangePassword}
+              disabled={!isFormValid || isloadingReq}
+              className={`w-full py-2 rounded-md text-white ${isFormValid ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400 cursor-not-allowed'
+                }`}
+            >
+              {isloadingReq ? 'در حال ارسال...' : 'ثبت تغییر'}
+            </button>
+
           </div>
+        </div>
+      )}
 
-          {/* محل تولد */}
-          <div className='xl:col-span-3 md:col-span-6 col-span-12'>
-            <div className='max-w-full h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
-              <span className='w-full block px-4 text-ellipsis'>محل تولد: {userInfo?.realPerson?.placeOfBirth}</span>
-            </div>
-          </div>
 
-          {/* تاریخ تولد */}
-          <div className='xl:col-span-3 md:col-span-6 col-span-12'>
-            <div className='max-w-full h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
-              <span className='w-full block px-4 text-ellipsis'>تاریخ تولد: {userInfo?.realPerson?.birthDate && getDate(userInfo?.realPerson?.birthDate)}</span>
-            </div>
-          </div>
+      <div className="flex flex-row items-start justify-center h-auto ">
+        <div className="w-[300px] bg-red-500 h-full bg-secondary sticky top-0 right-0 hidden lg:flex">
+          <Sidebar />
+        </div>
 
-          {/* کدملی */}
-          <div className='xl:col-span-3 md:col-span-6 col-span-12'>
-            <div className='max-w-full h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
-              <span className='w-full block px-4 text-ellipsis'>کدملی: {userInfo?.realPerson?.shNumber}</span>
+        {/* محتوای صفحه */}
+        <div className='flex-1 w-full h-full flex flex-col items-center justify-start px-6 py-8'>
+
+          {/* اطلاعات کاربر */}
+          <div className='user-datas grid grid-cols-12 gap-4 w-full min-h-max bg-white border border-1 border-gray-200 rounded-lg p-5'>
+
+            {/* نام و نام خانوادگی */}
+            <div className='xl:col-span-3 md:col-span-6 col-span-12'>
+              <div className='max-w-full text-sm h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
+                <span className='w-full block px-4 text-ellipsis'>نام و نام خانوادگی:  {userInfo?.realPerson?.firstName} {userInfo?.realPerson?.lastName}</span>
+              </div>
             </div>
+
+            {/* محل تولد */}
+            <div className='xl:col-span-3 md:col-span-6 col-span-12'>
+              <div className='max-w-full text-sm h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
+                <span className='w-full block px-4 text-ellipsis'>محل تولد: {userInfo?.realPerson?.placeOfBirth}</span>
+              </div>
+            </div>
+
+            {/* تاریخ تولد */}
+            <div className='xl:col-span-3 md:col-span-6 col-span-12'>
+              <div className='max-w-full text-sm h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
+                <span className='w-full block px-4 text-ellipsis'>تاریخ تولد: {userInfo?.realPerson?.birthDate && getDate(userInfo?.realPerson?.birthDate)}</span>
+              </div>
+            </div>
+
+            {/* کدملی */}
+            <div className='xl:col-span-3 md:col-span-6 col-span-12'>
+              <div className='max-w-full text-sm h-10 flex justify-center items-center border border-1 border-gray-200 rounded-lg'>
+                <span className='w-full block px-4 text-ellipsis'>کدملی: {userInfo?.realPerson?.shNumber}</span>
+              </div>
+            </div>
+
+            {/* تغییر رمز عبور */}
+            <div className='change-password col-span-12 flex justify-center items-center mt-2.5'>
+              <button onClick={() => setIsModalOpen(true)} className='md:w-1/2 w-full py-2 rounded-md bg-green-500 text-white'>تغییر رمز عبور</button>
+            </div>
+
           </div>
 
         </div>
 
-      </div>
-
-      {/* <div className="flex-1 w-full flex flex-col items-center align-middle p-9 ">
+        {/* <div className="flex-1 w-full flex flex-col items-center align-middle p-9 ">
         {userInfo ? (
           <div className="grid grid-cols-12 w-full gap-x-8 gap-y-5 bg-white text-gray-800 border border-1 border-gray-200 rounded-lg p-5  font-normal">
             <div className='xl:col-span-3 sm:col-span-6 col-span-8 max-w-max min-w-full py-2 px-4 rounded-md border border-1 border-gray-300'>
@@ -187,8 +240,8 @@ function Account() {
         <div className="flex w-full justify-center">
           <div className="border-b-2 border-gray-300  w-2/3 pt-10 px-5" />
         </div> */}
-      {/* user logs table  */}
-      {/* <div className="relative overflow-x-auto md:rounded-lg mt-8">
+        {/* user logs table  */}
+        {/* <div className="relative overflow-x-auto md:rounded-lg mt-8">
           <table className="table-auto  font-IRANYekanX w-full  rounded-md">
             <thead className="font-bold  shadow-xl bg-white text-base text-right text-dominant-500  ">
               <tr className=" ">
@@ -230,7 +283,8 @@ function Account() {
           </div>
         </div>
       </div> */}
-    </div>
+      </div>
+    </>
   );
 }
 

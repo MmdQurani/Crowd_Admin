@@ -78,7 +78,8 @@ const AllPlans = () => {
           }}
         />
       </div>
-      <div className="flex flex-wrap w-full ">
+
+      <div className='w-full h-full grid grid-cols-12 gap-4'>
         {response &&
           response?.data?.map((item, index) => (
             <Card
@@ -94,6 +95,24 @@ const AllPlans = () => {
             />
           ))}
       </div>
+
+      {/* <div className="flex flex-wrap w-full ">
+        {response &&
+          response?.data?.map((item, index) => (
+            <Card
+              key={index}
+              coverimages={item?.coverImagePaths}
+              annualRate={Number(item?.annualProfiteRate * 100).toFixed()}
+              title={item?.title}
+              unitAmount={item?.unitAmount}
+              unitAvailable={item?.unitAvailable}
+              state={item?.state}
+              redirectRout={`/plans/plan_details/${item?.id}`}
+              editRout={`/plans/plan_details_edit/${item?.id}`}
+            />
+          ))}
+      </div> */}
+
       {isloading && (
         <div className=" w-full flex-col flex items-center justify-center h-screen">
           <BouncingDotsLoader />

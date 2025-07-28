@@ -16,6 +16,7 @@ import { Table } from 'flowbite-react';
 import UserInfoCard from 'component/UserInfoCard/UserInfoCard';
 
 import { IoMdClose, IoMdMenu } from 'react-icons/io';
+import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
 
 function Account() {
   const { userInfo } = useContext(DataContext); // اطلاعات کاربر
@@ -130,27 +131,10 @@ function Account() {
         </div>
 
         {/* سایدبار برای اندازه های کوچکتر از لارج */}
-        <div
-          className={`lg:hidden fixed inset-0 z-40 transition-opacity ${isDrawerOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-            }`}
-        >
-          {/* بک‌درپ */}
-          <div
-            className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
-            onClick={() => setIsDrawerOpen(false)}
-          />
-
-          {/* سایدبار */}
-          <div className={`absolute inset-y-0 right-0 w-[350px] bg-white shadow-lg transform transition-transform duration-300 ${isDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-            <div className="flex justify-start p-4">
-              <IoMdClose
-                className="text-2xl cursor-pointer"
-                onClick={() => setIsDrawerOpen(false)}
-              />
-            </div>
-            <Sidebar />
-          </div>
-        </div>
+        <DrawerSidebar
+          isOpen={isDrawerOpen}
+          onClose={() => setIsDrawerOpen(false)}
+        />
 
         {/* محتوای صفحه */}
         <div className='flex-1 w-full h-full flex flex-col items-center justify-start p-6'>

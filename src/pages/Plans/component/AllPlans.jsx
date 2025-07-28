@@ -76,7 +76,7 @@ const AllPlans = () => {
               value={search}
               placeholder="نام طرح مورد نطر را وارد کنید "
               dir="rtl"
-              className=" w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring focus:border-blue-500"
+              className=" w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none "
             />
           </div>
         </div>

@@ -8,6 +8,8 @@ import BouncingDotsLoader from 'component/Loading/BouncingDotsLoader';
 import { findStatusTitle } from 'component/db/PlanStatusEnum';
 import DateFunction2 from 'component/DateFunctions/DateFunction2';
 import getBaseUrl from 'component/Axios/getBaseUrl';
+import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
+import { IoMdMenu } from 'react-icons/io';
 
 const PlanDetails = () => {
   const { id } = useParams();
@@ -179,12 +181,31 @@ const PlanDetails = () => {
     { title: 'درصد شناوری', value: `%${details?.floatingPercentage * 100}` }
   ];
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
   return (
     <div className="flex flex-row items-start h-auto">
-      <div className="w-1/4 h-full bg-secondary fixed right-0 hidden lg:flex">
+      <div className="w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-3/4 max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex flex-col items-center align-middle p-10 gap-y-5 ">
+
+      {/* سایدبار برای اندازه های کوچکتر از لارج */}
+      <DrawerSidebar
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+
+      <div className="flex-1 w-full h-full flex flex-col items-center align-middle p-10 gap-y-5 ">
+
+
+        <button
+          className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <IoMdMenu className="text-2xl" />
+        </button>
+
+
         {' '}
         {isloading ? (
           <div className="w-full flex flex-col items-center justify-center h-screen">
@@ -192,57 +213,96 @@ const PlanDetails = () => {
             <BouncingDotsLoader />
           </div>
         ) : details ? (
-          <div className="w-full h-auto flex flex-col items-center justify-start gap-y-10  bg-white">
-            <div className="w-full flex  items-center justify-end text-sm   cursor-pointer p-3">
-              <span
-                className="cursor-pointer border-b border-gray-800 p-2 text-gray-800 font-semibold "
-                onClick={() => navigate(-1)}>
-                {' '}
-                بازگشت
-              </span>
-            </div>
-            {/* cover pictures  */}
-            <div className="w-full h-auto flex justify-center gap-x-3 items-center">
-              {details?.coverImagePaths?.map((item, index) => (
-                <img
-                  key={index}
-                  src={getBaseUrl() + item?.value}
-                  className="w-[250px] h-[250px] bg-cover rounded-md shadow-lg "
-                />
-              ))}
-            </div>
-            {/*  divider  */}
-            <div className="border-b-2  border-gray-300 w-[90%] " />
-            {/* plan informations */}
-            <div className="w-[90%] flex justify-between items-center flex-wrap gap-4 h-auto ">
-              {data?.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex min-w-[15%] justify-between items-center text-xs flex-wrap  border border-gray-500 shadow-md  min-h-[50px] p-2 rounded-lg  ">
-                  <span dir="ltr" className="text-gray-800 font-bold">
-                    :{item?.title}{' '}
-                  </span>
-                  <span className="text-sm  text-gray-600 ">
-                    {item?.value ? item?.value : 'مشخص نشده '}
-                  </span>
+          <div dir="rtl" className="w-full bg-white p-6 rounded-lg shadow-xl">
+            <div className="grid grid-cols-12 gap-6">
+              {/* بازگشت */}
+              <div className="col-span-12 flex justify-start">
+                {/* در حالت RTL، justify-start محتوا رو به سمت راست می‌برد */}
+                <button
+                  onClick={() => navigate(-1)}
+                  className="sm:w-max w-full bg-blue-50 text-blue-600 rounded-md border border-blue-200 hover:bg-blue-100 transition px-6 py-1"
+                >
+                  بازگشت
+                </button>
+              </div>
+
+
+              {/* تصاویر کاور */}
+              <div className="col-span-12">
+                <div className=" grid  grid-cols-1  sm:grid-cols-2  md:grid-cols-3   xl:grid-cols-5  gap-4">
+                  {details.coverImagePaths?.map((img, idx) => (
+                    <>
+                      <div
+                        key={idx}
+                        className=" relative overflow-hidden  rounded-lg  shadow-lg  group w-full ">
+                        {/* با یک wrapper برای نگه‌داشتن نسبت 4:3 */}
+                        <div className="w-full h-0 pb-[75%]" />
+
+                        <img
+                          src={getBaseUrl() + img.value}
+                          alt={`cover-${idx}`}
+                          className=" absolute inset-0 w-full h-full object-cover cursor-pointer transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                    </>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <div className="flex w-[95%] justify-start gap-x-5 items-center text-xs  bg-gray-100  min-h-[50px] p-2 rounded-lg  ">
-              <span className="text-gray-800 font-bold"> آدرس فرابورس:</span>
-              <a
-                href={details?.ifbUrl}
-                className="text-sm font-bold underline text-blue-400 cursor-pointer  ">
-                {details?.ifbUrl ? details?.ifbUrl : 'ندارد'}
-              </a>
-            </div>
-            <div className="flex w-[95%] justify-start gap-x-5 items-center text-xs  bg-gray-100  min-h-[50px] p-2 rounded-lg  ">
-              <span className="text-gray-800 font-bold">توضیحات :</span>
-              <span className="text-sm  text-gray-600 ">
-                {details?.descriptions ? details?.descriptions : 'مشخص نشده '}
-              </span>
+              </div>
+
+
+
+              {/* جداکننده */}
+              <div className="col-span-12 border-b-2 border-gray-300" />
+
+              {/* اطلاعات طرح */}
+              <div className="col-span-12 grid grid-cols-12 gap-4">
+                {data.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-3 bg-white flex flex-col justify-between p-3 border border-gray-300 rounded-lg shadow-sm min-h-[60px] gap-y-2.5 hover:bg-gray-100"
+                  >
+                    <span className="text-xs text-gray-800 font-bold text-right">
+                      {item.title}:
+                    </span>
+                    <span className="text-sm text-gray-600 break-words text-right">
+                      {item.value || 'مشخص نشده'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* آدرس فرابورس و توضیحات */}
+              <div className="col-span-12 grid grid-cols-12 gap-6">
+                <div className="col-span-12 md:col-span-6 flex flex-col p-4 bg-gray-100 rounded-lg shadow-sm min-h-[70px]">
+                  <span className="text-xs text-gray-800 font-bold mb-2 text-right">
+                    آدرس فرابورس:
+                  </span>
+                  {details.ifbUrl ? (
+                    <a
+                      href={details.ifbUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm text-blue-500 underline break-all text-right"
+                    >
+                      {details.ifbUrl}
+                    </a>
+                  ) : (
+                    <span className="text-sm text-gray-600 text-right">ندارد</span>
+                  )}
+                </div>
+
+                <div className="col-span-12 md:col-span-6 flex flex-col p-4 bg-gray-100 rounded-lg shadow-sm min-h-[70px]">
+                  <span className="text-xs text-gray-800 font-bold mb-2 text-right">
+                    توضیحات:
+                  </span>
+                  <p className="text-sm text-gray-600 whitespace-pre-wrap text-right">
+                    {details.descriptions || 'مشخص نشده'}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
+
         ) : (
           <div className="w-full flex justify-center items-center h-full">
             اطلاعاتی برای طرح مورد نظز یافت نشد{' '}

@@ -246,16 +246,13 @@ function Sidebar() {
             <div className="flex flex-col w-full items-center" key={i}>
               {/* Show Menu item  */}
               <div
-                className={`w-2/3 mx-auto flex justify-between  ${pathname?.includes(item?.link) ? 'bg-gray-500 rounded  ' : ''
-                  } flex flex-row items-center py-[5px]  justify-between mb-6 pr-2 mr-10 ml-[42px]`}>
+                className={`w-2/3 mx-auto flex justify-between  flex-row items-center py-[5px] bg-gray-500 rounded-md fill-white text-white  mb-6 pr-2 mr-10 ml-[42px]`}>
                 <Link
                   to={item?.link}
-                  className={`py-1 px-2  ${pathname?.includes(item?.link) ? 'text-white' : ''
-                    } flex flex-row items-center justify-start`}>
+                  className={`py-1 px-2 text-white fill-white flex flex-row items-center justify-start`}>
                   <InlineSVG
                     src={item.icon}
-                    className={` ${pathname?.includes(item?.link) ? 'fill-white filter brightness-0 invert' : ''
-                      } ml-1 cursor-pointer`}
+                    className={` text-white fill-white filter brightness-0 invert ml-1 cursor-pointer`}
                   />
 
                   <div className="text-6 cursor-pointer mr-2">{item?.name} </div>

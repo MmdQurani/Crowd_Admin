@@ -21,7 +21,7 @@ const Card = ({
   return (
     <div className="p-3 w-full h-max mx-auto xl:col-span-6 md:col-span-12 sm:col-span-10 col-span-12">
 
-      <div className="w-full grid grid-cols-12 gap-x-4 gap-y-6  font-IRANYekanX  bg-white shadow-xl   border border-gray-300  rounded-md h-full p-5 ">
+      <div className="w-full h-max min-h-[350px] grid grid-cols-12 gap-x-4 gap-y-6  font-IRANYekanX  bg-white shadow-xl   border border-gray-300  rounded-md p-5 ">
 
         <div className='md:col-span-6 col-span-12'>
           <div className='w-full h-full'>
@@ -29,7 +29,7 @@ const Card = ({
               <img
                 alt="مشکلی در نمایش تصویر رخ داد "
                 src={getBaseUrl() + coverimages?.[0]?.value}
-                className="bg-no-repeat object-contain h-full w-full max-h-full rounded-lg"
+                className="bg-no-repeat object-cover h-full w-full max-h-full rounded-lg"
               />
             ) : (
               <div className="h-full flex flex-col justify-end">

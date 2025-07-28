@@ -57,7 +57,7 @@ const AllPlans = () => {
 
       {/* header */}
 
-      <div className=" w-full bg-white shadow-md flex flex-col md:flex-row items-center justify-between px-6 py-3"
+      <div className=" w-full bg-white shadow-md flex flex-col md:flex-row items-center justify-between p-6 rounded-lg "
       >
         {/* تیتر */}
         <h1 className="text-xl font-semibold text-gray-800 mb-2 md:mb-0">

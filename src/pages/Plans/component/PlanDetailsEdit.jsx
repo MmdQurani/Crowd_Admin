@@ -743,7 +743,7 @@ const PlanDetailsEdit = () => {
                   {/* دکمه ثبت */}
                   <button
                     onClick={Updateplan}
-                    className=" col-span-12 sm:col-span-6 w-full                     /* پرکردن عرض سلول */ h-12 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-lg shadow-lg transition-transform duration-200 hover:scale-105 hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-200/50">
+                    className=" col-span-12 sm:col-span-6 w-full h-12 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-lg shadow-lg transition-transform duration-200 hover:scale-105 hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-200/50">
                     ثبت
                   </button>
 

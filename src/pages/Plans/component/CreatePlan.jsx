@@ -11,7 +11,7 @@ import getBaseUrl from 'component/Axios/getBaseUrl';
 import { HandleOnChange } from 'component/GlobalyTools/UseAbleFunction';
 import FindUser from 'component/AutoComplete/FindUser';
 import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
-import { IoMdMenu } from 'react-icons/io';
+import { IoMdAdd, IoMdClose, IoMdMenu } from 'react-icons/io';
 
 const CreatePlan = () => {
   const initialValue = {
@@ -606,47 +606,53 @@ const CreatePlan = () => {
 
             {/* بارگذاری تصاویر طرح */}
             <div className="col-span-12 flex flex-col gap-10">
-              <div className="border-b border-gray-600 text-gray-500 py-2">
-                بارگذاری تصاویر طرح :
+              {/* عنوان بخش */}
+              <div className="text-gray-600 text-base font-medium border-b border-gray-300 pb-2">
+                بارگذاری تصاویر طرح:
               </div>
-              <div className="grid grid-cols-12 gap-2">
+
+              <div className="grid grid-cols-12 gap-4">
                 {details?.coverImagePaths?.map((path, index) => (
                   <div
                     key={index}
-                    className="col-span-6 sm:col-span-4 md:col-span-3 flex items-center gap-2"
+                    className="relative group col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-4 xl:col-span-3"
                   >
                     {!path && (
-                      <FileUploadPage
-                        multiple={true}
-                        setFileAddress={(i, p) => handleInputChange(i, p)}
-                        id={index}
-                      />
+                      <div
+                        className=" flex items-center justify-center h-32 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer transition hover:border-blue-400 hover:bg-blue-50">
+                        <FileUploadPage
+                          multiple={true}
+                          setFileAddress={(i, p) => handleInputChange(i, p)}
+                          id={index}
+                        />
+                        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                          {/* <FiPlus className="text-2xl text-gray-400 mb-1" /> */}
+                          <span className="text-gray-400 text-sm">انتخاب یا کشیدن فایل</span>
+                        </div>
+                      </div>
                     )}
                     {path && (
                       <img
                         src={getBaseUrl() + path}
-                        className="w-full h-32 object-cover rounded-md shadow-md"
-                      />
+                        alt={`cover-${index}`}
+                        className=" w-full h-32 object-cover rounded-lg shadow-sm transition-transform group-hover:scale-105" />
                     )}
                     {details.coverImagePaths.length > 1 && path && (
                       <button
                         onClick={() => removeInputField(index)}
-                        className="bg-red-500 text-white px-3 py-1 rounded-md"
-                      >
-                        -
+                        className=" absolute top-2 right-2 w-6 h-6 flex items-center justify-center bg-white rounded-full shadow opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 hover:text-white">
+                        <IoMdClose size={14} />
                       </button>
                     )}
                   </div>
                 ))}
 
-                <div className="col-span-6 sm:col-span-4 md:col-span-3 flex items-center justify-center">
-                  <button
-                    onClick={addInputField}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                  >
-                    +
-                  </button>
-                </div>
+                {/* دکمه افزودن فیلد جدید */}
+                <button
+                  onClick={addInputField}
+                  className=" col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-4 xl:col-span-3 flex items-center justify-center h-32 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 transition hover:border-green-400 hover:bg-green-50">
+                  <IoMdAdd className="text-2xl" />
+                </button>
               </div>
             </div>
 
@@ -656,18 +662,18 @@ const CreatePlan = () => {
             </div>
 
             {/* دکمه‌های عملیاتی */}
-            <div className="col-span-12 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <div className="col-span-12 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-x-6">
               {isloading ? (
-                <div className="w-full flex justify-center py-5">
+                <div className="col-span-12 flex justify-center items-center py-5">
                   <BouncingDotsLoader />
                 </div>
               ) : response ? (
                 response === 'success' ? (
-                  <div className="border border-green-500 text-green-400 h-10 w-full sm:w-7/12 text-center flex items-center justify-center rounded-md">
+                  <div className="col-span-12 w-full border border-green-500 bg-green-50 text-green-600 h-10 flex items-center justify-center rounded-lg shadow-sm">
                     ویرایش با موفقیت انجام شد
                   </div>
                 ) : (
-                  <div className="border border-red-500 text-red-400 h-10 w-full sm:w-7/12 text-center flex items-center justify-center rounded-md">
+                  <div className="col-span-12 w-full border border-red-500 bg-red-50 text-red-600 h-10 flex items-center justify-center rounded-lg shadow-sm">
                     خطا!: ثبت ناموفق
                   </div>
                 )
@@ -676,14 +682,14 @@ const CreatePlan = () => {
                   <button
                     disabled={!disabled}
                     onClick={CreatePlan}
-                    className={`w-full sm:w-1/2 bg-green-500 text-white h-12 rounded-md flex items-center justify-center ${disabled ? 'opacity-50' : 'opacity-100'
+                    className={`col-span-12 sm:col-span-6 w-full h-12 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-lg shadow-lg transition-transform duration-200  ${disabled ? 'opacity-50' : 'opacity-100'
                       }`}
                   >
                     ثبت
                   </button>
                   <button
                     onClick={() => navigate(-1)}
-                    className="w-full sm:w-1/2 border border-gray-500 text-gray-700 h-12 rounded-md flex items-center justify-center"
+                    className="col-span-12 sm:col-span-6 w-full h-12 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg shadow hover:shadow-md transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-indigo-100/50"
                   >
                     بازگشت
                   </button>

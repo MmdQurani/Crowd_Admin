@@ -14,9 +14,8 @@ const Input = ({ value, setvalue, label, placeholder, type, width, ...rest }) =>
         <input
           autoComplete="off"
           id={label}
-          className={`${
-            width ? width : 'w-full text-right'
-          } h-[45px] rounded border  border-[#465FF1]/30   px-4 text-6 text-dominant direction-ltr   focus:ring-dominant-500 focus:outline-none focus:ring-0 focus:`}
+          className={`${width ? width : 'w-full text-right'
+            } w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors`}
           placeholder={placeholder ? placeholder : ''}
           value={value}
           onChange={(e) => setvalue(e.target.value)}

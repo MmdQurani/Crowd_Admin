@@ -10,6 +10,8 @@ import BouncingDotsLoader from 'component/Loading/BouncingDotsLoader';
 import getBaseUrl from 'component/Axios/getBaseUrl';
 import { HandleOnChange } from 'component/GlobalyTools/UseAbleFunction';
 import FindUser from 'component/AutoComplete/FindUser';
+import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
+import { IoMdMenu } from 'react-icons/io';
 
 const CreatePlan = () => {
   const initialValue = {
@@ -510,151 +512,188 @@ const CreatePlan = () => {
 
   console.log('deata', Number('22.5' / 100));
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
   return (
     <div className="flex flex-row items-start h-auto">
-      <div className="w-1/4 h-full bg-secondary fixed right-0 hidden lg:flex text-satisfication-85 ">
+      {/* سایدبار */}
+      <div className="w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-full max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex  flex-wrap gap-x-3   items-center align-middle p-10 gap-y-5 ">
+
+      {/* سایدبار برای اندازه های کوچکتر از لارج */}
+      <DrawerSidebar
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+
+      <div className="flex-1 w-full h-full flex  flex-wrap gap-x-3   items-center align-middle p-10 gap-y-5 ">
+
+        <button className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <IoMdMenu className="text-2xl" />
+        </button>
+
         {' '}
         {isloading ? (
-          <div className="w-full justify-center h-screen items-center ">
-            {' '}
+          <div className="col-span-12 flex justify-center items-center h-screen">
             <BouncingDotsLoader />
           </div>
         ) : (
-          <div className="w-full flex flex-col  items-center justify-start gap-y-16">
-            <div className=" text-lg font-bold text-center w-full border-b border-gray-500 py-2 flex justify-center text-gray-500   ">
-              <span className="w-[95%]"> ایجاد طرح جدید</span>
-              <button className="text-gray-500  text-sm font-normal " onClick={() => navigate(-1)}>
-                بازگشت
-              </button>{' '}
+          <div className="w-full grid grid-cols-12 gap-y-16">
+
+            {/* تایتل صفحه */}
+            <div className="col-span-12 bg-white px-4 sm:px-6 lg:px-8 py-4 rounded-lg shadow-sm border border-gray-200 flex flex-col md:flex-row items-start md:items-center justify-between">
+              <span className="text-base md:text-lg font-semibold text-gray-800 leading-8">
+                ایجاد طرح جدید
+              </span>
             </div>
-            {/* autoCompleteInput */}
-            <div className=" w-full flex justify-between items-center  ">
-              <div className=" w-[30%] h-auto items-center justify-center gap-y-2">
-                <label htmlFor="userId" className=" text-xs font-bold ">
+
+            {/* شناسه ملی و آیدی فرابورس */}
+            <div className="col-span-12 grid grid-cols-12 gap-x-4 gap-y-6">
+              <div className="col-span-12 md:col-span-4 flex flex-col gap-2">
+                <label htmlFor="userId" className="text-xs font-bold text-gray-700">
                   شناسه ملی طرف حساب*
                 </label>
                 <FindUser
-                  setUserId={(e) => setDetails((prev) => ({ ...prev, userId: e }))}
+                  setUserId={(e) =>
+                    setDetails((prev) => ({ ...prev, userId: e }))
+                  }
                   userId={details?.userId}
                 />
               </div>
-              {/* ifbProjectId */}
-              <div className=" w-[30%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
-                <label htmlFor="ifbProjectId" className=" text-xs  ">
-                  آیدی فرابورس طرح{' '}
+              <div className="col-span-12 md:col-span-4 flex flex-col justify-end gap-1">
+                <label htmlFor="ifbProjectId" className="text-xs font-bold text-gray-700">
+                  آیدی فرابورس طرح
                 </label>
                 <input
                   onChange={(e) =>
-                    setDetails((prev) => ({ ...prev, ifbProjectId: e.target.value }))
+                    setDetails((prev) => ({
+                      ...prev,
+                      ifbProjectId: e.target.value,
+                    }))
                   }
                   value={details?.ifbProjectId}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
-                />{' '}
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                />
               </div>
             </div>
-            <div className=" w-full flex flex-wrap h-auto gap-4 items-end  justify-start">
+
+            {/* فیلدهای داینامیک */}
+            <div className="col-span-12 grid grid-cols-12 gap-4 items-end">
               {InputFields?.map((item, index) => (
                 <div
                   key={index}
-                  className={` ${item?.width} flex items-center gap-y-1 flex-col justify-start   `}>
-                  <label htmlFor={item?.name} className={`${item?.labelstyle} text-start  w-full `}>
-                    {item?.label}{' '}
+                  className="col-span-12 md:col-span-6 xl:col-span-4 flex flex-col gap-1"
+                >
+                  <label htmlFor={item.name} className="text-xs font-medium text-gray-700">
+                    {item.label}
                   </label>
-                  {item?.field ? (
-                    item?.field
+                  {item.field ? (
+                    item.field
                   ) : (
                     <input
-                      name={item?.name}
-                      onChange={item?.onchange}
-                      value={item?.value}
-                      className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md  flex-grow"
+                      name={item.name}
+                      onChange={item.onchange}
+                      value={item.value}
+                      className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
                     />
-                  )}{' '}
+                  )}
                 </div>
               ))}
             </div>
 
-            <div className="flex  gap-2 items-start w-full flex-col  justify-start gap-y-10">
-              <div className="text-start text-base w-auto justify-start border-b border-gray-600 text-gray-500  py-2 ">
+            {/* بارگذاری تصاویر طرح */}
+            <div className="col-span-12 flex flex-col gap-10">
+              <div className="border-b border-gray-600 text-gray-500 py-2">
                 بارگذاری تصاویر طرح :
-              </div>{' '}
-              <div className="w-full flex flex-wrap items-center  justify-start gap-2">
-                {details?.coverImagePaths?.map((input, index) => (
-                  <div key={index} className="flex items-center mb-3 gap-x-2">
-                    {!details?.coverImagePaths?.[index] && (
+              </div>
+              <div className="grid grid-cols-12 gap-2">
+                {details?.coverImagePaths?.map((path, index) => (
+                  <div
+                    key={index}
+                    className="col-span-6 sm:col-span-4 md:col-span-3 flex items-center gap-2"
+                  >
+                    {!path && (
                       <FileUploadPage
                         multiple={true}
-                        setFileAddress={(index, path) => handleInputChange(index, path)}
+                        setFileAddress={(i, p) => handleInputChange(i, p)}
                         id={index}
                       />
                     )}
-                    {details?.coverImagePaths?.[index] && (
+                    {path && (
                       <img
-                        src={getBaseUrl() + details?.coverImagePaths?.[index]}
-                        className="w-[150px] h-[150px] rounded-md shadow-md"
+                        src={getBaseUrl() + path}
+                        className="w-full h-32 object-cover rounded-md shadow-md"
                       />
                     )}
-                    {details?.coverImagePaths.length > 1 && (
+                    {details.coverImagePaths.length > 1 && path && (
                       <button
                         onClick={() => removeInputField(index)}
-                        className=" bg-red-500 text-white px-4 py-1 rounded-md">
+                        className="bg-red-500 text-white px-3 py-1 rounded-md"
+                      >
                         -
                       </button>
                     )}
                   </div>
                 ))}
 
-                <button
-                  onClick={addInputField}
-                  className="bg-blue-500 text-white px-3 py-1 rounded-md -mt-3">
-                  +
-                </button>
+                <div className="col-span-6 sm:col-span-4 md:col-span-3 flex items-center justify-center">
+                  <button
+                    onClick={addInputField}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
             </div>
-            <span className=" w-full flex justify-start items-center text-start text-sm text-gray-700  font-semibold">
+
+            {/* یادآوری فیلدهای اجباری */}
+            <div className="col-span-12 text-sm text-gray-700 font-semibold">
               مواردی که با * مشخص شده اند الزامی هستند
-            </span>
-            <div className="w-full justify-center items-center h-auto gap-x-3 flex flex-nowrap ">
-              {' '}
+            </div>
+
+            {/* دکمه‌های عملیاتی */}
+            <div className="col-span-12 flex flex-col sm:flex-row items-center justify-center gap-3">
               {isloading ? (
-                <div className=" w-full items-center justify-center flex py-5 ">
-                  {' '}
+                <div className="w-full flex justify-center py-5">
                   <BouncingDotsLoader />
                 </div>
               ) : response ? (
-                response == 'success' ? (
-                  <div className="border border-green-500 text-green-400 h-[40px] w-[70%]  text-center flex justify-center items-center  rounded-md  ">
-                    ویرایش با موفقیت انجام شد{' '}
+                response === 'success' ? (
+                  <div className="border border-green-500 text-green-400 h-10 w-full sm:w-7/12 text-center flex items-center justify-center rounded-md">
+                    ویرایش با موفقیت انجام شد
                   </div>
                 ) : (
-                  <div className="border border-red-500 text-red-400 h-[40px] w-[70%]  text-center flex justify-center items-center  rounded-md  ">
+                  <div className="border border-red-500 text-red-400 h-10 w-full sm:w-7/12 text-center flex items-center justify-center rounded-md">
                     خطا!: ثبت ناموفق
                   </div>
                 )
               ) : (
                 <>
-                  {' '}
                   <button
                     disabled={!disabled}
                     onClick={CreatePlan}
-                    className={` bg-green-500 text-white text-base text-center justify-center flex w-[48%] h-[45px] items-center rounded-md ${
-                      disabled ? 'opacity-100' : 'opacity-50'
-                    }`}>
-                    ثبت{' '}
+                    className={`w-full sm:w-1/2 bg-green-500 text-white h-12 rounded-md flex items-center justify-center ${disabled ? 'opacity-50' : 'opacity-100'
+                      }`}
+                  >
+                    ثبت
                   </button>
                   <button
-                    className="  border border-gray-500  text-gray-700  text-base text-center justify-center flex w-[48%] h-[45px] items-center rounded-md"
-                    onClick={() => navigate(-1)}>
-                    بازگشت{' '}
+                    onClick={() => navigate(-1)}
+                    className="w-full sm:w-1/2 border border-gray-500 text-gray-700 h-12 rounded-md flex items-center justify-center"
+                  >
+                    بازگشت
                   </button>
                 </>
               )}
             </div>
+
           </div>
         )}
+
       </div>
     </div>
   );

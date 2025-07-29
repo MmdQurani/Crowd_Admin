@@ -267,17 +267,13 @@ const PlanDetailsEdit = () => {
           <div className="w-full flex flex-col  items-center justify-start gap-y-16">
 
             {/* تایتل صفحه */}
-            <div className=" w-full flex items-center justify-between bg-white px-6 py-4 rounded-lg shadow-sm border border-gray-200 border-l-4 ">
-              <h2 className="text-lg font-semibold text-gray-800">
-                ویرایش طرح <span className="text-indigo-500">{details?.title}</span>
+            <div className=" w-full flex flex-col md:flex-row items-start md:items-center justify-between bg-white px-4 sm:px-6 lg:px-8 py-4 rounded-lg shadow-sm border border-gray-200">
+              <h2 className=" w-full md:w-auto mb-2 md:mb-0 text-base md:text-lg font-semibold text-gray-800 leading-tight ">
+                ویرایش طرح
+                <span className="text-indigo-500 leading-8"> {details?.title}</span>
               </h2>
-              <button
-                onClick={() => navigate(-1)}
-                className=" flex items-center text-indigo-500 text-sm font-medium hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-200 rounded">
-                بازگشت
-                <IoIosArrowBack className='text-lg' />
-              </button>
             </div>
+
 
             {/* اینپوت های آپدیت دیتاها */}
             <div className=" w-full grid grid-cols-12 h-auto gap-4 items-center justify-start">

@@ -13,6 +13,7 @@ import DownloadExcelBtn from 'component/GlobalyTools/DownloadExcelBtn';
 import { toast } from 'react-toastify';
 import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
 import { IoMdMenu } from 'react-icons/io';
+import { Table } from 'flowbite-react';
 
 function Users() {
   const navigate = useNavigate();
@@ -90,7 +91,7 @@ function Users() {
       />
 
       {/* محتوای صفحه */}
-      <div className="flex-1 w-full h-full flex flex-col items-center align-middle p-10 ">
+      <div className="flex-1 w-full h-full flex flex-col items-center justify-start px-4     md:px-10 py-6 md:py-10 overflow-auto ">
 
         {/* باز کردن سایدبار */}
         <button
@@ -167,198 +168,309 @@ function Users() {
               </div>
 
             </div>
-            
+
           </div>
         </div>
 
 
         {/* جدول */}
-        <div className="relative overflow-x-auto md:rounded-lg mt-8 p-2 w-full">
+        <div
+          dir="rtl"
+          className="relative w-full overflow-x-auto sm:rounded-lg mt-8 p-2"
+        >
           {usertype ? (
-            <table className="table-auto bordered font-IRANYekanX w-full">
-              <thead className="font-normal  text-base text-right text-dominant-500 bg-white shadow-xl">
-                <tr className="">
-                  <th className="  bg-secondary p-4">ردیف</th>
-                  <th className="  bg-secondary p-4">تاریخ ایجاد</th>
-                  <th className="  bg-secondary p-4">نام شرکت </th>
-                  <th className="  bg-secondary p-4"> تاریخ تاسیس</th>
-                  <th className="  bg-secondary p-4">شناسه اقتصادی</th>
-                  <th className="  bg-secondary p-4">شماره ثبت </th>
-                  <th className="  bg-secondary p-4">محل ثبت </th>
-                  <th className="  bg-secondary p-4">نام کاربری </th>
-                  <th className="  bg-secondary p-4"></th>
-                  <th className="  bg-secondary p-4"></th>
-                </tr>
-              </thead>
-              {searchActive ? (
-                <tbody>
-                  {response && (
-                    <tr
-                      key={1}
-                      className=" border-t-2 p-10   rounded-md font-semibold text-caption text-right text-dominant-500">
-                      <td className="p-3 ">1</td>
-                      <td className="p-3 ">
-                        {response?.createDate && getDate(response?.createDate)}
-                      </td>
-                      <td className="p-3 ">{response?.legalPerson?.companyName}</td>
-                      <td className="p-3 ">
-                        {response?.legalPerson
-                          ? getDate(response?.legalPerson?.registerDate)
-                          : '----'}
-                      </td>
-                      <td className="p-3 ">{response?.legalPerson?.economicCode}</td>
-                      <td className="p-3 ">{response?.legalPerson?.registerNumber}</td>
-                      <td className="p-3 ">{response?.legalPerson?.registerPlace}</td>
-                      <td className="p-3 ">{response?.username}</td>
-                      <td
-                        className="p-3 hover:text-accent cursor-pointer border-b-2 border-accent"
-                        onClick={() =>
-                          navigate(`/users/details/${response?.username}/${usertype}`)
-                        }>
-                        جزییات
-                      </td>
-                      <td
-                        className="p-3 text-accent cursor-pointer "
-                        onClick={() => GetImpersonateToken(response?.username)}>
-                        ورود به پنل کاربر{' '}
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              ) : (
-                <tbody>
-                  {response &&
-                    response?.data?.map((data, index) => (
-                      <tr
-                        key={index}
-                        className=" border-b-2 border-gray-300   rounded-md font-semibold text-caption text-right text-dominant-500">
-                        <td className="p-5 ">{index + 1}</td>
-                        <td className="p-5 ">{data?.createDate && getDate(data?.createDate)}</td>
-                        <td className="p-5 ">{data?.legalPerson?.companyName}</td>
-                        <td className="p-5 ">
-                          {data?.legalPerson ? getDate(data?.legalPerson?.registerDate) : '----'}
-                        </td>
-                        <td className="p-5 ">{data?.legalPerson?.economicCode}</td>
-                        <td className="p-5 ">{data?.legalPerson?.registerNumber}</td>
-                        <td className="p-5 ">{data?.legalPerson?.registerPlace}</td>
-                        <td className="p-5 ">{data?.username}</td>
-                        <td
-                          className="p-5 hover:text-accent cursor-pointer border-b-2 border-accent "
-                          onClick={() => navigate(`/users/details/${data?.username}/${usertype}`)}>
-                          جزییات
-                        </td>
-                        <td
-                          className="p-5 text-accent cursor-pointer "
-                          onClick={() => GetImpersonateToken(data?.username)}>
-                          ورود به پنل کاربر{' '}
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              )}
-            </table>
-          ) : (
-            <table className="table-auto bordered font-IRANYekanX w-full ">
-              <thead className="w-full shadow-xl font-normal bg-white  text-base text-right text-dominant-500">
-                <tr className=" bg-white">
-                  <th className="p-4">ردیف</th>
-                  <th className="p-4">تاریخ ایجاد</th>
-                  <th className="p-4">نام خانوادگی</th>
-                  <th className="p-4"> تاریخ تولد</th>
-                  <th className="p-4"> محل تولد</th>
-                  <th className="p-4">شماره شناسنامه</th>
-                  <th className="p-4">نام کاربری</th>
-                  <th className="p-4">تلفن همراه </th>
-                  <th className="p-4"></th>
-                  <th className="p-4"></th>
-                </tr>
-              </thead>
-              {searchActive ? (
-                <tbody>
-                  {response && (
-                    <tr
-                      key={1}
-                      className=" rounded-md font-semibold text-caption text-right text-dominant-500">
-                      <td className="p-5 ">1</td>
-                      <td className="p-5 ">
-                        {response?.createDate && getDate(response?.createDate)}
-                      </td>
-                      <td className="p-5 ">
-                        {/* {response?.realPerson?.firstName +
-                          '' +
-                          response?.realPerson?.lastName} */}
-                      </td>
-                      <td className="p-5 ">
-                        {response?.realPerson ? getDate(response?.realPerson?.birthDate) : '----'}
-                      </td>
-                      <td className="p-5 ">{response?.realPerson?.placeOfBirth}</td>
-                      <td className="p-5 ">{response?.realPerson?.shNumber}</td>
-                      <td className="p-5 ">{response?.username}</td>
-                      <td className="p-5 ">{response?.phoneNumber}</td>
-                      <td
-                        className="p-5 hover:text-accent cursor-pointer border-b-2 border-accent "
-                        onClick={() =>
-                          navigate(`/users/details/${response?.username}/${usertype}`)
-                        }>
-                        جزییات
-                      </td>
-                      <td
-                        className="p-5 text-accent cursor-pointer "
-                        onClick={() => GetImpersonateToken(response?.username)}>
-                        ورود به پنل کاربر{' '}
-                      </td>{' '}
-                    </tr>
-                  )}
-                </tbody>
-              ) : (
-                <tbody>
-                  {response &&
-                    response?.data?.map((data, index) => (
-                      <tr
-                        key={index}
-                        className=" border-b-2 border-gray-300  rounded-md font-semibold text-caption text-right text-dominant-500">
-                        <td className="p-5 ">{index + 1}</td>
-                        <td className="p-5 ">{getDate(data?.createDate)}</td>
-                        <td className="p-5 ">
-                          {data?.realPerson?.firstName + '  ' + data?.realPerson?.lastName}
-                        </td>
-                        <td className="p-5 ">
-                          {data?.realPerson ? getDate(data?.realPerson?.birthDate) : '----'}
-                        </td>
-                        <td className="p-5 ">{data?.realPerson?.placeOfBirth}</td>
-                        <td className="p-5 ">{data?.realPerson?.shNumber}</td>
-                        <td className="p-5 ">{data?.username}</td>
-                        <td className="p-5 ">{data?.phoneNumber}</td>
+            <Table striped hoverable={false} className="min-w-full table-auto font-IRANYekanX">
+              {/* sticky header */}
+              <Table.Head className="sticky top-0 z-10 bg-gray-100 border-b border-gray-300">
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  ردیف
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  تاریخ ایجاد
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  نام شرکت
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  تاریخ تاسیس
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  شناسه اقتصادی
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  شماره ثبت
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  محل ثبت
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  نام کاربری
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2" />
+                <Table.HeadCell className="px-4 py-2" />
+              </Table.Head>
 
-                        <td
-                          className="p-5 hover:text-accent cursor-pointer border-b-2 border-accent "
-                          onClick={() => navigate(`/users/details/${data?.username}/${usertype}`)}>
-                          جزییات
-                        </td>
-                        <td
-                          className="p-5 text-accent cursor-pointer "
-                          onClick={() => GetImpersonateToken(data?.username)}>
-                          ورود به پنل کاربر{' '}
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              )}
-            </table>
+              <Table.Body className="divide-y divide-gray-200 bg-white">
+                {searchActive ? (
+                  response && (
+                    <Table.Row key="single" className="hover:bg-gray-50">
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 whitespace-nowrap">
+                        1
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 whitespace-nowrap">
+                        {response.createDate && getDate(response.createDate)}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {response.legalPerson?.companyName || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 whitespace-nowrap">
+                        {response.legalPerson
+                          ? getDate(response.legalPerson.registerDate)
+                          : '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {response.legalPerson?.economicCode || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {response.legalPerson?.registerNumber || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {response.legalPerson?.registerPlace || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {response.username}
+                      </Table.Cell>
+                      <Table.Cell
+                        className="px-4 py-3 text-right text-sm text-accent cursor-pointer hover:text-accent-dark whitespace-nowrap border-b-2 border-accent"
+                        onClick={() =>
+                          navigate(`/users/details/${response.username}/${usertype}`)
+                        }
+                      >
+                        جزییات
+                      </Table.Cell>
+                      <Table.Cell
+                        className="px-4 py-3 text-right text-sm text-accent cursor-pointer hover:text-accent-dark whitespace-nowrap"
+                        onClick={() => GetImpersonateToken(response.username)}
+                      >
+                        ورود به پنل کاربر
+                      </Table.Cell>
+                    </Table.Row>
+                  )
+                ) : (
+                  response?.data?.map((data, idx) => (
+                    <Table.Row key={idx} className="hover:bg-gray-50">
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 whitespace-nowrap">
+                        {idx + 1}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 whitespace-nowrap">
+                        {data.createDate && getDate(data.createDate)}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {data.legalPerson?.companyName || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 whitespace-nowrap">
+                        {data.legalPerson
+                          ? getDate(data.legalPerson.registerDate)
+                          : '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {data.legalPerson?.economicCode || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {data.legalPerson?.registerNumber || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {data.legalPerson?.registerPlace || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {data.username}
+                      </Table.Cell>
+                      <Table.Cell
+                        className="px-4 py-3 text-right text-sm text-accent cursor-pointer hover:text-accent-dark whitespace-nowrap border-b-2 border-accent"
+                        onClick={() =>
+                          navigate(`/users/details/${data.username}/${usertype}`)
+                        }
+                      >
+                        جزییات
+                      </Table.Cell>
+                      <Table.Cell
+                        className="px-4 py-3 text-right text-sm text-accent cursor-pointer hover:text-accent-dark whitespace-nowrap"
+                        onClick={() => GetImpersonateToken(data.username)}
+                      >
+                        ورود به پنل کاربر
+                      </Table.Cell>
+                    </Table.Row>
+                  ))
+                )}
+
+                {/* empty state */}
+                {!(searchActive ? response : response?.data?.length) && (
+                  <Table.Row>
+                    <Table.Cell
+                      colSpan={10}
+                      className="px-4 py-8 text-center text-sm text-gray-500"
+                    >
+                      هیچ کاربری یافت نشد
+                    </Table.Cell>
+                  </Table.Row>
+                )}
+              </Table.Body>
+            </Table>
+          ) : (
+            <Table striped hoverable className="min-w-full table-auto font-IRANYekanX">
+              {/* sticky header */}
+              <Table.Head className="sticky top-0 z-10 bg-gray-100 border-b border-gray-300">
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  ردیف
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  تاریخ ایجاد
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  نام خانوادگی
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  تاریخ تولد
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  محل تولد
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  شماره شناسنامه
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  نام کاربری
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">
+                  تلفن همراه
+                </Table.HeadCell>
+                <Table.HeadCell className="px-4 py-2" />
+                <Table.HeadCell className="px-4 py-2" />
+              </Table.Head>
+
+              <Table.Body className="divide-y divide-gray-200 bg-white">
+                {searchActive ? (
+                  response && (
+                    <Table.Row key="single-real" className="hover:bg-gray-50">
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 whitespace-nowrap">
+                        1
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 whitespace-nowrap">
+                        {response.createDate && getDate(response.createDate)}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {`${response.realPerson?.firstName || ''} ${response.realPerson?.lastName || ''
+                          }`.trim() || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 whitespace-nowrap">
+                        {response.realPerson
+                          ? getDate(response.realPerson.birthDate)
+                          : '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {response.realPerson?.placeOfBirth || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {response.realPerson?.shNumber || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {response.username}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 whitespace-nowrap">
+                        {response.phoneNumber || '—'}
+                      </Table.Cell>
+                      <Table.Cell
+                        className="px-4 py-3 text-right text-sm text-accent cursor-pointer hover:text-accent-dark whitespace-nowrap border-b-2 border-accent"
+                        onClick={() =>
+                          navigate(`/users/details/${response.username}/${usertype}`)
+                        }
+                      >
+                        جزییات
+                      </Table.Cell>
+                      <Table.Cell
+                        className="px-4 py-3 text-right text-sm text-accent cursor-pointer hover:text-accent-dark whitespace-nowrap"
+                        onClick={() => GetImpersonateToken(response.username)}
+                      >
+                        ورود به پنل کاربر
+                      </Table.Cell>
+                    </Table.Row>
+                  )
+                ) : (
+                  response?.data?.map((data, idx) => (
+                    <Table.Row key={idx} className="hover:bg-gray-50">
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 whitespace-nowrap">
+                        {idx + 1}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 whitespace-nowrap">
+                        {getDate(data.createDate) || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {`${data.realPerson?.firstName || ''} ${data.realPerson?.lastName || ''
+                          }`.trim() || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 whitespace-nowrap">
+                        {data.realPerson
+                          ? getDate(data.realPerson.birthDate)
+                          : '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {data.realPerson?.placeOfBirth || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {data.realPerson?.shNumber || '—'}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 truncate">
+                        {data.username}
+                      </Table.Cell>
+                      <Table.Cell className="px-4 py-3 text-right text-sm text-gray-900 whitespace-nowrap">
+                        {data.phoneNumber || '—'}
+                      </Table.Cell>
+                      <Table.Cell
+                        className="px-4 py-3 text-right text-sm text-accent cursor-pointer hover:text-accent-dark whitespace-nowrap border-b-2 border-accent"
+                        onClick={() =>
+                          navigate(`/users/details/${data.username}/${usertype}`)
+                        }
+                      >
+                        جزییات
+                      </Table.Cell>
+                      <Table.Cell
+                        className="px-4 py-3 text-right text-sm text-accent cursor-pointer hover:text-accent-dark whitespace-nowrap"
+                        onClick={() => GetImpersonateToken(data.username)}
+                      >
+                        ورود به پنل کاربر
+                      </Table.Cell>
+                    </Table.Row>
+                  ))
+                )}
+
+                {/* empty state */}
+                {!(searchActive ? response : response?.data?.length) && (
+                  <Table.Row>
+                    <Table.Cell
+                      colSpan={10}
+                      className="px-4 py-8 text-center text-sm text-gray-500"
+                    >
+                      هیچ کاربری یافت نشد
+                    </Table.Cell>
+                  </Table.Row>
+                )}
+              </Table.Body>
+            </Table>
           )}
+
           {isloading && (
-            <div className=" w-full flex-col flex items-center">
+            <div className="w-full flex flex-col items-center py-8">
               <BouncingDotsLoader />
             </div>
           )}
-          {(response?.pagination?.total == 0 || response?.length == 0) && (
-            <div className=" w-full flex-col flex items-center pt-5 text-caption font-medium text-dominant">
-              <p className="">کاربری یافت نشد </p>
+
+          {response?.pagination?.total === 0 && (
+            <div className="w-full flex flex-col items-center pt-5 text-caption font-medium text-dominant">
+              <p>کاربری یافت نشد</p>
             </div>
           )}
 
-          <div className=" relative flex justify-center p-8">
-            {' '}
+          <div className="relative flex justify-center p-8">
             <PaginationComponet
               total={response?.pagination?.total}
               currentPage={currentPage}
@@ -366,6 +478,9 @@ function Users() {
             />
           </div>
         </div>
+
+
+
       </div>
     </div>
   );

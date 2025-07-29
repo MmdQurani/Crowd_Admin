@@ -11,6 +11,8 @@ import DatePickerPersian from 'component/Datepicker/datepicker';
 import BouncingDotsLoader from 'component/Loading/BouncingDotsLoader';
 import getBaseUrl from 'component/Axios/getBaseUrl';
 import { HandleOnChange } from 'component/GlobalyTools/UseAbleFunction';
+import { IoMdMenu } from 'react-icons/io';
+import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
 
 const PlanDetailsEdit = () => {
   const { id } = useParams();
@@ -108,12 +110,12 @@ const PlanDetailsEdit = () => {
       setFundingType(
         (details?.fundingType &&
           FindRelatedItemforDefault(FundingTypeEnum, details?.fundingType)) ||
-          ''
+        ''
       );
       setCoverImagePaths(
         (details?.coverImagePaths?.length > 0 &&
           details?.coverImagePaths?.map((item) => item?.value)) ||
-          []
+        []
       );
       setstate((details?.state && FindRelatedItemforDefault(planStatusEnum, details?.state)) || '');
       setIsVisible(
@@ -125,7 +127,7 @@ const PlanDetailsEdit = () => {
             ],
             details?.isVisible
           )) ||
-          false
+        false
       );
       setFixedProvisionalProfit(Number(details?.fixedProvisionalProfit * 100).toFixed(2) || 0);
       setTotalProfitRate(Number(details?.totalProfitRate * 100).toFixed(2) || 0);
@@ -232,12 +234,30 @@ const PlanDetailsEdit = () => {
     setCoverImagePaths(newInputs);
   };
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
   return (
     <div className="flex flex-row items-start h-auto">
-      <div className="w-1/4 h-full bg-secondary fixed right-0 hidden lg:flex text-satisfication-85 ">
+      {/* سایدبار */}
+      <div className="w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-full max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex  flex-wrap gap-x-3   items-center align-middle p-10 gap-y-5 ">
+
+      {/* سایدبار برای اندازه های کوچکتر از لارج */}
+      <DrawerSidebar
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+
+      <div className="flex-1 w-full h-full flex  flex-wrap gap-x-3   items-center align-middle p-10 gap-y-5 ">
+
+        <button
+          className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <IoMdMenu className="text-2xl" />
+        </button>
+
         {' '}
         {isloading ? (
           <div className="w-full justify-center h-screen items-center ">
@@ -252,9 +272,10 @@ const PlanDetailsEdit = () => {
                 بازگشت
               </button>
             </div>
-            <div className=" w-full flex flex-wrap h-auto gap-4 items-center justify-start">
+
+            <div className=" w-full grid grid-cols-12 h-auto gap-4 items-center justify-start">
               {/* title */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="title" className=" text-xs  ">
                   عنوان{' '}
                 </label>
@@ -265,7 +286,7 @@ const PlanDetailsEdit = () => {
                 />
               </div>
               {/* titleEn */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="titleEn" className=" text-xs  ">
                   عنوان (EN){' '}
                 </label>
@@ -276,7 +297,7 @@ const PlanDetailsEdit = () => {
                 />
               </div>
               {/* symbol */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="symbol" className=" text-xs  ">
                   نماد
                 </label>
@@ -287,7 +308,7 @@ const PlanDetailsEdit = () => {
                 />
               </div>
               {/* symbolEn */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="symbolEn" className=" text-xs  ">
                   نماد (EN){' '}
                 </label>
@@ -298,7 +319,7 @@ const PlanDetailsEdit = () => {
                 />
               </div>
               {/* executionLocation */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="executionLocation" className=" text-xs  ">
                   محل اجرای طرح
                 </label>
@@ -309,7 +330,7 @@ const PlanDetailsEdit = () => {
                 />
               </div>
               {/* industryGroupId */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="industryGroupId" className=" text-xs  ">
                   ایدی گروه صنعت{' '}
                 </label>
@@ -320,7 +341,7 @@ const PlanDetailsEdit = () => {
                 />
               </div>
               {/* industryGroupTitle */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="industryGroupTitle" className=" text-xs  ">
                   عنوان گروه صنعت{' '}
                 </label>
@@ -331,7 +352,7 @@ const PlanDetailsEdit = () => {
                 />
               </div>
               {/* subIndustryGroupId */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="subIndustryGroupId" className=" text-xs  ">
                   آیدی زیر گروه صنعت{' '}
                 </label>
@@ -342,7 +363,7 @@ const PlanDetailsEdit = () => {
                 />
               </div>
               {/* subIndustryGroupTitle */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="subIndustryGroupTitle" className=" text-xs  ">
                   عنوان زیر گروه صنعت{' '}
                 </label>
@@ -353,21 +374,21 @@ const PlanDetailsEdit = () => {
                 />
               </div>
               {/* startDate */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="startDate" className=" text-xs  ">
                   تاریخ شروع طرح{' '}
                 </label>
                 <DatePickerPersian onchange={setStartDate} value={startDate} />
               </div>
               {/* endDate */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="endDate" className=" text-xs  ">
                   تاریخ پایان طرح{' '}
                 </label>
                 <DatePickerPersian onchange={setEndDate} value={endDate} />
               </div>
               {/* underwritingStartDate */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="underwritingStartDate" className=" text-xs  ">
                   تاریخ آغاز جمع آوری وجوه{' '}
                 </label>
@@ -377,14 +398,14 @@ const PlanDetailsEdit = () => {
                 />
               </div>
               {/* underwritingEndDate */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="underwritingEndDate" className=" text-xs  ">
                   تاریخ پایان جمع آوری وجوه{' '}
                 </label>
                 <DatePickerPersian onchange={setUnderwritingEndDate} value={underwritingEndDate} />
               </div>
               {/* installmentCount */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="installmentCount" className=" text-xs  ">
                   تعداد اقساط{' '}
                 </label>
@@ -395,7 +416,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
               {/* installmentPeriod */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="installmentPeriod" className=" text-xs  ">
                   دوره اقساط{' '}
                 </label>
@@ -406,7 +427,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
               {/* investmentPeriod */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="investmentPeriod" className=" text-xs  ">
                   دوره سرمایه گذاری{' '}
                 </label>
@@ -417,7 +438,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
               {/* unitAmount */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="unitAmount" className=" text-xs  ">
                   قیمت هر واحد{' '}
                 </label>
@@ -428,7 +449,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
               {/* unitCount */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="unitCount" className=" text-xs  ">
                   تعداد واحد{' '}
                 </label>
@@ -438,20 +459,8 @@ const PlanDetailsEdit = () => {
                   className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
                 />{' '}
               </div>
-              {/* minRequiredUnit */}
-              {/* <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
-                <label htmlFor="minRequiredUnit" className=" text-xs  ">
-                  حداقل واحد مورد نیاز برای موفقیت طرح{' '}
-                </label>
-                <input
-                  onChange={(e) => HandleOnChange(e, 'number', setMinRequiredUnit, 1, 100000000)}
-                  value={minRequiredUnit.toLocaleString()}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
-                />{' '}
-              </div> */}
-
               {/* maxUnitPerLegalInvestor */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="maxUnitPerLegalInvestor" className=" text-xs  ">
                   حداکثر واحد قابل خرید (حقوقی)
                 </label>
@@ -464,7 +473,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
               {/* maxUnitPerIndividualInvestor */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="maxUnitPerIndividualInvestor" className=" text-xs  ">
                   حداکثر واحد قابل خرید (حقیقی)
                 </label>
@@ -477,7 +486,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
               {/* minUnitPerLegalInvestor */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="minUnitPerLegalInvestor" className=" text-xs  ">
                   حداقل واحد قابل خرید (حقوقی)
                 </label>
@@ -490,7 +499,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
               {/* minUnitPerIndividualInvestor */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="minUnitPerIndividualInvestor" className=" text-xs  ">
                   حداقل واحد قابل خرید (حقیقی)
                 </label>
@@ -503,7 +512,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
               {/* warranty */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="warranty" className=" text-xs  ">
                   ضمانت نامه طرح{' '}
                 </label>
@@ -514,7 +523,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
               {/* ifbProjectId */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="ifbProjectId" className=" text-xs  ">
                   آیدی فرابورس طرح{' '}
                 </label>
@@ -525,7 +534,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
               {/* ifbUrl */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="ifbUrl" className=" text-xs  ">
                   آدرس فرابورس طرح
                 </label>
@@ -536,7 +545,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
               {/* utilizationPlan    */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="utilizationPlan" className=" text-xs  ">
                   محل استفاده از سرمایه
                 </label>
@@ -547,7 +556,7 @@ const PlanDetailsEdit = () => {
                 />
               </div>
               {/* fixedProvisionalProfit */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="fixedProvisionalProfit" className=" text-xs  ">
                   سود پرداختی هر دوره(اعداد درصد می باشند و اعداد اعشاری را با ( . ) مشخص نمایید
                   مانند 22.5)
@@ -559,7 +568,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
               {/* totalProfitRate */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="totalProfitRate" className=" text-xs  ">
                   سود کل دوره (اعداد درصد می باشند و اعداد اعشاری را با ( . ) مشخص نمایید مانند
                   22.5)
@@ -571,7 +580,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
               {/* monthlyProfitRate */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="monthlyProfitRate" className=" text-xs  ">
                   سود ماهانه (اعداد درصد می باشند و اعداد اعشاری را با ( . ) مشخص نمایید مانند 22.5)
                 </label>
@@ -583,7 +592,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
               {/* annualProfiteRate */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="annualProfiteRate" className=" text-xs  ">
                   سود سالانه (اعداد درصد می باشند و اعداد اعشاری را با ( . ) مشخص نمایید مانند 22.5)
                 </label>
@@ -594,7 +603,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
               {/* floatingPercentage */}
-              <div className=" w-[24%] flex flex-col items-start  justify-start h-auto gap-y-1 ">
+              <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
                 <label htmlFor="floatingPercentage" className=" text-xs  ">
                   درصد شناوری (اعداد درصد می باشند و اعداد اعشاری را با ( . ) مشخص نمایید مانند
                   22.5)
@@ -606,6 +615,7 @@ const PlanDetailsEdit = () => {
                 />{' '}
               </div>
             </div>
+
             {/* description */}
             <div className=" w-full flex flex-col items-start  justify-start h-auto gap-y-1 ">
               <label htmlFor="monthlyProfitRate" className=" text-xs  ">
@@ -614,17 +624,14 @@ const PlanDetailsEdit = () => {
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full text-start pr-2 text-gray-600 text-sm resize-y h-[80px] border border-gray-300 rounded-md "
+                className="w-full text-start pr-2 text-gray-600 text-sm resize-y h-[240px] border border-gray-300 rounded-md "
               />
             </div>
 
             {/*  dropdown row  */}
-            <div className=" flex flex-wrap w-full justify-between items-center">
-              {/* <div className="w-[28%] flex flex-col gap-y-1 items-start ">
-                <label className=" text-xs   text-start"> نوع تامین مالی</label>
-                <DropDown arrey={FundingTypeEnum} select={fundingType} setSelect={setFundingType} />
-              </div> */}
-              <div className="w-[28%] flex flex-col gap-y-1 items-start ">
+            <div className=" grid grid-cols-12 w-full gap-y-4 gap-x-6 justify-between items-center">
+
+              <div className="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-3  flex flex-col gap-y-1 items-start ">
                 <label className=" text-xs   text-start">وضعیت طرح</label>
                 <DropDown
                   arrey={planStatusEnum}
@@ -633,7 +640,8 @@ const PlanDetailsEdit = () => {
                   height="h-[150px]"
                 />
               </div>
-              <div className="w-[28%] flex flex-col gap-y-1 items-start ">
+
+              <div className="col-span-12 sm:col-span-6 md:col-span-4 xl:col-span-3 flex flex-col gap-y-1 items-start ">
                 <label className=" text-xs   text-start">نمایش در سامانه</label>
                 <DropDown
                   arrey={[
@@ -644,7 +652,9 @@ const PlanDetailsEdit = () => {
                   setSelect={setIsVisible}
                 />
               </div>
+
             </div>
+
             <div className="flex  gap-2 items-start w-full flex-col  justify-start gap-y-10">
               <div className="text-start text-base w-auto justify-start border-b border-gray-600 text-gray-500  py-2 ">
                 بارگذاری تصاویر طرح :

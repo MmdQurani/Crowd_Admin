@@ -63,8 +63,7 @@ const RealUserData = ({ details, statistics }) => {
       title: 'آخرین ورود:',
       data:
         (statistics?.lastSuccessfullLoginAttempDate &&
-          `درتاریخ ${getDate(statistics?.lastSuccessfullLoginAttempDate)} ودر ساعت ${
-            statistics?.lastSuccessfullLoginAttempDate?.split('T')?.[1]
+          `درتاریخ ${getDate(statistics?.lastSuccessfullLoginAttempDate)} ودر ساعت ${statistics?.lastSuccessfullLoginAttempDate?.split('T')?.[1]
           }`) ||
         'نامشخص'
     },
@@ -90,9 +89,9 @@ const RealUserData = ({ details, statistics }) => {
       title: 'سریال شناسنامه:',
       data:
         details?.realPerson?.seriSh +
-          '/' +
-          details?.realPerson?.serial +
-          details?.realPerson?.seriShChar || 'نامشخص'
+        '/' +
+        details?.realPerson?.serial +
+        details?.realPerson?.seriShChar || 'نامشخص'
     }
   ];
   const bankAcccountInfo = [
@@ -128,116 +127,147 @@ const RealUserData = ({ details, statistics }) => {
   ];
 
   return (
-    <div className="w-full flex flex-col gap-y-10 items-center  ">
-      {' '}
-      <div className="w-full h-auto flex  justify-end">
-        <a className="flex cursor-pointer" onClick={() => navigate(-1)}>
-          <p className="text-gray-600 p-2 border-b border-gray-500 text-sm font-semibold  ">
-            بازگشت
-          </p>
-        </a>
+    <div className="max-w-5xl mx-auto py-8 px-4 sm:px-6 lg:px-8 space-y-10">
+      {/* بازگشت */}
+      <div className="flex justify-end">
+        <button
+          onClick={() => navigate(-1)}
+          className="inline-flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+        >
+          بازگشت
+                    <svg
+            className="h-5 w-5 ml-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
       </div>
+
       {/* main data */}
-      <div className=" w-[90%] flex flex-wrap gap-8 h-auto  items-center justify-between ">
+      <div className="bg-white shadow rounded-lg p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {mainDetail?.map((item, index) => (
-          <div key={index} className=" w-auto justify-start items-center flex gap-x-1 flex-nowrap ">
-            <span className="text-sm  text-accent-700 font-semibold ">{item.title}</span>
-            <span className="text-base  font-semibold text-gray-700 ">{item.data}</span>
+          <div key={index} className="space-y-1">
+            <span className="block text-sm text-accent-700 font-semibold">
+              {item.title}
+            </span>
+            <span className="block text-base font-medium text-gray-800 whitespace-normal break-words">
+              {item.data}
+            </span>
           </div>
         ))}
       </div>
-      {/*  user status  */}
-      <div className="  w-[90%] rounded-lg flex justify-between">
-        <div className="flex gap-x-2 items-center">
-          <span className="text-sm  text-accent-700 font-semibold border-b border-accent-700 py-1">
-            وضعیت کابر :
+
+      {/* user status */}
+      <div className="bg-white shadow rounded-lg p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-accent-700 font-semibold border-b border-accent-700 pb-1">
+            وضعیت کاربر:
           </span>
-          <span className={`  ${statistics?.isActive ? 'text-green-500' : 'text-red-500'}`}>
+          <span
+            className={`${statistics?.isActive ? 'text-green-600' : 'text-red-600'
+              } text-base font-medium`}
+          >
             {statistics?.isActive ? 'فعال' : 'غیرفعال'}
           </span>
         </div>
-        <div className="flex gap-x-2 items-center">
-          <span className="text-sm  text-accent-700 font-semibold border-b border-accent-700 ">
-            تغییر وضعیت کاربر:
-          </span>
-          <button
-            className={`${
-              statistics?.isActive
-                ? 'border border-red-500 text-red-500'
-                : 'border border-green-500 text-green-500'
-            }  px-2 rounded-md w-fit h-8 text-sm flex items-center justify-center text-center   `}
-            onClick={() => UpdateUserStatus(!statistics?.isActive)}>
-            {statistics?.isActive ? 'غیرفعال کردن کاربر' : 'فعال کردن کاربر'}
-          </button>
-        </div>
+        <button
+          onClick={() => UpdateUserStatus(!statistics?.isActive)}
+          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors
+        ${statistics?.isActive
+              ? 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100'
+              : 'bg-green-50 text-green-600 border border-green-200 hover:bg-green-100'
+            }`}
+        >
+          {statistics?.isActive ? 'غیرفعال کردن کاربر' : 'فعال کردن کاربر'}
+        </button>
       </div>
-      {/* personal info  */}
-      <div className="   rounded-lg w-[90%] flex flex-wrap justify-between gap-3">
-        <span className="font-semibold  w-full text-start  border-b border-accent-700">
+
+      {/* personal info */}
+      <div className="bg-white shadow rounded-lg p-6 space-y-4">
+        <span className="text-lg font-semibold border-b border-gray-200 pb-2">
           اطلاعات فردی
         </span>
-        <div className=" w-full flex flex-wrap gap-8 h-auto  items-center justify-between ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {personalInfo?.map((item, index) => (
-            <div
-              key={index}
-              className=" w-auto justify-start items-center flex gap-x-1 flex-nowrap ">
-              <span className="text-sm  text-accent-700 font-semibold ">{item.title}</span>
-              <span className="text-base  font-semibold text-gray-700 ">{item.data}</span>
+            <div key={index} className="space-y-1">
+              <span className="block text-sm text-accent-700 font-semibold">
+                {item.title}
+              </span>
+              <span className="block text-base font-medium text-gray-800 whitespace-normal break-words">
+                {item.data}
+              </span>
             </div>
           ))}
         </div>
       </div>
-      {/*  bank account  info  */}
-      <div className="   rounded-lg w-[90%] flex flex-wrap justify-between gap-3">
-        {' '}
-        <span className="font-semibold  w-full text-start border-b border-accent-700 ">
-          اطلاعات حساب بانکی{' '}
+
+      {/* bank account info */}
+      <div className="bg-white shadow rounded-lg p-6 space-y-4">
+        <span className="text-lg font-semibold border-b border-gray-200 pb-2">
+          اطلاعات حساب بانکی
         </span>
-        <div className=" w-full flex flex-wrap gap-8 h-auto  items-center justify-between ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {bankAcccountInfo?.map((item, index) => (
-            <div
-              key={index}
-              className=" w-auto justify-start items-center flex gap-x-1 flex-nowrap ">
-              <span className="text-sm  text-accent-700 font-semibold ">{item.title}</span>
-              <span className="text-base  font-semibold text-gray-700 ">{item.data}</span>
+            <div key={index} className="space-y-1">
+              <span className="block text-sm text-accent-700 font-semibold">
+                {item.title}
+              </span>
+              <span className="block text-base font-medium text-gray-800 whitespace-normal break-words">
+                {item.data}
+              </span>
             </div>
           ))}
-        </div>{' '}
+        </div>
       </div>
-      {/* user job info  */}
-      <div className="   rounded-lg w-[90%] flex flex-wrap justify-between gap-3">
-        <span className="font-semibold  w-full text-start border-b border-accent-700 ">
-          {' '}
+
+      {/* address info */}
+      <div className="bg-white shadow rounded-lg p-6 space-y-4">
+        <span className="text-lg font-semibold border-b border-gray-200 pb-2">
           اطلاعات محل سکونت
         </span>
-        <div className=" w-full flex flex-wrap gap-8 h-auto  items-center justify-between ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {userAddressInfo?.map((item, index) => (
-            <div
-              key={index}
-              className=" w-auto justify-start items-center flex gap-x-1 flex-nowrap ">
-              <span className="text-sm  text-accent-700 font-semibold ">{item.title}</span>
-              <span className="text-base  font-semibold text-gray-700 ">{item.data}</span>
+            <div key={index} className="space-y-1">
+              <span className="block text-sm text-accent-700 font-semibold">
+                {item.title}
+              </span>
+              <span className="block text-base font-medium text-gray-800 whitespace-normal break-words">
+                {item.data}
+              </span>
             </div>
           ))}
         </div>
       </div>
-      {/* user job info  */}
-      <div className="   rounded-lg w-[90%] flex flex-wrap justify-between gap-3">
-        <span className="font-semibold  w-full text-start border-b border-accent-700">
-          اطلاعات شغلی{' '}
+
+      {/* job info */}
+      <div className="bg-white shadow rounded-lg p-6 space-y-4">
+        <span className="text-lg font-semibold border-b border-gray-200 pb-2">
+          اطلاعات شغلی
         </span>
-        <div className=" w-full flex flex-wrap gap-8 h-auto  items-center justify-between ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {userJobInfo?.map((item, index) => (
-            <div
-              key={index}
-              className=" w-auto justify-start items-center flex gap-x-1 flex-nowrap ">
-              <span className="text-sm  text-accent-700 font-semibold ">{item.title}</span>
-              <span className="text-base  font-semibold text-gray-700 ">{item.data}</span>
+            <div key={index} className="space-y-1">
+              <span className="block text-sm text-accent-700 font-semibold">
+                {item.title}
+              </span>
+              <span className="block text-base font-medium text-gray-800 whitespace-normal break-words">
+                {item.data}
+              </span>
             </div>
           ))}
         </div>
       </div>
+
     </div>
+
   );
 };
 

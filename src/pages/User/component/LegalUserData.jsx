@@ -86,7 +86,7 @@ const LegalUserData = ({ details, statistics }) => {
     setReload(!reload);
   };
   return (
-    <div className="w-full flex flex-col gap-y-5 ">
+    <div className="w-full flex flex-col gap-y-5 bg-red-600">
       <div className=" w-full flex justify-end ">
         {' '}
         <div

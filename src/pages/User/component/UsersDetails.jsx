@@ -8,6 +8,7 @@ import RealUserData from './RealUserData';
 import { GetUserStatisticsReq } from 'pages/Plans/Api/PlanReq';
 import DataContext from 'comon/context/MainContext';
 import BouncingDotsLoader from 'component/Loading/BouncingDotsLoader';
+import { IoMdMenu } from 'react-icons/io';
 
 const UsersDetails = () => {
   const { reload } = useContext(DataContext);
@@ -48,12 +49,22 @@ const UsersDetails = () => {
       <RealUserData details={details} statistics={statistics} />
     );
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   return (
     <div className="flex flex-row items-start h-auto">
-      <div className="w-1/4 h-full bg-secondary fixed right-0 hidden lg:flex">
+      <div className="w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-full max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex flex-col items-center align-middle p-10 ">
+      <div className="flex-1 w-full h-full flex flex-col items-center align-middle p-10 ">
+        {/* باز کردن سایدبار */}
+        <button
+          className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <IoMdMenu className="text-2xl" />
+        </button>
+
         {isloading ? (
           <BouncingDotsLoader />
         ) : details ? (

@@ -23,9 +23,8 @@ const DatePickerPersian = ({ value, onchange, title, name, style, titleStyle }) 
     <div className={` h-full  relative ${style ? style : ' w-full '}  flex flex-col z-[1000] `}>
       {title && (
         <p
-          className={`font-IRANYekanX font-normal text-xs   rounded-md  ${
-            titleStyle ? titleStyle : 'text-white'
-          } mr-3 w-fit z-10`}>
+          className={`font-IRANYekanX font-normal text-xs   rounded-md  ${titleStyle ? titleStyle : 'text-white'
+            } mr-3 w-fit z-10`}>
           {title}
         </p>
       )}
@@ -39,7 +38,7 @@ const DatePickerPersian = ({ value, onchange, title, name, style, titleStyle }) 
         name={name}
         render={
           <input
-            className="w-full h-[42px] mt-1 border border-gray-400 rounded-lg  flex text-center placeholder:text-xs"
+            className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
             placeholder="تاریخ را  انتخاب کنید"
           />
         }

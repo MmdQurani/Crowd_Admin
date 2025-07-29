@@ -289,7 +289,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => setTitle(e.target.value)}
                   value={title}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />
               </div>
               {/* titleEn */}
@@ -300,7 +300,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => setTitleEn(e.target.value)}
                   value={titleEn}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />
               </div>
               {/* symbol */}
@@ -311,7 +311,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => setSymbol(e.target.value)}
                   value={symbol}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />
               </div>
               {/* symbolEn */}
@@ -322,7 +322,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => setSymbolEn(e.target.value)}
                   value={symbolEn}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />
               </div>
               {/* executionLocation */}
@@ -333,7 +333,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => setExecutionLocation(e.target.value)}
                   value={executionLocation}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />
               </div>
               {/* industryGroupId */}
@@ -344,7 +344,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => HandleOnChange(e, 'number', setIndustryGroupId)}
                   value={industryGroupId}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />
               </div>
               {/* industryGroupTitle */}
@@ -355,7 +355,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => setIndustryGroupTitle(e.target.value)}
                   value={industryGroupTitle}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />
               </div>
               {/* subIndustryGroupId */}
@@ -366,7 +366,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => HandleOnChange(e, 'number', setSubIndustryGroupId)}
                   value={subIndustryGroupId}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />
               </div>
               {/* subIndustryGroupTitle */}
@@ -377,7 +377,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => setSubIndustryGroupTitle(e.target.value)}
                   value={subIndustryGroupTitle}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />
               </div>
               {/* startDate */}
@@ -419,7 +419,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => HandleOnChange(e, 'number', setInstallmentCount, 1, 100)}
                   value={installmentCount}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* installmentPeriod */}
@@ -430,7 +430,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => HandleOnChange(e, 'number', setInstallmentPeriod, 1, 100)}
                   value={installmentPeriod}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* investmentPeriod */}
@@ -441,7 +441,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => HandleOnChange(e, 'number', setInvestmentPeriod, 1, 100)}
                   value={investmentPeriod}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* unitAmount */}
@@ -452,7 +452,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => HandleOnChange(e, 'number', setUnitAmount, 1, 100000000)}
                   value={unitAmount.toLocaleString()}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* unitCount */}
@@ -463,7 +463,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => HandleOnChange(e, 'number', setUnitCount, 1, 100000000)}
                   value={unitCount.toLocaleString()}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* maxUnitPerLegalInvestor */}
@@ -476,7 +476,7 @@ const PlanDetailsEdit = () => {
                     HandleOnChange(e, 'number', setMaxUnitPerLegalInvestor, 1, 100000000)
                   }
                   value={maxUnitPerLegalInvestor.toLocaleString()}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* maxUnitPerIndividualInvestor */}
@@ -489,7 +489,7 @@ const PlanDetailsEdit = () => {
                     HandleOnChange(e, 'number', setMaxUnitPerIndividualInvestor, 1, 100000000)
                   }
                   value={maxUnitPerIndividualInvestor.toLocaleString()}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* minUnitPerLegalInvestor */}
@@ -502,7 +502,7 @@ const PlanDetailsEdit = () => {
                     HandleOnChange(e, 'number', setMinUnitPerLegalInvestor, 1, 100000000)
                   }
                   value={minUnitPerLegalInvestor.toLocaleString()}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* minUnitPerIndividualInvestor */}
@@ -515,7 +515,7 @@ const PlanDetailsEdit = () => {
                     HandleOnChange(e, 'number', setMinUnitPerIndividualInvestor, 1, 100000000)
                   }
                   value={minUnitPerIndividualInvestor.toLocaleString()}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* warranty */}
@@ -526,7 +526,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => setwarranty(e.target.value)}
                   value={warranty}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* ifbProjectId */}
@@ -537,7 +537,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => setIfbProjectId(e.target.value)}
                   value={ifbProjectId}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* ifbUrl */}
@@ -548,7 +548,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => setIfbUrl(e.target.value)}
                   value={ifbUrl}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* utilizationPlan    */}
@@ -559,7 +559,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => setUtilizationPlan(e.target.value)}
                   value={utilizationPlan}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />
               </div>
               {/* fixedProvisionalProfit */}
@@ -571,7 +571,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => HandleOnChange(e, 'number', setFixedProvisionalProfit, 0, 100)}
                   value={fixedProvisionalProfit}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* totalProfitRate */}
@@ -583,7 +583,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => HandleOnChange(e, 'number', setTotalProfitRate, 1, 100)}
                   value={totalProfitRate}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* monthlyProfitRate */}
@@ -595,7 +595,7 @@ const PlanDetailsEdit = () => {
                   max={100}
                   onChange={(e) => HandleOnChange(e, 'number', setMonthlyProfitRate, 0, 100)}
                   value={monthlyProfitRate}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* annualProfiteRate */}
@@ -606,7 +606,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => HandleOnChange(e, 'number', setAnnualProfiteRate, 0, 100)}
                   value={annualProfiteRate}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
               {/* floatingPercentage */}
@@ -618,7 +618,7 @@ const PlanDetailsEdit = () => {
                 <input
                   onChange={(e) => HandleOnChange(e, 'number', setFloatingPercentage, 0, 100)}
                   value={floatingPercentage}
-                  className=" w-full h-[40px] pr-2 text-start border border-gray-300 text-sm rounded-md "
+                  className="w-full px-4 py-2 bg-white border border-gray-200 text-sm text-gray-800 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors "
                 />{' '}
               </div>
             </div>

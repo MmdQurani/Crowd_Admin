@@ -11,7 +11,7 @@ import DatePickerPersian from 'component/Datepicker/datepicker';
 import BouncingDotsLoader from 'component/Loading/BouncingDotsLoader';
 import getBaseUrl from 'component/Axios/getBaseUrl';
 import { HandleOnChange } from 'component/GlobalyTools/UseAbleFunction';
-import { IoMdAdd, IoMdClose, IoMdMenu } from 'react-icons/io';
+import { IoIosArrowBack, IoMdAdd, IoMdArrowBack, IoMdClose, IoMdMenu } from 'react-icons/io';
 import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
 
 const PlanDetailsEdit = () => {
@@ -265,10 +265,17 @@ const PlanDetailsEdit = () => {
           </div>
         ) : (
           <div className="w-full flex flex-col  items-center justify-start gap-y-16">
-            <div className=" text-lg font-bold text-center w-full border-b border-gray-500 py-2 flex justify-center text-gray-500   ">
-              <span className="w-[95%]"> ویرایش طرح {details?.title}</span>
-              <button className="text-gray-500  text-sm font-normal " onClick={() => navigate(-1)}>
+
+            {/* تایتل صفحه */}
+            <div className=" w-full flex items-center justify-between bg-white px-6 py-4 rounded-lg shadow-sm border border-gray-200 border-l-4 ">
+              <h2 className="text-lg font-semibold text-gray-800">
+                ویرایش طرح <span className="text-indigo-500">{details?.title}</span>
+              </h2>
+              <button
+                onClick={() => navigate(-1)}
+                className=" flex items-center text-indigo-500 text-sm font-medium hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-200 rounded">
                 بازگشت
+                <IoIosArrowBack className='text-lg' />
               </button>
             </div>
 

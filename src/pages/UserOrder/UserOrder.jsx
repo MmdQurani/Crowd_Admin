@@ -12,6 +12,8 @@ import FindUser from 'component/AutoComplete/FindUser';
 import DownloadExcelBtn from 'component/GlobalyTools/DownloadExcelBtn';
 import DataContext from 'comon/context/MainContext';
 import UserOrderWalletFlowsModal from './component/UserOrderWalletFlowsModal';
+import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
+import { IoMdMenu } from 'react-icons/io';
 
 function UserOrder() {
   const { allPlans } = useContext(DataContext);
@@ -56,48 +58,86 @@ function UserOrder() {
     setStartDate();
     setUserId();
   };
+
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   return (
     <div className="flex flex-row items-start h-auto">
-      <div className="w-1/4 h-full bg-secondary fixed right-0 hidden lg:flex">
+
+      {/* سایدبار */}
+      <div className="w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full  max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex flex-col items-center align-middle py-5 gap-y-5 ">
-        <div className="bg-gray-500 rounded-lg  w-[80%]  flex flex-col items-center  justify-center  gap-y-3 p-3">
-          <div className="w-full flex justify-between items-center ">
-            {' '}
-            <div className="w-[30%] flex gap-x-2 justify-start ">
+
+      {/* سایدبار برای اندازه های کوچکتر از لارج */}
+      <DrawerSidebar
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+
+      <div className="flex-1 w-full h-full flex flex-col items-center align-middle py-5 gap-y-5 p-6 ">
+
+        {/* باز کردن سایدبار */}
+        <button
+          className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <IoMdMenu className="text-2xl" />
+        </button>
+
+        <div className="w-full max-w-[80%] mx-auto bg-white shadow-lg rounded-xl p-6 flex flex-col gap-6">
+          {/* ردیف اول: جستجوی کاربر و دکمه‌ها */}
+          <div className="flex flex-col sm:flex-row items-end justify-between flex-wrap gap-4">
+            <div className="w-full md:w-1/3">
               <FindUser setUserId={setUserId} userId={userId} />
             </div>
-            <div className="w-[50%] flex justify-end items-center gap-x-2">
-              {' '}
+            <div className="md:w-auto w-full flex items-center flex-wrap gap-3">
               <DownloadExcelBtn
                 Rout="OrdersManagement/GetAll"
                 filename="گزارش سفارشات"
                 body={{
                   investorId: userId,
                   planId: planId?.key,
-                  startDate: startDate,
-                  endDate: endDate,
-                  pagination: {
-                    take: 100000,
-                    skip: 0
-                  }
+                  startDate,
+                  endDate,
+                  pagination: { take: 100000, skip: 0 }
                 }}
               />
               <button
                 onClick={HandelClearFilter}
-                className="w-[100px] h-10 text-white text-center flex justify-center items-center text-sm font-semibold  focus:outline-none focus:ring-0 border border-white rounded-md ">
-                حذف فیلتر{' '}
+                className="md:w-max w-full px-4 py-2 h-10 bg-red-50 text-red-600 border border-red-200 rounded-md text-sm font-medium hover:bg-red-100 transition-colors"
+              >
+                حذف فیلتر
               </button>
             </div>
           </div>
 
-          <div className="w-full flex  justify-center gap-x-10 items-end">
-            <DatePickerPersian value={startDate} onchange={setStartDate} title="از تاریخ" />
-            <DatePickerPersian value={endDate} onchange={setEndDate} title="تا تاریخ" />
-            <DropDown arrey={allPlans} select={planId} setSelect={setPlanId} height="h-[200px]" />
+          {/* ردیف دوم: ورودی تاریخ و پلن */}
+          <div className="flex flex-col sm:flex-row items-end justify-center sm:justify-start md:flex-nowrap` flex-wrap gap-4">
+            <DatePickerPersian
+              value={startDate}
+              onchange={setStartDate}
+              title="از تاریخ"
+              className="w-full sm:w-auto"
+            />
+            <DatePickerPersian
+              value={endDate}
+              onchange={setEndDate}
+              title="تا تاریخ"
+              className="w-full sm:w-auto"
+            />
+            <DropDown
+              arrey={allPlans}
+              select={planId}
+              setSelect={setPlanId}
+              height="h-[200px]"
+              className="w-full sm:w-48"
+            />
           </div>
         </div>
+
+
+
         <div className=" overflow-x-auto md:rounded-lg  w-[80%]">
           <table className="table-auto  font-IRANYekanX w-full ">
             <thead className="font-normal w-full  bg-white text-sm shadow-lg   text-center text-dominant-500 ">

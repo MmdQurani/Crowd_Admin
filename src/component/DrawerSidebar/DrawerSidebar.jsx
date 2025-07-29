@@ -5,7 +5,7 @@ import { IoMdClose } from 'react-icons/io';
 function DrawerSidebar({ isOpen, onClose }) {
   return (
     <div
-      className={`lg:hidden fixed inset-0 z-40 transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      className={`lg:hidden fixed inset-0 z-[10000] transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
     >
       {/* بک‌درپ */}

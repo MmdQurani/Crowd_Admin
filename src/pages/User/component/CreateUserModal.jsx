@@ -71,7 +71,7 @@ function CreateUserModal({ isOpen, setIsOpen }) {
   return (
     <>
       <button
-        className="text-white border border-white rounded-md h-[40px] text-sm font-normal w-[150px]"
+        className=" text-white w-full bg-accent hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
         onClick={openModal}>
         ثبت نام کاربر جدید
       </button>

@@ -32,7 +32,7 @@ export default function ImpersonateModal() {
   return (
     <>
       <button
-        className="text-white border border-white rounded-md h-[40px]  w-[150px]  text-sm font-normal "
+        className="text-white w-full bg-accent hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "
         onClick={openModal}>
         ورود به صفحه کاربر
       </button>

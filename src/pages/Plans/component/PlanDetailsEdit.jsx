@@ -11,7 +11,7 @@ import DatePickerPersian from 'component/Datepicker/datepicker';
 import BouncingDotsLoader from 'component/Loading/BouncingDotsLoader';
 import getBaseUrl from 'component/Axios/getBaseUrl';
 import { HandleOnChange } from 'component/GlobalyTools/UseAbleFunction';
-import { IoMdMenu } from 'react-icons/io';
+import { IoMdAdd, IoMdClose, IoMdMenu } from 'react-icons/io';
 import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
 
 const PlanDetailsEdit = () => {
@@ -251,8 +251,7 @@ const PlanDetailsEdit = () => {
 
       <div className="flex-1 w-full h-full flex  flex-wrap gap-x-3   items-center align-middle p-10 gap-y-5 ">
 
-        <button
-          className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+        <button className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
           onClick={() => setIsDrawerOpen(true)}
         >
           <IoMdMenu className="text-2xl" />
@@ -273,6 +272,7 @@ const PlanDetailsEdit = () => {
               </button>
             </div>
 
+            {/* اینپوت های آپدیت دیتاها */}
             <div className=" w-full grid grid-cols-12 h-auto gap-4 items-center justify-start">
               {/* title */}
               <div className=" md:col-span-4 sm:col-span-6 col-span-12 flex flex-col items-start  justify-start h-auto gap-y-1 ">
@@ -618,8 +618,8 @@ const PlanDetailsEdit = () => {
 
             {/* description */}
             <div className=" w-full flex flex-col items-start  justify-start h-auto gap-y-1 ">
-              <label htmlFor="monthlyProfitRate" className=" text-xs  ">
-                توضیحات طرح{' '}
+              <label htmlFor="monthlyProfitRate" className="text-gray-600 text-base font-medium border-gray-300 pb-2">
+                توضیحات طرح :{' '}
               </label>
               <textarea
                 value={description}
@@ -655,76 +655,105 @@ const PlanDetailsEdit = () => {
 
             </div>
 
-            <div className="flex  gap-2 items-start w-full flex-col  justify-start gap-y-10">
-              <div className="text-start text-base w-auto justify-start border-b border-gray-600 text-gray-500  py-2 ">
-                بارگذاری تصاویر طرح :
-              </div>{' '}
-              <div className="w-full flex flex-wrap items-center  justify-start gap-2">
-                {coverImagePaths?.map((input, index) => (
-                  <div key={index} className="flex items-center mb-3 gap-x-2">
-                    {!coverImagePaths?.[index] && (
-                      <FileUploadPage
-                        multiple={true}
-                        setFileAddress={(index, path) => handleInputChange(index, path)}
-                        id={index}
-                      />
+            {/* آپدیت تصاویر */}
+            <div className="w-full flex flex-col gap-6">
+
+              {/* عنوان بخش */}
+              <div className="text-gray-600 text-base font-medium border-b border-gray-300 pb-2">
+                بارگذاری تصاویر طرح:
+              </div>
+
+              {/* شبکه کارت‌ها */}
+              <div className="grid grid-cols-12 gap-4">
+                {coverImagePaths.map((path, index) => (
+                  <div
+                    key={index}
+                    className=" relative group col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-4 xl:col-span-3">
+                    {/* کارت آپلود فایل */}
+                    {!path && (
+                      <div
+                        className=" flex items-center justify-center h-32 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer transition hover:border-blue-400 hover:bg-blue-50">
+                        <FileUploadPage
+                          multiple={true}
+                          setFileAddress={(i, p) => handleInputChange(i, p)}
+                          id={index}
+                        />
+                        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                          {/* <FiPlus className="text-2xl text-gray-400 mb-1" /> */}
+                          <span className="text-gray-400 text-sm">انتخاب یا کشیدن فایل</span>
+                        </div>
+                      </div>
                     )}
-                    {coverImagePaths?.[index] && (
+
+                    {/* نمایش تصویر آپلود شده */}
+                    {path && (
                       <img
-                        src={getBaseUrl() + coverImagePaths?.[index]}
-                        className="w-[150px] h-[150px] rounded-md shadow-md"
-                      />
+                        src={getBaseUrl() + path}
+                        alt={`cover-${index}`}
+                        className=" w-full h-32 object-cover rounded-lg shadow-sm transition-transform group-hover:scale-105" />
                     )}
-                    {coverImagePaths.length > 1 && (
+
+                    {/* دکمه حذف */}
+                    {path && coverImagePaths.length > 1 && (
                       <button
                         onClick={() => removeInputField(index)}
-                        className=" bg-red-500 text-white px-4 py-1 rounded-md">
-                        -
+                        className=" absolute top-2 right-2 w-6 h-6 flex items-center justify-center bg-white rounded-full shadow opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 hover:text-white">
+                        <IoMdClose size={14} />
                       </button>
                     )}
                   </div>
                 ))}
 
+                {/* دکمه افزودن فیلد جدید */}
                 <button
                   onClick={addInputField}
-                  className="bg-blue-500 text-white px-3 py-1 rounded-md -mt-3">
-                  +
+                  className=" col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-4 xl:col-span-3 flex items-center justify-center h-32 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg text-gray-500 transition hover:border-green-400 hover:bg-green-50">
+                  <IoMdAdd className="text-2xl" />
                 </button>
               </div>
+
             </div>
-            <div className="w-full justify-center items-center h-auto gap-x-3 flex flex-nowrap ">
-              {' '}
+
+            {/* ثبت اطلاعات */}
+            <div className="grid grid-cols-12 gap-4 md:gap-x-8 w-full h-auto">
               {isloading ? (
-                <div className=" w-full items-center justify-center flex py-5 ">
-                  {' '}
+                /* Loader */
+                <div className="col-span-12 flex justify-center items-center py-5">
                   <BouncingDotsLoader />
                 </div>
               ) : response ? (
-                response == 'success' ? (
-                  <div className="border border-green-500 text-green-400 h-[40px] w-[70%]  text-center flex justify-center items-center  rounded-md  ">
-                    ویرایش با موفقیت انجام شد{' '}
+                response === "success" ? (
+                  /* Success message */
+                  <div
+                    className=" col-span-12 w-full border border-green-500 bg-green-50 text-green-600 h-10 flex items-center justify-center rounded-lg shadow-sm ">
+                    ویرایش با موفقیت انجام شد
                   </div>
                 ) : (
-                  <div className="border border-red-500 text-red-400 h-[40px] w-[70%]  text-center flex justify-center items-center  rounded-md  ">
+                  /* Error message */
+                  <div
+                    className=" col-span-12 w-full border border-red-500 bg-red-50 text-red-600 h-10 flex items-center justify-center rounded-lg shadow-sm">
                     خطا!: ثبت ناموفق
                   </div>
                 )
               ) : (
                 <>
-                  {' '}
+                  {/* دکمه ثبت */}
                   <button
                     onClick={Updateplan}
-                    className="  bg-green-500 text-white text-base text-center justify-center flex w-[48%] h-[45px] items-center rounded-md">
-                    ثبت{' '}
+                    className=" col-span-12 sm:col-span-6 w-full                     /* پرکردن عرض سلول */ h-12 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-lg shadow-lg transition-transform duration-200 hover:scale-105 hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-200/50">
+                    ثبت
                   </button>
+
+                  {/* دکمه بازگشت */}
                   <button
-                    className="  border border-gray-500  text-gray-700  text-base text-center justify-center flex w-[48%] h-[45px] items-center rounded-md"
-                    onClick={() => navigate(-1)}>
-                    بازگشت{' '}
+                    onClick={() => navigate(-1)}
+                    className=" col-span-12 sm:col-span-6 w-full h-12 bg-white border border-gray-200 text-gray-700 font-medium rounded-lg shadow hover:shadow-md transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-indigo-100/50">
+                    بازگشت
                   </button>
                 </>
               )}
             </div>
+
           </div>
         )}
       </div>

@@ -306,6 +306,7 @@ function ScheduledPaymentsManagementDetails() {
           <IoMdMenu className="text-2xl" />
         </button>
 
+        {/* بخش هدر */}
         <div className="w-full grid grid-cols-12 gap-4 bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition">
           {/* بخش عنوان (Title) */}
           <div className="col-span-12 lg:col-span-6 xl:col-span-5 flex items-center">
@@ -331,8 +332,8 @@ function ScheduledPaymentsManagementDetails() {
               <button
                 onClick={DeleteScheduledPaymentsManagement}
                 className={`px-4 py-2 flex-1 sm:flex-none flex justify-center items-center rounded-md text-white transition ${isloadingResponse
-                    ? "bg-red-400 cursor-not-allowed"
-                    : "bg-red-500 hover:bg-red-600 focus:ring-2 focus:ring-red-500"
+                  ? "bg-red-400 cursor-not-allowed"
+                  : "bg-red-500 hover:bg-red-600 focus:ring-2 focus:ring-red-500"
                   }`}
               >
                 {isloadingResponse ? <BouncingDotsLoader /> : "حذف"}
@@ -361,78 +362,121 @@ function ScheduledPaymentsManagementDetails() {
 
 
         {' '}
-        <div className="w-full flex justify-start items-center flex-wrap gap-8 h-auto p-3">
-          <div className="flex min-w-[10%] justify-start gap-x-5 items-center text-xs  bg-gray-100  min-h-[50px] p-2 rounded-lg  ">
-            <span dir="ltr">:تاریخ تخمینی پرداخت </span>
-            <span className="text-sm font-bold">
-              {details?.estimatedPayoutDate && DateFunction2.getDate(details?.estimatedPayoutDate)}
+        {/* بخش اطلاعات */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full p-4">
+          {/* کارت تاریخ تخمینی پرداخت */}
+          <div className="bg-white shadow-sm rounded-lg p-4 flex gap-x-2 justify-between items-center">
+            <span className="text-gray-600 text-xs" dir="ltr">
+              :تاریخ تخمینی پرداخت
             </span>
-          </div>
-          <div className="flex min-w-[10%] justify-start gap-x-5 items-center text-xs  bg-gray-100  min-h-[50px] p-2 rounded-lg  ">
-            <span dir="ltr">:درصد پرداخت تخمینی</span>
-            <span className="text-sm font-bold">
-              {details?.estimatedPayoutPercentage ? details?.estimatedPayoutPercentage * 100 : 0}{' '}
-              {'%'}
-            </span>
-          </div>
-          <div className="flex min-w-[10%] justify-start gap-x-5 items-center text-xs  bg-gray-100  min-h-[50px] p-2 rounded-lg  ">
-            <span dir="ltr">:تاریخ واریز سود </span>
-            <span className="text-sm font-bold">
-              {details?.investeeDepositDate && DateFunction2.getDate(details?.investeeDepositDate)}{' '}
-            </span>
-          </div>
-          <div className="flex min-w-[10%] justify-start gap-x-5 items-center text-xs  bg-gray-100  min-h-[50px] p-2 rounded-lg  ">
-            <span dir="ltr">: درصد سود محقق شده </span>
-            <span className="text-sm font-bold">
-              {details?.achievedPayoutPercentage ? details?.achievedPayoutPercentage * 100 : 0}
-              {' %'}
-            </span>
-          </div>
-          <div className="flex min-w-[10%] justify-start gap-x-5 items-center text-xs  bg-gray-100  min-h-[50px] p-2 rounded-lg  ">
-            <span dir="ltr">:وضعیت </span>
-            <span className="text-sm font-bold">
-              {details?.status &&
-                FindName(scheduledPaymentsManagementStatus, details?.status)?.name}
+            <span className="text-gray-900 text-sm font-semibold">
+              {details?.estimatedPayoutDate &&
+                DateFunction2.getDate(details?.estimatedPayoutDate)}
             </span>
           </div>
 
-          <div className="flex min-w-[10%] justify-start gap-x-5 items-center text-xs  bg-gray-100  min-h-[50px] p-2 rounded-lg  ">
-            <span dir="ltr">: مبلغ سود تخمینی </span>
-            <span className="text-sm font-bold">
+          {/* کارت درصد پرداخت تخمینی */}
+          <div className="bg-white shadow-sm rounded-lg p-4 flex gap-x-2 justify-between items-center">
+            <span className="text-gray-600 text-xs" dir="ltr">
+              :درصد پرداخت تخمینی
+            </span>
+            <span className="text-gray-900 text-sm font-semibold">
+              {(details?.estimatedPayoutPercentage ?? 0) * 100}%
+            </span>
+          </div>
+
+          {/* کارت تاریخ واریز سود */}
+          <div className="bg-white shadow-sm rounded-lg p-4 flex gap-x-2 justify-between items-center">
+            <span className="text-gray-600 text-xs" dir="ltr">
+              :تاریخ واریز سود
+            </span>
+            <span className="text-gray-900 text-sm font-semibold">
+              {details?.investeeDepositDate &&
+                DateFunction2.getDate(details?.investeeDepositDate)}
+            </span>
+          </div>
+
+          {/* کارت درصد سود محقق شده */}
+          <div className="bg-white shadow-sm rounded-lg p-4 flex gap-x-2 justify-between items-center">
+            <span className="text-gray-600 text-xs" dir="ltr">
+              :درصد سود محقق شده
+            </span>
+            <span className="text-gray-900 text-sm font-semibold">
+              {(details?.achievedPayoutPercentage ?? 0) * 100}%
+            </span>
+          </div>
+
+          {/* کارت وضعیت */}
+          <div className="bg-white shadow-sm rounded-lg p-4 flex gap-x-2 justify-between items-center">
+            <span className="text-gray-600 text-xs" dir="ltr">
+              :وضعیت
+            </span>
+            <span className="text-gray-900 text-sm font-semibold">
+              {details?.status &&
+                FindName(scheduledPaymentsManagementStatus, details.status)?.name}
+            </span>
+          </div>
+
+          {/* کارت مبلغ سود تخمینی */}
+          <div className="bg-white shadow-sm rounded-lg p-4 flex gap-x-2 justify-between items-center">
+            <span className="text-gray-600 text-xs" dir="ltr">
+              :مبلغ سود تخمینی
+            </span>
+            <span className="text-gray-900 text-sm font-semibold">
               {details?.estimatedTotalPayout
-                ? Number(details?.estimatedTotalPayout).toLocaleString()
-                : 0}{' '}
-              {' ریال'}
+                ? Number(details.estimatedTotalPayout).toLocaleString()
+                : 0} ریال
             </span>
           </div>
-          <div className="flex min-w-[10%] justify-start gap-x-5 items-center text-xs  bg-gray-100  min-h-[50px] p-2 rounded-lg  ">
-            <span dir="ltr">: مبلغ سود محقق شده </span>
-            <span className="text-sm font-bold">
+
+          {/* کارت مبلغ سود محقق شده */}
+          <div className="bg-white shadow-sm rounded-lg p-4 flex gap-x-2 justify-between items-center">
+            <span className="text-gray-600 text-xs" dir="ltr">
+              :مبلغ سود محقق شده
+            </span>
+            <span className="text-gray-900 text-sm font-semibold">
               {details?.achievedTotalPayout
-                ? Number(details?.achievedTotalPayout).toLocaleString()
+                ? Number(details.achievedTotalPayout).toLocaleString()
+                : 0} ریال
+            </span>
+          </div>
+
+          {/* کارت تاریخ ایجاد */}
+          <div className="bg-white shadow-sm rounded-lg p-4 flex gap-x-2 justify-between items-center">
+            <span className="text-gray-600 text-xs" dir="ltr">
+              :تاریخ ایجاد
+            </span>
+            <span className="text-gray-900 text-sm font-semibold">
+              {details?.createDate && DateFunction2.getDate(details.createDate)}
+            </span>
+          </div>
+
+          {/* کارت مبلغ جمع‌آوری شده */}
+          <div className="bg-white shadow-sm rounded-lg p-4 flex gap-x-2 justify-between items-center">
+            <span className="text-gray-600 text-xs" dir="ltr">
+              :مبلغ جمع‌آوری شده
+            </span>
+            <span className="text-gray-900 text-sm font-semibold">
+              {details?.amountRaised
+                ? Number(details.amountRaised).toLocaleString()
+                : 0} ریال
+            </span>
+          </div>
+
+          {/* کارت تعداد سرمایه‌گذاران */}
+          <div className="bg-white shadow-sm rounded-lg p-4 flex gap-x-2 justify-between items-center">
+            <span className="text-gray-600 text-xs" dir="ltr">
+              :تعداد سرمایه‌گذاران
+            </span>
+            <span className="text-gray-900 text-sm font-semibold">
+              {details?.totalInvestors
+                ? Number(details.totalInvestors).toLocaleString()
                 : 0}
-              {' ریال'}
-            </span>
-          </div>
-          <div className="flex min-w-[10%] justify-start gap-x-5 items-center text-xs  bg-gray-100  min-h-[50px] p-2 rounded-lg  ">
-            <span dir="ltr">:تاریخ ایجاد </span>
-            <span className="text-sm font-bold">
-              {details?.createDate && DateFunction2.getDate(details?.createDate)}{' '}
-            </span>
-          </div>
-          <div className="flex min-w-[10%] justify-start gap-x-5 items-center text-xs  bg-gray-100  min-h-[50px] p-2 rounded-lg  ">
-            <span dir="ltr">: مبلغ جمع آوری شده </span>
-            <span className="text-sm font-bold">
-              {details?.amountRaised ? Number(details?.amountRaised).toLocaleString() : 0} {' ریال'}
-            </span>
-          </div>
-          <div className="flex min-w-[10%] justify-start gap-x-5 items-center text-xs  bg-gray-100  min-h-[50px] p-2 rounded-lg  ">
-            <span dir="ltr">: تعداد سرمایه گذاران </span>
-            <span className="text-sm font-bold">
-              {details?.totalInvestors && Number(details?.totalInvestors).toLocaleString()}
             </span>
           </div>
         </div>
+
+
         {/* tab for select */}
         <div className=" w-full flex flex-col items-center justify-start   py-5 h-auto text-sm ">
           {/*  tab buttons  */}

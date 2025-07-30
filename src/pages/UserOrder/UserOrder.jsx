@@ -136,97 +136,116 @@ function UserOrder() {
           </div>
         </div>
 
-        <div dir="rtl" className="relative w-[80%] overflow-x-auto shadow-md sm:rounded-lg mt-4 striped-rows">
-          <Table hoverable={false}>
-            <Table.Head className="bg-gray-200 border-b border-gray-400">
-              <Table.HeadCell className="text-right py-4 text-gray-700">
-                ردیف
-              </Table.HeadCell>
-              <Table.HeadCell className="text-right py-4 text-gray-700">
-                تاریخ سفارش
-              </Table.HeadCell>
-              <Table.HeadCell className="text-right py-4 text-gray-700">
-                مبلغ سفارش
-              </Table.HeadCell>
-              <Table.HeadCell className="text-right py-4 text-gray-700">
-                تعداد واحد سفارش
-              </Table.HeadCell>
-              <Table.HeadCell className="text-right py-4 text-gray-700">
-                عنوان طرح
-              </Table.HeadCell>
-              <Table.HeadCell className="text-right py-4 text-gray-700">
-                شناسه ملی / کدملی
-              </Table.HeadCell>
-              <Table.HeadCell className="text-right py-4 text-gray-700">
-                سرمایه‌گذار
-              </Table.HeadCell>
-              <Table.HeadCell className="text-right py-4 text-gray-700">
-                سود پرداختی
-              </Table.HeadCell>
-              <Table.HeadCell className="text-right py-4 text-gray-700">
-                نمایش نام سرمایه‌گذار
-              </Table.HeadCell>
-              <Table.HeadCell className="text-right py-4 text-gray-700">
-                جزییات
-              </Table.HeadCell>
-            </Table.Head>
+        <div dir="rtl" className="relative w-full sm:w-[80%] mx-auto overflow-x-auto mt-4" >
+          <div className='w-max'>
 
-            <Table.Body className="divide-y">
-              {response?.data?.length > 0 ? (
-                response.data.map((item, idx) => (
-                  <Table.Row key={item.id ?? idx}>
-                    <Table.Cell className="text-right">{Skip + idx + 1}</Table.Cell>
-                    <Table.Cell className="text-right">
-                      {DateFunction2.getDate(item.createDate)}
-                    </Table.Cell>
-                    <Table.Cell className="text-right">
-                      {item.totalAmount &&
-                        Number(item.totalAmount).toLocaleString()}{" "}
-                      ریال
-                    </Table.Cell>
-                    <Table.Cell className="text-right">
-                      {Number(item.totalUnit).toLocaleString()}
-                    </Table.Cell>
-                    <Table.Cell className="text-right">
-                      {item.plan?.title}
-                    </Table.Cell>
-                    <Table.Cell className="text-right">
-                      {item.user?.username}
-                    </Table.Cell>
-                    <Table.Cell className="text-right">
-                      {item.user?.name}
-                    </Table.Cell>
-                    <Table.Cell className="text-right">
-                      {item.totalPayout &&
-                        Number(item.totalPayout).toLocaleString()}{" "}
-                      ریال
-                    </Table.Cell>
-                    <Table.Cell
-                      className={`text-right ${item.isVisible ? "text-green-500" : "text-red-500"
-                        }`}
-                    >
-                      {item.isVisible ? "نمایش" : "عدم نمایش"}
-                    </Table.Cell>
-                    <Table.Cell className="text-right">
-                      <UserOrderWalletFlowsModal orderId={item.id} />
+            <Table hoverable={false} className="whitespace-nowrap">
+              <Table.Head className="bg-gray-200 border-b border-gray-400">
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  ردیف
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  تاریخ سفارش
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  مبلغ سفارش
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  تعداد واحد سفارش
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  عنوان طرح
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  شناسه ملی / کدملی
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  سرمایه‌گذار
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  سود پرداختی
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  نمایش نام سرمایه‌گذار
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  جزییات
+                </Table.HeadCell>
+              </Table.Head>
+
+              <Table.Body className="divide-y">
+                {response?.data?.length > 0 ? (
+                  response.data.map((item, idx) => (
+                    <Table.Row key={item.id ?? idx}>
+                      <Table.Cell className="text-right">{Skip + idx + 1}</Table.Cell>
+                      <Table.Cell className="text-right">
+                        {DateFunction2.getDate(item.createDate)}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {item.totalAmount &&
+                          Number(item.totalAmount).toLocaleString()}{" "}
+                        ریال
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {Number(item.totalUnit).toLocaleString()}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {item.plan?.title}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {item.user?.username}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {item.user?.name}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {item.totalPayout &&
+                          Number(item.totalPayout).toLocaleString()}{" "}
+                        ریال
+                      </Table.Cell>
+                      <Table.Cell
+                        className={`text-right ${item.isVisible ? "text-green-500" : "text-red-500"
+                          }`}
+                      >
+                        {item.isVisible ? "نمایش" : "عدم نمایش"}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        <UserOrderWalletFlowsModal orderId={item.id} />
+                      </Table.Cell>
+                    </Table.Row>
+                  ))
+                ) : (
+                  <Table.Row>
+                    <Table.Cell colSpan={10} className="text-center text-gray-500 py-4">
+                      موردی یافت نشد
                     </Table.Cell>
                   </Table.Row>
-                ))
-              ) : (
-                <Table.Row>
-                  <Table.Cell
-                    colSpan={10}
-                    className="text-center text-gray-500 py-4"
-                  >
-                    موردی یافت نشد
-                  </Table.Cell>
-                </Table.Row>
-              )}
-            </Table.Body>
-          </Table>
+                )}
+              </Table.Body>
+            </Table>
+
+            {isloading && (
+              <div className="w-full flex flex-col items-center justify-center h-40">
+                <BouncingDotsLoader />
+              </div>
+            )}
+
+            {response?.pagination?.total === 0 && (
+              <span className="w-full flex items-center justify-center py-5 text-caption font-medium text-dominant">
+                موردی یافت نشد
+              </span>
+            )}
+
+            <div className="relative flex justify-center p-8">
+              <PaginationComponet
+                total={response?.pagination?.total}
+                currentPage={currentPage}
+                onPageChange={handlePageChange}
+              />
+            </div>
+
+          </div>
         </div>
-
-
 
       </div>
     </div>

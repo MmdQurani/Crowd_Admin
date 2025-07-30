@@ -10,6 +10,9 @@ import FindUser from 'component/AutoComplete/FindUser';
 import BouncingDotsLoader from 'component/Loading/BouncingDotsLoader';
 import { GetOrderWalletFlows } from '../Api/userOrderReq';
 import { getDate } from 'component/DateFunctions/DateFunctions';
+import { Table } from 'flowbite-react';
+
+import {IoMdClose } from 'react-icons/io';
 
 function UserOrderWalletFlowsModal({ orderId }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -100,7 +103,7 @@ function UserOrderWalletFlowsModal({ orderId }) {
             leaveTo="opacity-0">
             <div className="relative inset-0 bg-black/25" />
           </Transition.Child>
-          <div className="fixed inset-0 overflow-y-auto">
+          <div className="fixed inset-0 overflow-y-auto bg-black/40 backdrop-blur-sm backdrop-filter">
             <div className="flex min-h-full h-full items-center justify-center p-4 text-center">
               <Transition.Child
                 as={Fragment}
@@ -110,122 +113,175 @@ function UserOrderWalletFlowsModal({ orderId }) {
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95">
-                <Dialog.Panel className="min-w-[1000px] w-auto   transform  shadow-2xl overflow-hidden rounded-lg p-7 text-left align-middle bg-white transition-all gap-y-5 min-h-[500px] h-auto flex flex-col items-center justify-between ">
-                  <div className="w-full flex flex-col items-center justify-startgap-y-3  ">
-                    <div className="w-full flex justify-end items-center">
-                      {' '}
+                <Dialog.Panel
+                  className="relative bg-white min-h-[90%] overflow-y-auto rounded-lg shadow-2xl w-full max-w-5xl p-8 flex flex-col gap-8"
+                >
+                  {/** Close button, now a sleek icon/text in top-right **/}
+                  <button
+                    onClick={closeModal}
+                    className="absolute p-2 bg-slate-50 hover:bg-slate-100 rounded-lg top-4 right-4 text-gray-500 hover:text-gray-700 focus:outline-none"
+                  >
+                    <IoMdClose className="text-2xl" />
+                  </button>
+
+                  {/** Filters wrapper with modern card style **/}
+                  <div className="w-full bg-gray-50 border border-gray-200 rounded-lg p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/** Status Dropdown **/}
+                    <div className="flex flex-col">
+                      <label
+                        htmlFor="walletflowstatus"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        وضعیت تراکنش
+                      </label>
+                      <DropDown
+                        arrey={walletflowstatus}
+                        select={status}
+                        setSelect={setStatus}
+                        name="walletflowstatus"
+                        className="w-full bg-white border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-200"
+                      />
+                    </div>
+
+                    {/** Start Date **/}
+                    <div className="flex flex-col">
+                      <label
+                        htmlFor="startDate"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        از تاریخ
+                      </label>
+                      <DatePickerPersian
+                        titleStyle=""
+                        value={startDate}
+                        onchange={setStartDate}
+                        title=""
+                        className="w-full bg-white border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-200"
+                      />
+                    </div>
+
+                    {/** End Date **/}
+                    <div className="flex flex-col">
+                      <label
+                        htmlFor="endDate"
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        تا تاریخ
+                      </label>
+                      <DatePickerPersian
+                        titleStyle=""
+                        value={endDate}
+                        onchange={setEndDate}
+                        title=""
+                        className="w-full bg-white border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-200"
+                      />
+                    </div>
+
+                    {/** Clear Filters Button **/}
+                    <div className="md:col-span-3 flex justify-start">
                       <button
-                        onClick={closeModal}
-                        className="w-auto focus:outline-none  focus:ring-0 border-b border-accent-500 text-accent-500">
-                        بستن
+                        onClick={HandelClearFilter}
+                        className="bg-white text-accent border border-accent hover:bg-accent hover:text-white font-medium px-5 py-2 rounded-md transition"
+                      >
+                        حذف فیلترها
                       </button>
                     </div>
-                    <div className="w-full flex flex-col justify-start  gap-3 items-center  ">
-                      <div className="w-full flex justify-between ">
-                        {' '}
-                        <div className="w-[30%] flex flex-col justify-center items-center gap-y-1 ">
-                          <label
-                            htmlFor="walletflowstatus"
-                            className=" text-start w-full text-xs text-white">
+                  </div>
+
+                  {/** Table container (unchanged) **/}
+                  <div className="relative w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 mt-2 p-2">
+                    <div className='w-max'>
+                      <Table hoverable={false} className="whitespace-nowrap ">
+                        <Table.Head className="bg-gray-200 border-b border-gray-400">
+                          <Table.HeadCell className="text-center py-4 text-gray-700">
+                            ردیف
+                          </Table.HeadCell>
+                          <Table.HeadCell className="text-center py-4 text-gray-700">
+                            عنوان طرح
+                          </Table.HeadCell>
+                          <Table.HeadCell className="text-center py-4 text-gray-700">
+                            نام
+                          </Table.HeadCell>
+                          <Table.HeadCell className="text-center py-4 text-gray-700">
+                            نام کاربری
+                          </Table.HeadCell>
+                          <Table.HeadCell className="text-center py-4 text-gray-700">
+                            تاریخ تراکنش
+                          </Table.HeadCell>
+                          <Table.HeadCell className="text-center py-4 text-gray-700">
+                            زمان تراکنش
+                          </Table.HeadCell>
+                          <Table.HeadCell className="text-center py-4 text-gray-700">
+                            توضیح تراکنش
+                          </Table.HeadCell>
+                          <Table.HeadCell className="text-center py-4 text-gray-700">
+                            مبلغ تراکنش
+                          </Table.HeadCell>
+                          <Table.HeadCell className="text-center py-4 text-gray-700">
+                            نوع تراکنش
+                          </Table.HeadCell>
+                          <Table.HeadCell className="text-center py-4 text-gray-700">
                             وضعیت تراکنش
-                          </label>
-                          <DropDown
-                            arrey={walletflowstatus}
-                            select={status}
-                            width="border border-gray-400 w-full  rounded-md"
-                            name="walletflowstatus"
-                            setSelect={setStatus}
-                          />
-                        </div>
-                        <DatePickerPersian
-                          titleStyle=" text-gray-600"
-                          value={startDate}
-                          onchange={setStartDate}
-                          title="از تاریخ"
-                          style="w-[30%]"
-                        />{' '}
-                        <DatePickerPersian
-                          titleStyle=" text-gray-600"
-                          value={endDate}
-                          onchange={setEndDate}
-                          title="تا تاریخ"
-                          style="w-[30%]"
-                        />
-                      </div>
+                          </Table.HeadCell>
+                        </Table.Head>
 
-                      <div className="w-full flex justify-start items-end gap-x-3">
-                        <button
-                          onClick={HandelClearFilter}
-                          className="w-[150px] text-center flex justify-center items-center border border-accent focus:outline-none focus:ring-0 rounded-md h-[42px] text-accent">
-                          {' '}
-                          حذف فیلتر ها
-                        </button>
-                      </div>
-                    </div>
+                        <Table.Body className="divide-y">
+                          {ordersWalletFlows?.data?.map((item, index) => (
+                            <Table.Row
+                              key={index}
+                              className="text-center font-normal text-xs text-dominant-500"
+                            >
+                              <Table.Cell className="py-3 whitespace-nowrap">
+                                {Skip + index + 1}
+                              </Table.Cell>
+                              <Table.Cell className="py-3 whitespace-nowrap">
+                                {item?.planTitle || "-"}
+                              </Table.Cell>
+                              <Table.Cell className="py-3 whitespace-nowrap">
+                                {item?.user?.name}
+                              </Table.Cell>
+                              <Table.Cell className="py-3 whitespace-nowrap">
+                                {item?.user?.username}
+                              </Table.Cell>
+                              <Table.Cell className="py-3 whitespace-nowrap">
+                                {item?.createDate && getDate(item.createDate)}
+                              </Table.Cell>
+                              <Table.Cell className="py-3 whitespace-nowrap">
+                                {item?.createDate?.split("T")?.[1]}
+                              </Table.Cell>
+                              <Table.Cell className="py-3 whitespace-nowrap">
+                                {item?.flowDescription || "-----"}
+                              </Table.Cell>
+                              <Table.Cell className="py-3 whitespace-nowrap">
+                                {Number(item?.moneyAmount).toLocaleString()} ریال
+                              </Table.Cell>
+                              <Table.Cell className="py-3 whitespace-nowrap">
+                                {FindType(OperationType, item?.operationType)?.name}
+                              </Table.Cell>
+                              <Table.Cell
+                                className={`py-3 font-medium whitespace-nowrap ${FindType(walletflowstatus, item?.status)?.textcolor
+                                  }`}
+                              >
+                                {FindType(walletflowstatus, item?.status)?.name}
+                              </Table.Cell>
+                            </Table.Row>
+                          ))}
+                        </Table.Body>
+                      </Table>
 
-                    <div className="relative overflow-x-auto md:rounded-lg mt-8 p-2 w-full">
-                      <table className="table-auto bordered font-IRANYekanX w-full ">
-                        <thead className="font-normal w-full text-sm   text-center text-dominant-500">
-                          <tr className=" bg-white shadow-2xl rounded-md ">
-                            <th className="   p-2 bg-white">ردیف</th>
-                            <th className="   p-2 bg-white">عنوان طرح</th>
-                            <th className="   p-2 bg-white">نام </th>
-                            <th className="   p-2 bg-white">نام کاربری</th>
-                            <th className="   p-2 bg-white">تاریخ تراکنش</th>
-                            <th className="   p-2 bg-white">زمان تراکنش</th>
-                            <th className="   p-2 bg-white">توضیح تراکنش</th>
-                            <th className="   p-2 bg-white">مبلغ تراکنش</th>
-                            <th className="   p-2 bg-white">نوع تراکنش</th>
-                            <th className="   p-2 bg-white">وضعیت تراکنش</th>
-                          </tr>
-                        </thead>
-                        <tbody className="p-10 w-full">
-                          {ordersWalletFlows &&
-                            ordersWalletFlows?.data?.map((item, index) => (
-                              <tr
-                                key={index}
-                                className=" border-t text-center rounded-md font-normal text-xs items-end text-dominant-500  ">
-                                <td className="p-3">{Skip + index + 1}</td>
-                                <td className="p-3">{item?.planTitle ? item?.planTitle : '-'}</td>
-                                <td className="p-3">{item?.user?.name}</td>
-                                <td className="p-3">{item?.user?.username}</td>
-                                <td className="p-3">
-                                  {item?.createDate && getDate(item?.createDate)}
-                                </td>
-                                <td className="p-3">
-                                  {item?.createDate && item?.createDate?.split('T')?.[1]}
-                                </td>
-                                <td className="p-3">
-                                  {item?.flowDescription ? item?.flowDescription : '-----'}
-                                </td>
-                                <td className="p-3">
-                                  {Number(item?.moneyAmount)?.toLocaleString()} ریال
-                                </td>
-                                <td className="p-3">
-                                  {item?.operationType &&
-                                    FindType(OperationType, item?.operationType)?.name}
-                                </td>
-                                <td
-                                  className={`p-3 ${
-                                    FindType(walletflowstatus, item?.status)?.textcolor
-                                  } font-medium`}>
-                                  {FindType(walletflowstatus, item?.status)?.name}
-                                </td>
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
                       {isloading && (
-                        <div className=" w-full justify-center flex items-center py-8">
+                        <div className="w-full flex justify-center items-center py-8">
                           <BouncingDotsLoader />
                         </div>
                       )}
-                      {(!ordersWalletFlows || ordersWalletFlows?.pagination?.total == 0) && (
-                        <span className=" w-full flex items-center py-5 text-base font-medium justify-center  text-gray-500">
+
+                      {(!ordersWalletFlows || ordersWalletFlows?.pagination?.total === 0) && (
+                        <span className="w-full flex items-center justify-center py-5 text-base font-medium text-gray-500">
                           گزارشی یافت نشد
                         </span>
                       )}
-                      <div className=" relative flex justify-center py-8">
+
+                      <div className="relative flex justify-center py-8">
                         <PaginationComponet
                           total={ordersWalletFlows?.pagination?.total}
                           currentPage={currentPage}
@@ -235,6 +291,7 @@ function UserOrderWalletFlowsModal({ orderId }) {
                     </div>
                   </div>
                 </Dialog.Panel>
+
               </Transition.Child>
             </div>
           </div>

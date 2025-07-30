@@ -14,6 +14,7 @@ import DataContext from 'comon/context/MainContext';
 import UserOrderWalletFlowsModal from './component/UserOrderWalletFlowsModal';
 import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
 import { IoMdMenu } from 'react-icons/io';
+import { Table } from 'flowbite-react';
 
 function UserOrder() {
   const { allPlans } = useContext(DataContext);
@@ -65,7 +66,7 @@ function UserOrder() {
     <div className="flex flex-row items-start h-auto">
 
       {/* سایدبار */}
-      <div className="w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
+      <div className="min-w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
 
@@ -75,11 +76,10 @@ function UserOrder() {
         onClose={() => setIsDrawerOpen(false)}
       />
 
-      <div className="flex-1 w-full h-full flex flex-col items-center align-middle py-5 gap-y-5 p-6 ">
+      <div className="flex-1 min-w-0 w-full h-full flex flex-col items-center align-middle py-5 gap-y-5 p-6 overflow-x-auto">
 
         {/* باز کردن سایدبار */}
-        <button
-          className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+        <button className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
           onClick={() => setIsDrawerOpen(true)}
         >
           <IoMdMenu className="text-2xl" />
@@ -136,75 +136,98 @@ function UserOrder() {
           </div>
         </div>
 
+        <div dir="rtl" className="relative w-[80%] overflow-x-auto shadow-md sm:rounded-lg mt-4 striped-rows">
+          <Table hoverable={false}>
+            <Table.Head className="bg-gray-200 border-b border-gray-400">
+              <Table.HeadCell className="text-right py-4 text-gray-700">
+                ردیف
+              </Table.HeadCell>
+              <Table.HeadCell className="text-right py-4 text-gray-700">
+                تاریخ سفارش
+              </Table.HeadCell>
+              <Table.HeadCell className="text-right py-4 text-gray-700">
+                مبلغ سفارش
+              </Table.HeadCell>
+              <Table.HeadCell className="text-right py-4 text-gray-700">
+                تعداد واحد سفارش
+              </Table.HeadCell>
+              <Table.HeadCell className="text-right py-4 text-gray-700">
+                عنوان طرح
+              </Table.HeadCell>
+              <Table.HeadCell className="text-right py-4 text-gray-700">
+                شناسه ملی / کدملی
+              </Table.HeadCell>
+              <Table.HeadCell className="text-right py-4 text-gray-700">
+                سرمایه‌گذار
+              </Table.HeadCell>
+              <Table.HeadCell className="text-right py-4 text-gray-700">
+                سود پرداختی
+              </Table.HeadCell>
+              <Table.HeadCell className="text-right py-4 text-gray-700">
+                نمایش نام سرمایه‌گذار
+              </Table.HeadCell>
+              <Table.HeadCell className="text-right py-4 text-gray-700">
+                جزییات
+              </Table.HeadCell>
+            </Table.Head>
 
-
-        <div className=" overflow-x-auto md:rounded-lg  w-[80%]">
-          <table className="table-auto  font-IRANYekanX w-full ">
-            <thead className="font-normal w-full  bg-white text-sm shadow-lg   text-center text-dominant-500 ">
-              <tr className="">
-                <th className="  bg-secondary p-2 ">ردیف</th>
-                <th className="  bg-secondary p-2 ">تاریخ سفارش</th>
-                <th className="  bg-secondary p-2 ">مبلغ سفارش</th>
-                <th className="  bg-secondary p-2 ">تعداد واحد سفارش</th>
-                <th className="  bg-secondary p-2  flex justify-center">عنوان طرح</th>
-                <th className="  bg-secondary p-2  text-xs "> شناسه ملی /کدملی</th>
-                <th className="  bg-secondary p-2  ">سرمایه گذار</th>
-                <th className="  bg-secondary p-2  "> سود پرداختی</th>
-                <th className="  bg-secondary p-2  ">نماش نام سرمایه گذار</th>
-                <th className="  bg-secondary p-2  ">جزییات </th>
-              </tr>
-            </thead>
-            <tbody className="p-10 w-full">
-              {response &&
-                response?.data?.map((item, index) => (
-                  <tr
-                    key={index}
-                    className=" border-b-2 border-gray-300 rounded-md  text-caption text-right text-dominant-500  ">
-                    <td className="p-3 ">{Skip + index + 1}</td>
-                    <td className="p-3 ">{DateFunction2.getDate(item?.createDate)}</td>
-                    <td className="p-3 ">
-                      {item?.totalAmount && Number(item?.totalAmount).toLocaleString()} ریال
-                    </td>
-                    <td className="p-3 flex justify-center ">
-                      {Number(item?.totalUnit).toLocaleString()}{' '}
-                    </td>
-                    <td className="p-3  text-center ">{item?.plan?.title} </td>
-                    <td className="p-3  text-center ">{item?.user?.username} </td>
-                    <td className="p-3  text-center ">{item?.user?.name} </td>
-                    <td className="p-3 ">
-                      {item?.totalPayout && Number(item?.totalPayout).toLocaleString()} ریال
-                    </td>
-                    <td className={`p-3 ${item?.isVisible ? 'text-green-500' : 'text-red-500'}`}>
-                      {item?.isVisible ? 'نمایش ' : 'عدم نمایش'}
-                    </td>
-                    <td className={`p-3 `}>
-                      <UserOrderWalletFlowsModal orderId={item?.id} />
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-          {isloading && (
-            <div className=" w-full flex-col flex items-center justify-center h-screen">
-              <BouncingDotsLoader />
-            </div>
-          )}
-
-          {response?.pagination?.total == 0 && (
-            <span className=" w-full flex-col flex items-center py-5 text-caption font-medium text-dominant">
-              موردی یافت نشد
-            </span>
-          )}
-
-          <div className=" relative flex justify-center p-8">
-            {' '}
-            <PaginationComponet
-              total={response?.pagination?.total}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-            />
-          </div>
+            <Table.Body className="divide-y">
+              {response?.data?.length > 0 ? (
+                response.data.map((item, idx) => (
+                  <Table.Row key={item.id ?? idx}>
+                    <Table.Cell className="text-right">{Skip + idx + 1}</Table.Cell>
+                    <Table.Cell className="text-right">
+                      {DateFunction2.getDate(item.createDate)}
+                    </Table.Cell>
+                    <Table.Cell className="text-right">
+                      {item.totalAmount &&
+                        Number(item.totalAmount).toLocaleString()}{" "}
+                      ریال
+                    </Table.Cell>
+                    <Table.Cell className="text-right">
+                      {Number(item.totalUnit).toLocaleString()}
+                    </Table.Cell>
+                    <Table.Cell className="text-right">
+                      {item.plan?.title}
+                    </Table.Cell>
+                    <Table.Cell className="text-right">
+                      {item.user?.username}
+                    </Table.Cell>
+                    <Table.Cell className="text-right">
+                      {item.user?.name}
+                    </Table.Cell>
+                    <Table.Cell className="text-right">
+                      {item.totalPayout &&
+                        Number(item.totalPayout).toLocaleString()}{" "}
+                      ریال
+                    </Table.Cell>
+                    <Table.Cell
+                      className={`text-right ${item.isVisible ? "text-green-500" : "text-red-500"
+                        }`}
+                    >
+                      {item.isVisible ? "نمایش" : "عدم نمایش"}
+                    </Table.Cell>
+                    <Table.Cell className="text-right">
+                      <UserOrderWalletFlowsModal orderId={item.id} />
+                    </Table.Cell>
+                  </Table.Row>
+                ))
+              ) : (
+                <Table.Row>
+                  <Table.Cell
+                    colSpan={10}
+                    className="text-center text-gray-500 py-4"
+                  >
+                    موردی یافت نشد
+                  </Table.Cell>
+                </Table.Row>
+              )}
+            </Table.Body>
+          </Table>
         </div>
+
+
+
       </div>
     </div>
   );

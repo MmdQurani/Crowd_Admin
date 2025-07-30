@@ -14,6 +14,8 @@ import CreateAndEditScheduledPaymentsModal from './CreateAndEditScheduledPayment
 import BouncingDotsLoader from 'component/Loading/BouncingDotsLoader';
 import ExcelUpload from 'component/Upload/ExcelUpload';
 import DownloadExcelBtn from 'component/GlobalyTools/DownloadExcelBtn';
+import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
+import { IoMdMenu } from 'react-icons/io';
 
 function ScheduledPaymentsManagementDetails() {
   const [details, setDetails] = useState();
@@ -279,65 +281,86 @@ function ScheduledPaymentsManagementDetails() {
   //     sheba: `\t${CheckBankDefault(item?.bankAccounts)?.iBan}`,
   //     bankName: `\t${CheckBankDefault(item?.bankAccounts)?.bank}`
   //   }));
+
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   return (
     <div className="flex flex-row items-start h-auto">
-      <div className="w-1/4 h-full bg-secondary fixed right-0 hidden lg:flex">
+      {/* سایدبار */}
+      <div className="min-w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-full max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex flex-col items-center align-middle p-10 gap-y-5 ">
-        <div
-          className="w-full flex justify-end text-gray-500  border-b border-accent cursor-pointer"
-          onClick={() => navigate(-1)}>
-          بازگشت
-        </div>
-        <div className="w-full flex flex-col items-start justify-between  rounded-md bg-gray-200 h-[120px] p-3 ">
-          <div className=" w-full flex items-center justify-start pr-5  gap-x-3">
-            {' '}
-            <span className="text-sm ">عنوان طرح:</span>
-            <span className="text-sm font-bold">{details?.planTitle}</span>
+
+      {/* سایدبار برای اندازه های کوچکتر از لارج */}
+      <DrawerSidebar
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+
+      <div className="flex-1 min-w-0 w-full h-full flex flex-col items-center align-middle p-10 gap-y-5 ">
+
+        {/* باز کردن سایدبار */}
+        <button className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <IoMdMenu className="text-2xl" />
+        </button>
+
+        <div className="w-full grid grid-cols-12 gap-4 bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition">
+          {/* بخش عنوان (Title) */}
+          <div className="col-span-12 lg:col-span-6 xl:col-span-5 flex items-center">
+            <span className="text-gray-500 text-sm ml-2">عنوان طرح:</span>
+            <span className="text-gray-900 text-base font-semibold">
+              {details?.planTitle}
+            </span>
           </div>
-          <div className="w-full flex justify-between items-center  ">
-            <div className="w-auto flex justify-start gap-x-2 items-center ">
-              {' '}
-              {response ? (
-                response == 'success' ? (
-                  <div className="w-[200px] h-[40px] rounded-md  border border-green-500 text-center justify-center flex items-center  text-green-500  ">
-                    حذف شد
-                  </div>
-                ) : (
-                  <div className="w-[200px] h-[40px] rounded-md  border border-red-500 text-center justify-center flex items-center  text-red-500  ">
-                    خطا ! حذف ناموفق{' '}
-                  </div>
-                )
+
+          {/* بخش دکمه‌ها (Actions) */}
+          <div className="col-span-12 lg:col-span-6 xl:col-span-4 flex items-center justify-start gap-x-4 space-x-2">
+            {response ? (
+              response === "success" ? (
+                <span className="px-4 py-2 bg-green-100 text-green-700 rounded-md text-sm font-medium">
+                  حذف شد
+                </span>
               ) : (
-                <button
-                  onClick={DeleteScheduledPaymentsManagement}
-                  className={`w-[100px] h-[40px] rounded-md ${
-                    isloadingResponse ? ' border-red-500 ' : 'bg-red-500'
-                  }   text-white text-center items-center justify-center  `}>
-                  {isloadingResponse ? <BouncingDotsLoader /> : 'حذف'}
-                </button>
-              )}
-              <CreateAndEditScheduledPaymentsModal
-                type={2}
-                id={id}
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                data={details}
-              />
-            </div>
-            <div className="h-auto items-center justify-end w-auto flex">
-              {' '}
-              <ExcelUpload
-                id={id}
-                filename={filename}
-                setFilename={setFilename}
-                placeholder="فایل  را بارگذاری کنید "
-                title="بارگذاری اکسل وایز سود"
-              />
-            </div>
+                <span className="px-4 py-2 bg-red-100 text-red-700 rounded-md text-sm font-medium">
+                  خطا! حذف ناموفق
+                </span>
+              )
+            ) : (
+              <button
+                onClick={DeleteScheduledPaymentsManagement}
+                className={`px-4 py-2 flex-1 sm:flex-none flex justify-center items-center rounded-md text-white transition ${isloadingResponse
+                    ? "bg-red-400 cursor-not-allowed"
+                    : "bg-red-500 hover:bg-red-600 focus:ring-2 focus:ring-red-500"
+                  }`}
+              >
+                {isloadingResponse ? <BouncingDotsLoader /> : "حذف"}
+              </button>
+            )}
+            <CreateAndEditScheduledPaymentsModal
+              type={2}
+              id={id}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              data={details}
+            />
           </div>
-        </div>{' '}
+
+          {/* بخش آپلود فایل (Upload) */}
+          <div className="col-span-12 lg:col-span-12 xl:col-span-3 flex items-center justify-start">
+            <ExcelUpload
+              id={id}
+              filename={filename}
+              setFilename={setFilename}
+              placeholder="فایل را بارگذاری کنید"
+              title="بارگذاری اکسل وایز سود"
+            />
+          </div>
+        </div>
+
+
+        {' '}
         <div className="w-full flex justify-start items-center flex-wrap gap-8 h-auto p-3">
           <div className="flex min-w-[10%] justify-start gap-x-5 items-center text-xs  bg-gray-100  min-h-[50px] p-2 rounded-lg  ">
             <span dir="ltr">:تاریخ تخمینی پرداخت </span>
@@ -422,9 +445,8 @@ function ScheduledPaymentsManagementDetails() {
                   className=" w-auto cursor-pointer  h-14 justify-between flex flex-col items-center  "
                   key={index}>
                   <span
-                    className={`h-[100%] w-fit  text-sm   text-nowrap text-center items-center flex px-3 justify-center ${
-                      tabSelected == item.key ? ' text-accent-600' : ' text-gray-170'
-                    } `}>
+                    className={`h-[100%] w-fit  text-sm   text-nowrap text-center items-center flex px-3 justify-center ${tabSelected == item.key ? ' text-accent-600' : ' text-gray-170'
+                      } `}>
                     {item.name}
                   </span>
                   {tabSelected == item.key && (

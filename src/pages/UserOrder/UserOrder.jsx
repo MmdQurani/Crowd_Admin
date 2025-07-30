@@ -236,15 +236,15 @@ function UserOrder() {
               </span>
             )}
 
-            <div className="relative flex justify-center p-8">
-              <PaginationComponet
-                total={response?.pagination?.total}
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-              />
-            </div>
-
           </div>
+        </div>
+
+        <div className="relative flex justify-center p-8">
+          <PaginationComponet
+            total={response?.pagination?.total}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
         </div>
 
       </div>

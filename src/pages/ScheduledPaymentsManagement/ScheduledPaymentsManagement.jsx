@@ -12,6 +12,9 @@ import DropDown from 'component/DropDown/DropDown';
 import DownloadExcelBtn from 'component/GlobalyTools/DownloadExcelBtn';
 import BouncingDotsLoader from 'component/Loading/BouncingDotsLoader';
 import DataContext from 'comon/context/MainContext';
+import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
+import { IoMdMenu } from 'react-icons/io';
+import { Table } from 'flowbite-react';
 
 function ScheduledPaymentsManagement() {
   const { allPlans } = useContext(DataContext);
@@ -103,169 +106,237 @@ function ScheduledPaymentsManagement() {
   //     OrderStatus: item?.status && FindName(scheduledPaymentsManagementStatus, item?.status)?.name
   //   }));
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   return (
     <div className="flex flex-row items-start h-auto">
-      <div className="w-1/4 h-full bg-secondary fixed right-0 hidden lg:flex">
+      {/* سایدبار */}
+      <div className="min-w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-full max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex flex-col items-center align-middle p-10 ">
-        <div className="bg-gray-500 rounded-lg  w-full flex justify-between gap-x-3 p-3 flex-wrap items-end ">
-          {' '}
-          <DatePickerPersian
-            value={startDate}
-            onchange={setStartDate}
-            title="از تاریخ"
-            style="w-[200px]"
-          />{' '}
-          <DatePickerPersian
-            value={EndDate}
-            onchange={setEndDate}
-            title="تا تاریخ"
-            style="w-[200px]"
-          />{' '}
-          <DropDown
-            arrey={allPlans}
-            select={investmentPlanId}
-            setSelect={setInvestmentPlanId}
-            height="h-[200px]"
-            width="w-[200px]"
-          />
+
+      {/* سایدبار برای اندازه های کوچکتر از لارج */}
+      <DrawerSidebar
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+
+      <div className="flex-1 min-w-0 w-full h-full flex flex-col items-center align-middle p-10 ">
+
+        {/* باز کردن سایدبار */}
+        <button className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <IoMdMenu className="text-2xl" />
+        </button>
+
+        <div
+          dir="rtl"
+          className=" bg-white border border-gray-200 shadow-md rounded-lg min-w-full sm:min-w-[80%] p-4 flex flex-wrap items-end gap-4
+  "
+        >
+          {/* از تاریخ */}
+          <div className="w-full md:w-[200px]">
+            <DatePickerPersian
+              value={startDate}
+              onchange={setStartDate}
+              title="از تاریخ"
+              className="w-full"
+            />
+          </div>
+
+          {/* تا تاریخ */}
+          <div className="w-full md:w-[200px]">
+            <DatePickerPersian
+              value={EndDate}
+              onchange={setEndDate}
+              title="تا تاریخ"
+              className="w-full"
+            />
+          </div>
+
+          {/* طرح سرمایه‌گذاری */}
+          <div className="w-full md:w-[200px]">
+            <DropDown
+              arrey={allPlans}
+              select={investmentPlanId}
+              setSelect={setInvestmentPlanId}
+              className="w-full"
+              height="h-[200px]"
+            />
+          </div>
+
+          {/* پاک کردن فیلتر */}
           <button
             onClick={HandelClearFilter}
-            className="w-[100px] h-10 text-white text-center flex justify-center items-center text-sm font-semibold  focus:outline-none focus:ring-0 border border-white rounded-md ">
-            حذف فیلتر{' '}
+            className=" w-full md:w-auto bg-red-50 text-red-600 hover:bg-red-200 border border-red-300 rounded-md px-4 py-2 text-sm font-medium transition">
+            حذف فیلتر
           </button>
+
+          {/* دانلود اکسل */}
           <DownloadExcelBtn
             Rout="OfflinePaymentManagement/GetAll"
-            filename=" گزارش واریز سود"
+            filename="گزارش واریز سود"
             body={{
-              startDate: startDate && startDate?.split('T')[0],
-              endDate: EndDate && EndDate?.split('T')[0],
+              startDate: startDate?.split("T")[0],
+              endDate: EndDate?.split("T")[0],
               planId: investmentPlanId?.key,
-              pagination: {
-                take: 1000000,
-                skip: 0
-              }
+              pagination: { take: 1000000, skip: 0 },
             }}
-          />
-          <CreateAndEditScheduledPaymentsModal type={1} isOpen={isOpen} setIsOpen={setIsOpen} />
+            className=" w-full md:w-auto bg-accent-500 text-white hover:bg-accent-600 rounded-md px-4 py-2 text-sm font-medium shadow-sm transition"/>
+
+          {/* ایجاد پرداخت زمان‌بندی‌شده */}
+          <div className="w-full sm:w-auto">
+            <CreateAndEditScheduledPaymentsModal
+              type={1}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              triggerClassName=" w-full md:w-auto bg-blue-500 text-white hover:bg-blue-600 rounded-md px-4 py-2 text-sm font-medium shadow-sm transition"
+              triggerText="افزودن پرداخت جدید"
+            />
+          </div>
         </div>
-        <div className="relative overflow-x-auto md:rounded-lg mt-8 p-2 w-full ">
-          <div className="relative overflow-x-auto md:rounded-lg mt-8">
-            <table className="   w-full  rounded-md">
-              <thead className=" shadow-xl bg-white text-xs font-light text-right  ">
-                <tr className=" font-normal ">
-                  <th className="  font-normal  border-gray-600   p-3 ">ردیف</th>
-                  <th className=" font-semibold border-gray-600   p-3  text-center">نام طرح</th>
-                  <th className=" font-semibold border-gray-600   p-3  text-center">
-                    مبلغ سرمایه گذاری شده{' '}
-                  </th>
-                  <th className=" font-semibold border-gray-600   p-3  text-center ">
-                    تاریخ واریز اعلامی{' '}
-                  </th>
-                  <th className=" font-semibold border-gray-600   p-3  text-center ">
-                    درصد سود محقق شده{' '}
-                  </th>
-                  <th className=" font-semibold border-gray-600   p-3  text-center ">
-                    درصد سود تخمینی{' '}
-                  </th>
-                  <th className=" font-semibold border-gray-600   p-3  text-center ">مبلغ سود</th>
-                  <th className=" font-semibold border-gray-600   p-3  text-center ">
-                    {' '}
-                    تاریخ واریز{' '}
-                  </th>
-                  <th className=" font-semibold border-gray-600   p-3  text-center ">
-                    تعداد سرمایه گذار{' '}
-                  </th>
-                  <th className=" font-semibold border-gray-600   p-3  text-center ">وضعیت</th>
-                  <th className=" font-semibold border-gray-600   p-3  text-center ">عملیات</th>
-                </tr>
-              </thead>
-              <tbody>
-                {response &&
-                  response?.data?.map((data, index) => (
-                    <tr key={index} className="  p-10 text-xs text-right text-dominant-500">
-                      <td className="p-3  border-b  border-gray-300 text-center ">
-                        {Skip + index + 1}{' '}
-                      </td>
-                      <td className="p-3 border-b  border-gray-300 text-center">
-                        {data?.planTitle}{' '}
-                      </td>
-                      <td className="p-3 border-b  border-gray-300 text-center ">
-                        {Number(data?.amountRaised)?.toLocaleString()} ریال
-                      </td>
-                      <td className="p-3 border-b  border-gray-300 text-center ">
-                        {data?.estimatedPayoutDate &&
-                          DateFunction2.getDate(data?.estimatedPayoutDate)}{' '}
-                      </td>
-                      <td className="p-3 border-b  border-gray-300 text-center ">
-                        {data?.achievedPayoutPercentage
-                          ? Number(data?.achievedPayoutPercentage * 100).toFixed()
-                          : 0}
-                        {' %'}
-                      </td>
-                      <td className="p-3 border-b  border-gray-300 text-center ">
-                        {data?.estimatedPayoutPercentage
-                          ? Number(data?.estimatedPayoutPercentage * 100).toFixed()
-                          : 0}
-                        {' %'}
-                      </td>
-                      <td className="p-3 border-b  border-gray-300 text-center ">
-                        {' '}
-                        {data?.estimatedTotalPayout
-                          ? Number(data?.estimatedTotalPayout).toLocaleString()
-                          : 0}{' '}
-                        ریال{' '}
-                      </td>
-                      <td className="p-3 border-b  border-gray-300 text-center ">
-                        {data?.investeeDepositDate
-                          ? DateFunction2.getDate(data?.investeeDepositDate)
-                          : '--'}{' '}
-                      </td>{' '}
-                      <td className="p-3 border-b  border-gray-300 text-center ">
-                        {' '}
-                        {data?.totalInvestors
-                          ? Number(data?.totalInvestors).toLocaleString()
-                          : 0}{' '}
-                        نفر{' '}
-                      </td>
-                      <td className="p-3 border-b  border-gray-300 text-center ">
-                        {' '}
-                        {data?.status &&
-                          FindName(scheduledPaymentsManagementStatus, data?.status)?.name}{' '}
-                      </td>
-                      <td className="p-3 border-b  border-gray-300 text-center ">
+
+
+
+        <div
+          dir="rtl"
+          className="relative w-full md:w-[80%] mx-auto overflow-x-auto mt-8"
+        >
+          <div className="w-max">
+            <Table hoverable={false} className="whitespace-nowrap">
+              <Table.Head className="bg-gray-200 border-b border-gray-400">
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  ردیف
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  نام طرح
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  مبلغ سرمایه‌گذاری‌شده
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  تاریخ واریز اعلامی
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  درصد سود محقق‌شده
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  درصد سود تخمینی
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  مبلغ سود
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  تاریخ واریز
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  تعداد سرمایه‌گذار
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  وضعیت
+                </Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">
+                  عملیات
+                </Table.HeadCell>
+              </Table.Head>
+
+              <Table.Body className="divide-y">
+                {response?.data?.length > 0 ? (
+                  response.data.map((data, idx) => (
+                    <Table.Row key={data.id ?? idx} className="hover:bg-gray-50">
+                      <Table.Cell className="text-right">
+                        {Skip + idx + 1}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {data.planTitle}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {Number(data.amountRaised).toLocaleString()} ریال
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {data.estimatedPayoutDate
+                          ? DateFunction2.getDate(data.estimatedPayoutDate)
+                          : "--"}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {data.achievedPayoutPercentage
+                          ? `${(data.achievedPayoutPercentage * 100).toFixed()} %`
+                          : "0 %"}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {data.estimatedPayoutPercentage
+                          ? `${(data.estimatedPayoutPercentage * 100).toFixed()} %`
+                          : "0 %"}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {data.estimatedTotalPayout
+                          ? `${Number(data.estimatedTotalPayout).toLocaleString()} ریال`
+                          : "0 ریال"}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {data.investeeDepositDate
+                          ? DateFunction2.getDate(data.investeeDepositDate)
+                          : "--"}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {data.totalInvestors
+                          ? `${Number(data.totalInvestors).toLocaleString()} نفر`
+                          : "0 نفر"}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {data.status
+                          ? FindName(
+                            scheduledPaymentsManagementStatus,
+                            data.status
+                          )?.name
+                          : "--"}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
                         <Link
-                          className="text-sm text-accent-500  border-b border-accent-500 py-1 cursor-pointer"
-                          to={`/scheduled_payments_management_details/${data?.id}`}>
+                          to={`/scheduled_payments_management_details/${data.id}`}
+                          className="text-accent-500 hover:underline"
+                        >
                           جزییات
                         </Link>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))
+                ) : (
+                  <Table.Row>
+                    <Table.Cell
+                      colSpan={11}
+                      className="text-center text-gray-500 py-4"
+                    >
+                      موردی یافت نشد
+                    </Table.Cell>
+                  </Table.Row>
+                )}
+              </Table.Body>
+            </Table>
 
             {isloading && (
-              <div className=" w-full justify-center flex items-center">
+              <div className="w-full flex flex-col items-center justify-center h-40">
                 <BouncingDotsLoader />
               </div>
             )}
-            {response?.pagination?.total == 0 && (
-              <span className=" w-full  flex items-center py-5 text-sm justify-center text-center   font-medium text-gray-800">
-                گزارشی یافت نشد{' '}
+
+            {response?.pagination?.total === 0 && (
+              <span className="w-full flex items-center justify-center py-5 text-caption font-medium text-dominant">
+                موردی یافت نشد
               </span>
             )}
-            <div className=" relative flex justify-center py-5">
-              {' '}
-              <PaginationComponet
-                total={response?.pagination?.total}
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-              />
-            </div>
           </div>
+
         </div>
+        <div className="relative flex justify-center p-8">
+          <PaginationComponet
+            total={response?.pagination?.total}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
+
       </div>
     </div>
   );

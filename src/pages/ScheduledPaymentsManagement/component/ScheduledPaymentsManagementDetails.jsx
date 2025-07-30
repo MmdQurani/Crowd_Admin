@@ -16,6 +16,7 @@ import ExcelUpload from 'component/Upload/ExcelUpload';
 import DownloadExcelBtn from 'component/GlobalyTools/DownloadExcelBtn';
 import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
 import { IoMdMenu } from 'react-icons/io';
+import { Table } from 'flowbite-react';
 
 function ScheduledPaymentsManagementDetails() {
   const [details, setDetails] = useState();
@@ -480,62 +481,76 @@ function ScheduledPaymentsManagementDetails() {
         {/* tab for select */}
         <div className=" w-full flex flex-col items-center justify-start   py-5 h-auto text-sm ">
           {/*  tab buttons  */}
-          <div className="w-full overflow-x-auto flex justify-start items-center h-auto border-b border-gray-500">
-            {' '}
-            <div className="lg:w-[90%] h-14 flex items-center justify-start gap-x-6 ">
-              {TabsName?.map((item, index) => (
-                <div
+          <div className="w-full overflow-x-auto border-b border-gray-200 dark:border-gray-700 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 snap-x snap-mandatory">
+            <nav className="flex items-center gap-x-6 px-4 lg:px-8 h-16">
+              {TabsName?.map((item) => (
+                <button
+                  key={item.key}
                   onClick={() => setTabSelected(item.key)}
-                  className=" w-auto cursor-pointer  h-14 justify-between flex flex-col items-center  "
-                  key={index}>
+                  className="relative flex flex-col items-center justify-center px-4 py-2 snap-start transition-colors duration-200 focus:outline-none focus:text-accent-600"
+                >
                   <span
-                    className={`h-[100%] w-fit  text-sm   text-nowrap text-center items-center flex px-3 justify-center ${tabSelected == item.key ? ' text-accent-600' : ' text-gray-170'
-                      } `}>
+                    className={`text-sm font-medium ${tabSelected === item.key
+                      ? 'text-accent-600 dark:text-accent-500'
+                      : 'text-gray-600 dark:text-gray-400'
+                      }`}
+                  >
                     {item.name}
                   </span>
-                  {tabSelected == item.key && (
-                    <div className=" w-full h-2  bg-accent-600  rounded-t-large" />
-                  )}{' '}
-                </div>
+                  <span
+                    className={`absolute bottom-0 left-0 w-full h-1 rounded-t-lg bg-accent-600 transform transition-transform duration-300 ${tabSelected === item.key ? 'scale-x-100' : 'scale-x-0'
+                      }`}
+                  />
+                </button>
               ))}
-            </div>
+            </nav>
           </div>
+
           {/* component display  */}
-          <div className="overflow-hidden w-full flex items-center flex-col justify-center rounded-lg gap-y-5  py-5 ">
-            <div className="w-full flex justify-start items-center">
-              {' '}
-              {tabSelected == 'orders' && orders && orders?.length !== 0 && (
+          <div className="w-full rounded-lg bg-white shadow-md p-4 flex flex-col gap-4">
+            {/* دکمه دانلود اکسل */}
+            <div className="flex justify-start">
+              {tabSelected === 'orders' && orders?.length > 0 && (
                 <DownloadExcelBtn
-                  style="w-[200px] h-[40px] border border-green-500 text-green-500 "
+                  style="w-48 h-10 border border-green-500 text-green-500 rounded-md"
                   Rout={`ScheduledPaymentsManagement/GetOrdersByScheduledPaymentId/${id}`}
                   filename={`سفارشات_${details?.planTitle}`}
                 />
               )}
             </div>
-            <div className="w-full h-[400px] overflow-y-auto rounded-md">
-              <table className="min-w-full shadow-md rounded-md">
-                <thead className="bg-secondray-50">
-                  <tr className="shadow-lg bg-white">
-                    {TabelHeaderHandler()?.map((item, index) => (
-                      <th
-                        key={index}
-                        scope="col"
-                        className={`sticky top-0  bg-white  py-5  text-center text-xs font-semibold  uppercase  `}>
-                        {' '}
-                        {item?.name}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="p-10 w-full">{HandleTableBody()}</tbody>
-              </table>
-              {isloading && (
-                <div className=" w-full  flex justify-center py-3 items-center">
-                  <BouncingDotsLoader />
-                </div>
-              )}
+
+            {/* جدول */}
+            <div className="overflow-x-auto">
+              <Table
+                hoverable={true}
+                striped={true}
+                className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 whitespace-nowrap "
+              >
+                <Table.Head className="sticky top-0 bg-white dark:bg-gray-800 z-10 shadow-sm">
+                  {TabelHeaderHandler().map((item, idx) => (
+                    <Table.HeadCell
+                      key={idx}
+                      className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase dark:text-gray-400"
+                    >
+                      {item.name}
+                    </Table.HeadCell>
+                  ))}
+                </Table.Head>
+
+                <Table.Body className="bg-white divide-y divide-gray-100 dark:bg-gray-900 dark:divide-gray-700">
+                  {HandleTableBody()}
+                </Table.Body>
+              </Table>
             </div>
-          </div>{' '}
+
+            {/* لودر هنگام بارگذاری */}
+            {isloading && (
+              <div className="flex justify-center py-3">
+                <BouncingDotsLoader />
+              </div>
+            )}
+          </div>
+          {' '}
         </div>{' '}
       </div>
     </div>

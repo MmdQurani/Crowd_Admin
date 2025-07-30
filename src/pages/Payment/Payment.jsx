@@ -8,6 +8,9 @@ import { getDate } from 'component/DateFunctions/DateFunctions';
 import { GetAllGetwayReq, GetAllPaymentReq } from './Api/paymentReq';
 import { payStatusEnum } from 'component/db/PlanStatusEnum';
 import FindUser from 'component/AutoComplete/FindUser';
+import { Table } from 'flowbite-react';
+import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
+import { IoMdMenu } from 'react-icons/io';
 
 function Payment() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,110 +51,135 @@ function Payment() {
     return payStatusEnum.find((item) => item?.key == key)?.name;
   };
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   return (
     <div className="flex flex-row items-start h-auto">
-      <div className="w-1/4 h-full bg-secondary fixed right-0 hidden lg:flex">
+      {/* سایدبار */}
+      <div className="min-w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-full max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex flex-col items-center align-middle p-10 ">
-        <div className="bg-gray-500 rounded-lg  w-1/2 flex justify-center gap-x-3 p-3">
-          <div className="w-[20%] flex gap-x-2 justify-start ">
-            <FindUser setUserId={setUserId} userId={userId} />
+
+      {/* سایدبار برای اندازه های کوچکتر از لارج */}
+      <DrawerSidebar
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+      <div className="flex-1 min-w-0 w-full h-full flex flex-col items-center align-middle p-10 ">
+
+        {/* باز کردن سایدبار */}
+        <button className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <IoMdMenu className="text-2xl" />
+        </button>
+
+        <div dir="rtl" className="min-w-[90%] sm:min-w-[50%] mx-auto  bg-gray-50 border border-gray-200  rounded-lg p-4  flex items-center gap-4">
+          <div className="flex-1">
+            <FindUser
+              setUserId={setUserId}
+              userId={userId}
+              className="w-full bg-white border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-200"
+            />
           </div>
         </div>
-        <div className="relative overflow-x-auto md:rounded-lg mt-8 p-2">
-          <table className="table-auto  font-IRANYekanX w-full ">
-            <thead className="font-normal w-full  bg-white text-base shadow-lg   text-right text-dominant-500">
-              <tr className="">
-                <th className="  bg-secondary p-4">ردیف</th>
-                <th className="  bg-secondary p-4 text-center">نام کاربر</th>
-                <th className="  bg-secondary p-4"> نوع کاربری</th>
-                <th className="  bg-secondary p-4"> نام کاربری</th>
-                <th className="  bg-secondary p-4 flex justify-center"> درگاه </th>
-                <th className="  bg-secondary p-4 ">تاریخ پرداخت</th>
-                <th className="  bg-secondary p-4 text-center ">مبلغ پرداخت</th>
-                <th className="  bg-secondary p-4 ">وضعیت پرداخت</th>
-                <th className="  bg-secondary p-4 text-center "></th>
-              </tr>
-            </thead>
-            <tbody className="p-10 w-full">
-              {response &&
-                response?.data?.map((item, index) => (
-                  <tr
+
+
+        <div dir="rtl" className="relative w-full sm:w-[90%] mx-auto overflow-x-auto mt-4">
+          <Table hoverable={false} className="min-w-full whitespace-nowrap">
+            <Table.Head className="bg-secondary sticky top-0">
+              <Table.HeadCell className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                ردیف
+              </Table.HeadCell>
+              <Table.HeadCell className="px-4 py-3 text-center text-sm font-semibold text-gray-700">
+                نام کاربر
+              </Table.HeadCell>
+              <Table.HeadCell className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                نوع کاربری
+              </Table.HeadCell>
+              <Table.HeadCell className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                نام کاربری
+              </Table.HeadCell>
+              <Table.HeadCell className="px-4 py-3 text-center text-sm font-semibold text-gray-700">
+                درگاه
+              </Table.HeadCell>
+              <Table.HeadCell className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                تاریخ پرداخت
+              </Table.HeadCell>
+              <Table.HeadCell className="px-4 py-3 text-center text-sm font-semibold text-gray-700">
+                مبلغ پرداخت
+              </Table.HeadCell>
+              <Table.HeadCell className="px-4 py-3 text-right text-sm font-semibold text-gray-700">
+                وضعیت پرداخت
+              </Table.HeadCell>
+              <Table.HeadCell className="px-4 py-3 text-center text-sm font-semibold text-gray-700">
+              </Table.HeadCell>
+            </Table.Head>
+
+            <Table.Body className="bg-white divide-y divide-gray-200">
+              {response?.data?.length > 0 ? (
+                response.data.map((item, index) => (
+                  <Table.Row
                     key={index}
-                    className=" border-t-2 text-center  border-b  border-gray-300 rounded-md font-semibold text-caption  text-dominant-500  ">
-                    <td className="p-4 ">{Skip + index + 1}</td>
-                    <td className="p-4 ">{item?.user?.name}</td>
-                    <td className="p-4 ">
-                      {item?.user?.type == 1 || item?.user?.type == 3 ? 'حقیقی' : 'حقوقی'}
-                    </td>
-                    <td className="p-4 ">{item?.user?.username}</td>
-                    <td className="p-4 ">
-                      {gatway?.filter((c) => c?.id == item?.gatewayId)[0]?.gatewayTypeName}
-                    </td>
-                    <td className="p-4 ">{item?.payDate ? getDate(item?.payDate) : '----'}</td>
-                    <td className="p-4 ">{Number(item?.amount).toLocaleString()} ریال</td>
-                    <td className="p-4 ">{fundPayStatus(item?.payStatus)} </td>
-                    <></>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+                    className="odd:bg-white even:bg-gray-50 hover:bg-indigo-50 transition-colors"
+                  >
+                    <Table.Cell className="px-4 py-3 text-right text-sm text-gray-600">
+                      {Skip + index + 1}
+                    </Table.Cell>
+                    <Table.Cell className="px-4 py-3 text-center text-sm text-gray-600">
+                      {item.user?.name}
+                    </Table.Cell>
+                    <Table.Cell className="px-4 py-3 text-right text-sm text-gray-600">
+                      {item.user?.type === 1 || item.user?.type === 3 ? 'حقیقی' : 'حقوقی'}
+                    </Table.Cell>
+                    <Table.Cell className="px-4 py-3 text-right text-sm text-gray-600">
+                      {item.user?.username}
+                    </Table.Cell>
+                    <Table.Cell className="px-4 py-3 text-center text-sm text-gray-600">
+                      {gatway.find(g => g.id === item.gatewayId)?.gatewayTypeName || '-'}
+                    </Table.Cell>
+                    <Table.Cell className="px-4 py-3 text-right text-sm text-gray-600">
+                      {item.payDate ? getDate(item.payDate) : '----'}
+                    </Table.Cell>
+                    <Table.Cell className="px-4 py-3 text-center text-sm text-gray-600">
+                      {Number(item.amount).toLocaleString()} ریال
+                    </Table.Cell>
+                    <Table.Cell className="px-4 py-3 text-right text-sm text-gray-600">
+                      {fundPayStatus(item.payStatus)}
+                    </Table.Cell>
+                    <Table.Cell className="px-4 py-3 text-center">
+                      {/* دکمه یا آیکون عملیات */}
+                    </Table.Cell>
+                  </Table.Row>
+                ))
+              ) : (
+                <Table.Row>
+                  <Table.Cell colSpan={9} className="px-4 py-10 text-center text-sm text-gray-500">
+                    گزارشی یافت نشد
+                  </Table.Cell>
+                </Table.Row>
+              )}
+            </Table.Body>
+          </Table>
+
           {isloading && (
-            <div className=" w-full flex-col flex items-center">
-              <div className="border-gray-300 h-12 w-12 animate-spin rounded-full border-8 border-t-accent mt-2"></div>
+            <div className="w-full flex flex-col items-center py-10">
+              <div className="h-12 w-12 border-8 border-gray-300 border-t-accent rounded-full animate-spin"></div>
+              <span className="mt-2 text-sm text-gray-600">در حال بارگذاری...</span>
             </div>
           )}
-          {response?.data?.length == 0 && (
-            <div className=" w-full  flex items-center justify-center py-3 text-caption font-bold text-dominant">
-              <p className="text-gray-500">گزارشی یافت نشد </p>
-            </div>
-          )}
-          <div className=" relative flex justify-center p-8">
-            {response?.data.length > 0 && (
+
+          {response?.data?.length > 0 && (
+            <div className="flex justify-center py-6">
               <PaginationComponet
-                total={response?.pagination?.total}
+                total={response.pagination.total}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
               />
-            )}
-            {/* <div className=" w-full  flex  flex-col items-center justify-center gap-y-2 ">
-              <div className=" w-full flex justify-center gap-x-10">
-                {' '}
-                <button
-                  disabled={currentPage == 1}
-                  onClick={() => setCurrentPage(currentPage - 1)}
-                  className={`text-base p-2 rounded-md  ${
-                    currentPage == 1 ? 'text-dominant-500' : 'text-accent  border border-accent'
-                  }`}>
-                  صفحه قبلی{''}
-                </button>
-                <button
-                  disabled={currentPage == pageNumber}
-                  onClick={() => setCurrentPage(currentPage + 1)}
-                  className={`text-base p-2  rounded-md ${
-                    currentPage == pageNumber
-                      ? 'text-dominant-500'
-                      : 'text-accent  border border-accent'
-                  }`}>
-                  {' '}
-                  صفحه بعدی{' '}
-                </button>
-              </div>
-              <div className=" w-full flex justify-center gap-x-2 text-sm">
-                <p>
-                  {' '}
-                  صفحه <span>{currentPage}</span> از {Math.ceil(response?.pagination?.total / 10)}
-                </p>
-              </div>
-            </div> */}
-            {/* <PaginationComponet
-              currentPage={currentPage}
-              totalPages={pageNumber}
-              onPageChange={handlePageChange}
-            /> */}
-          </div>
+            </div>
+          )}
         </div>
+
       </div>
     </div>
   );

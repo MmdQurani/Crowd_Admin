@@ -224,75 +224,57 @@ function Sidebar() {
   ];
 
   return (
-    <div className="flex flex-col lg:h-screen overflow-y-scroll w-full  rounded-md py-11 items-center">
-      {/* Show User Profile and Portfo */}
-      <div className="flex flex-col items-start gap-x-6  w-2/3 ">
-        <div className=" p-3 rounded  bg-gray-500  text-white  items-center  justify-center flex w-full ">
-          <InlineSVG
-            src={ProfileSVG}
-            className="filter brightness-0 invert w-1/5 justify-end"
-            fill=""
-          />
-          <p className="w-4/5 justify-start"> {userInfo?.title}</p>
+    <div className="flex flex-col h-full lg:h-screen w-full z[1000000000000] bg-white shadow-xl overflow-y-auto py-8 px-6">
+      {/* Profile Card */}
+      <div className="flex items-center gap-4 mb-8">
+        <InlineSVG
+          src={ProfileSVG}
+          className="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 p-2 fill-white text-white"
+        />
+        <div>
+          <p className="text-lg font-semibold text-gray-800">{userInfo?.title}</p>
         </div>
       </div>
 
       {/* Divider */}
-      <div className="h-px w-full border border-dashed border-dominant-200 my-11"></div>
+      <div className="border-t border-gray-200 my-4"></div>
 
-      {menu.map(
-        (item, i) =>
-          item?.show && (
-            <div className="flex flex-col w-full items-center" key={i}>
-              {/* Show Menu item  */}
-              <div
-                className={`w-2/3 mx-auto flex justify-between  flex-row items-center py-[5px] bg-gray-500 rounded-md fill-white text-white  mb-6 pr-2 mr-10 ml-[42px]`}>
+      {/* Menu Items */}
+      <ul className="flex-1 space-y-2">
+        {menu.map(
+          (item, i) =>
+            item.show && (
+              <li key={i} className="group">
                 <Link
-                  to={item?.link}
-                  className={`py-1 px-2 text-white fill-white flex flex-row items-center justify-start`}>
+                  to={item.link}
+                  className="flex items-center gap-3 px-3 py-2 rounded-md transition-colors duration-200 hover:bg-indigo-50"
+                >
                   <InlineSVG
                     src={item.icon}
-                    className={` text-white fill-white filter brightness-0 invert ml-1 cursor-pointer`}
+                    className="w-6 h-6 text-indigo-500 transition-colors duration-200 group-hover:text-indigo-600"
                   />
-
-                  <div className="text-6 cursor-pointer mr-2">{item?.name} </div>
+                  <span className="text-gray-700 transition-colors duration-200 group-hover:text-indigo-600">
+                    {item.name}
+                  </span>
                 </Link>
-              </div>
-              {/* Show Submenu */}
-              {/* <div className="submenu1 ">
-            {item.subMenu &&
-              item.subMenu.map((sub) => (
-                <Link
-                  key={sub.name}
-                  to={sub.link}
-                  className={`flex flex-row items-center justify-between text-dominant-500 text-6 cursor-pointer  px-4 mb-3 mr-10 ml-[42px] ${
-                    sub.link == pathname ? 'bg-accent-0 rounded text-white ' : null
-                  } `}>
-                  <div>
-                    <span className="font-bold text-4 ml-2">.</span> {sub?.name}
-                  </div>
-                  {pathname === sub?.link && (
-                    <InlineSVG src={arrowSVG} fill="white" className="cursor-pointer rotate-90" />
-                  )}
-                </Link>
-              ))}
-          </div> */}
-            </div>
-          )
-      )}
+              </li>
+            )
+        )}
+      </ul>
 
-      {/* Divider  */}
-      <div className="h-px w-full border border-dashed border-dominant-200 my-11"></div>
+      {/* Divider */}
+      <div className="border-t border-gray-200 my-4"></div>
 
-      {/* Log out */}
+      {/* Logout */}
       <button
-        className="px-4 py-2 font-medium text-caption text-gray-500 border w-max border-gray-500 hover:bg-gray-500 hover:text-white rounded mx-auto transition-colors duration-300 ease-in-out"
-        onClick={(e) => LogOutHandler(e)}
+        onClick={LogOutHandler}
+        className="mt-auto flex items-center justify-center gap-2 px-4 py-2 w-full bg-red-50 text-red-600 rounded-md hover:bg-red-100 transition-colors duration-200 text-sm font-medium"
       >
         خروج از حساب کاربری
       </button>
 
     </div>
+
   );
 }
 

@@ -204,7 +204,7 @@ function Complaints() {
 
         <div className="relative overflow-x-auto md:rounded-lg mt-8 p-2 w-full">
           <div className="w-full min-w-max">
-            <Table className="table-auto font-IRANYekanX rounded-lg w-full">
+            <Table className="table-auto font-IRANYekanX rounded-lg w-full whitespace-nowrap">
               <Table.Head className="font-bold  bg-white text-sm text-right text-gray-500">
                 {TableHeader?.map((item, index) => (
                   <Table.HeadCell
@@ -307,6 +307,7 @@ function Complaints() {
             onPageChange={handlePageChange}
           />
         </div>
+        
       </div>
     </div>
   );

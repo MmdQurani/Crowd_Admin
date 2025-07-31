@@ -15,6 +15,9 @@ import DatePickerPersian from 'component/Datepicker/datepicker';
 import DropDown from 'component/DropDown/DropDown';
 import { toast } from 'react-toastify';
 import DataContext from 'comon/context/MainContext';
+import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
+import { IoMdMenu } from 'react-icons/io';
+import { Table } from 'flowbite-react';
 
 function CommentManagment() {
   const { allPlans } = useContext(DataContext);
@@ -237,9 +240,8 @@ function CommentManagment() {
               <div className="py-2 flex w-[50%] justify-center  gap-x-2 items-center h-auto">
                 <button
                   onClick={CreateComment}
-                  className={`w-[20%] flex justify-center items-center  ${
-                    isLoadingAction ? 'border border-gray-500' : 'bg-green-500 '
-                  }  h-[25px] rounded-md  text-center text-white `}>
+                  className={`w-[20%] flex justify-center items-center  ${isLoadingAction ? 'border border-gray-500' : 'bg-green-500 '
+                    }  h-[25px] rounded-md  text-center text-white `}>
                   {isLoadingAction ? <BouncingDotsLoader /> : 'ثبت'}
                 </button>
                 <button
@@ -275,9 +277,8 @@ function CommentManagment() {
               <div className="py-2 flex w-[50%] justify-center  gap-x-2 items-center h-auto">
                 <button
                   onClick={EditeCommentContent}
-                  className={`w-[20%] flex justify-center items-center  ${
-                    isLoadingAction ? 'border border-gray-500' : 'bg-green-500 '
-                  }  h-[25px] rounded-md  text-center text-white `}>
+                  className={`w-[20%] flex justify-center items-center  ${isLoadingAction ? 'border border-gray-500' : 'bg-green-500 '
+                    }  h-[25px] rounded-md  text-center text-white `}>
                   {isLoadingAction ? <BouncingDotsLoader /> : 'ثبت'}
                 </button>
                 <button
@@ -335,9 +336,8 @@ function CommentManagment() {
               <div className="py-2 flex w-[50%] justify-center  gap-x-2 items-center h-auto">
                 <button
                   onClick={UpdateCommentStatus}
-                  className={`w-[20%] flex justify-center items-center  ${
-                    isLoadingAction ? 'border border-gray-500' : 'bg-green-500 '
-                  }  h-[25px] rounded-md  text-center text-white `}>
+                  className={`w-[20%] flex justify-center items-center  ${isLoadingAction ? 'border border-gray-500' : 'bg-green-500 '
+                    }  h-[25px] rounded-md  text-center text-white `}>
                   {isLoadingAction ? <BouncingDotsLoader /> : 'ثبت'}
                 </button>
                 <button
@@ -370,167 +370,219 @@ function CommentManagment() {
     setPlanId();
     setStartDate();
   };
+
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   return (
     <div className="flex flex-row items-start h-auto">
-      <div className="w-1/4 h-full bg-secondary fixed right-0 hidden lg:flex">
+
+      {/* سایدبار */}
+      <div className="min-w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-full max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex flex-col items-center align-middle p-10 ">
-        <div className="w-full flex flex-col justify-center items-center bg-gray-500 rounded-lg p-4">
-          <div className="w-full flex flex-wrap items-end justify-start gap-3">
-            {' '}
-            <div className="flex w-[20%] justify-between items-center">
-              <DatePickerPersian value={startDate} onchange={setStartDate} title="از تاریخ" />
+
+      {/* سایدبار برای اندازه های کوچکتر از لارج */}
+      <DrawerSidebar
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+
+
+      <div className="flex-1 min-w-0 w-full h-full flex flex-col items-center align-middle p-10 ">
+
+        {/* باز کردن سایدبار */}
+        <button className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <IoMdMenu className="text-2xl" />
+        </button>
+
+        <div className="w-full flex flex-col items-center bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+          <div className="w-full flex flex-wrap items-end justify-start gap-6">
+
+            {/* از تاریخ */}
+            <div className="w-full sm:w-[200px]">
+              <DatePickerPersian
+                value={startDate}
+                onchange={setStartDate}
+                title="از تاریخ"
+                titleStyle="block mb-1 text-sm text-gray-700 dark:text-gray-300"
+                className="w-full px-3 py-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
             </div>
-            <div className="flex w-[20%] justify-between items-center">
-              <DatePickerPersian value={endDate} onchange={setEndDate} title="تا تاریخ" />
+
+            {/* تا تاریخ */}
+            <div className="w-full sm:w-[200px]">
+              <DatePickerPersian
+                value={endDate}
+                onchange={setEndDate}
+                title="تا تاریخ"
+                titleStyle="block mb-1 text-sm text-gray-700 dark:text-gray-300"
+                className="w-full px-3 py-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
             </div>
-            <div className="flex w-[25%] justify-between items-center flex-col ">
-              <label htmlFor="planId" className="text-white w-full text-start text-xs ">
+
+            {/* نام طرح */}
+            <div className="w-full sm:w-[200px] flex flex-col gap-1">
+              <label htmlFor="planId" className="text-sm text-gray-700 dark:text-gray-300">
                 نام طرح
               </label>
-              <DropDown arrey={allPlans} select={planId} setSelect={setPlanId} height="h-[200px]" />
-            </div>{' '}
-            {/* <DownloadExcelBtn
-              Rout="'CommentsManagement/GetAll'"
-              filename="گزارش نطرات"
-              body={{
-                investmentPlanId: planId?.key,
-                commentState: status?.key,
-                startDate: startDate?.split('T')?.[0],
-                endDate: endDate?.split('T')?.[0],
-                pagination: {
-                  take: 10000000,
-                  skip: 0
-                }
-              }}
-            /> */}
+              <DropDown
+                arrey={allPlans}
+                select={planId}
+                setSelect={setPlanId}
+                height="h-[200px]"
+                className="w-full h-[200px] px-3 py-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+
+            {/* حذف فیلتر */}
             <button
               onClick={HandelClearFilter}
-              className="w-[100px] h-10 text-white text-center flex justify-center items-center text-sm font-semibold  focus:outline-none focus:ring-0 border border-white rounded-md ">
-              حذف فیلتر{' '}
+              className="w-full sm:w-auto px-6 h-10 bg-red-50 text-red-600 border border-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium focus:outline-none"
+            >
+              حذف فیلتر
             </button>
+
           </div>
         </div>
-        <div className="relative overflow-x-auto md:rounded-lg mt-8 p-2 w-full ">
-          <div className="relative overflow-x-auto md:rounded-lg mt-8 w-full">
-            <table className="table-auto  font-IRANYekanX w-full  rounded-md">
-              <thead className="font-bold  shadow-xl bg-white text-sm text-right text-gray-500  ">
-                <tr className=" ">
-                  <th className="  border-gray-600   p-3">ردیف</th>
-                  <th className="  border-gray-600   p-3 text-center">نام طرح</th>
-                  <th className="  border-gray-600   p-3 text-center">کاربر</th>
-                  <th className="  border-gray-600   p-3 text-center">پیام</th>
-                  <th className="  border-gray-600   p-3 text-center">نوع پیام </th>
-                  <th className="  border-gray-600   p-3 text-center ">وضعیت </th>
-                  <th className="  border-gray-600   p-3 text-center ">پاسخ </th>
-                  <th className="  border-gray-600   p-3 text-center ">تغییر وضعیت </th>
-                  <th className="  border-gray-600   p-3 text-center "> </th>
-                </tr>
-              </thead>
-              <tbody className="p-10 w-full">
-                {comment &&
-                  comment?.data?.map((item, index) => (
-                    <React.Fragment key={index}>
-                      {/* Main Row */}
-                      <tr className="text-start  w-full border-b border-gray-300  text-sm">
-                        <td className="p-4 border-b border-gray-300 ">{Skip + index + 1} </td>
-                        <td className="p-4 border-b border-gray-300 ">
-                          {item?.investmentPlanTitle}{' '}
-                        </td>
-                        <td className="p-4 border-b border-gray-300 ">{item?.userTitle} </td>
-                        <td
-                          onClick={() => GenerateRelatedCursuor(index, 'text', item?.content)}
-                          className="p-4 border-b border-gray-300  cursor-pointer text-cyan-600 font-semibold">
-                          {' '}
-                          {item?.content && TruncateText(item?.content)}{' '}
-                        </td>
-                        <td className="p-4 border-b border-gray-300 ">
-                          {item?.parentCommentId ? ' پاسخ' : 'نطر '}
-                        </td>
-                        <td className="p-4 border-b border-gray-300 ">
-                          {item?.commentState && FindState(item?.commentState)?.name}{' '}
-                        </td>
-                        <td
-                          onClick={() =>
-                            GenerateRelatedCursuor(
-                              index,
-                              item?.parentCommentId ? 'id' : 'input',
-                              item?.id,
-                              {
-                                comment: item?.id,
-                                plan: item?.investmentPlanId
-                              }
-                            )
-                          }
-                          className="p-4 border-b border-gray-300  cursor-pointer text-cyan-600 font-semibold">
-                          {item?.parentCommentId ? 'مشاهده' : 'ثبت پاسخ'}
-                        </td>
-                        <td
-                          onClick={() =>
-                            GenerateRelatedCursuor(index, 'checkBox', item?.commentState, item?.id)
-                          }
-                          className={`p-4 border-b border-gray-300  cursor-pointer  font-semibold  ${
-                            item?.commentState && HandleCheckBoxDisplay(item?.commentState)?.color
-                          }`}>
-                          {item?.commentState && HandleCheckBoxDisplay(item?.commentState)?.title}
-                        </td>
-                        <td
-                          onClick={() => RemoveComment(item.id)}
-                          className={`p-4 border-b border-gray-300  cursor-pointer  font-semibold  text-xs text-red-500 `}>
-                          {isLoadingAction == item.id ? <BouncingDotsLoader /> : 'حذف'}
-                        </td>
-                        <td
-                          onClick={() =>
-                            GenerateRelatedCursuor(index, 'editinput', item?.content, item?.id)
-                          }
-                          className={`p-4 border-b border-gray-300  cursor-pointer  font-semibold  text-xs text-cyan-600 `}>
-                          {item?.parentCommentId ? 'ویرایش' : ''}
-                        </td>
-                      </tr>
 
-                      {/* Expanded Row (Details) */}
-                      <tr
-                        className={`w-full ${
-                          expandedRow === index ? 'border-b border-accent-700' : ''
-                        }`}>
-                        <td colSpan={10} className="p-0">
-                          <div
-                            ref={(el) => (contentRefs.current[index] = el)}
-                            className="overflow-hidden transition-all duration-500 ease-in-out  text-xs text-gray-170  w-full"
-                            style={{
-                              maxHeight: expandedRow === index ? '1000px' : '0px', // Adjust max height as needed
-                              opacity: expandedRow === index ? 1 : 0
-                            }}>
-                            {expandedRow === index && HandleCursor()}
-                          </div>
-                        </td>
-                      </tr>
-                    </React.Fragment>
-                  ))}
-              </tbody>
-            </table>
+        <div className="relative overflow-x-auto md:rounded-lg mt-8 p-2 w-full">
+          <div className="w-full min-w-max">
+            <Table className="table-auto font-IRANYekanX rounded-lg w-full">
+              <Table.Head className="font-bold shadow-xl bg-white text-sm text-right text-gray-500">
+                <Table.HeadCell className="rounded-r-lg p-4">ردیف</Table.HeadCell>
+                <Table.HeadCell className="p-4 text-center">نام طرح</Table.HeadCell>
+                <Table.HeadCell className="p-4 text-center">کاربر</Table.HeadCell>
+                <Table.HeadCell className="p-4 text-center">پیام</Table.HeadCell>
+                <Table.HeadCell className="p-4 text-center">نوع پیام</Table.HeadCell>
+                <Table.HeadCell className="p-4 text-center">وضعیت</Table.HeadCell>
+                <Table.HeadCell className="p-4 text-center">پاسخ</Table.HeadCell>
+                <Table.HeadCell className="p-4 text-center">تغییر وضعیت</Table.HeadCell>
+                <Table.HeadCell className="p-4 text-center">حذف</Table.HeadCell>
+                <Table.HeadCell className="rounded-l-lg p-4 text-center">ویرایش</Table.HeadCell>
+              </Table.Head>
+
+              <Table.Body className="divide-y p-10 w-full">
+                {comment?.data?.map((item, index) => (
+                  <React.Fragment key={item.id}>
+                    {/* Main Row */}
+                    <Table.Row className="text-start border-b border-gray-300 text-sm">
+                      <Table.Cell className="p-4">
+                        {skip + index + 1}
+                      </Table.Cell>
+                      <Table.Cell className="p-4 text-center">
+                        {item.investmentPlanTitle}
+                      </Table.Cell>
+                      <Table.Cell className="p-4 text-center">
+                        {item.userTitle}
+                      </Table.Cell>
+                      <Table.Cell
+                        onClick={() =>
+                          GenerateRelatedCursuor(index, 'text', item.content)
+                        }
+                        className="p-4 cursor-pointer text-cyan-600 font-semibold text-center"
+                      >
+                        {item.content && TruncateText(item.content)}
+                      </Table.Cell>
+                      <Table.Cell className="p-4 text-center">
+                        {item.parentCommentId ? 'پاسخ' : 'نظر'}
+                      </Table.Cell>
+                      <Table.Cell className="p-4 text-center">
+                        {item.commentState && FindState(item.commentState)?.name}
+                      </Table.Cell>
+                      <Table.Cell
+                        onClick={() =>
+                          GenerateRelatedCursuor(
+                            index,
+                            item.parentCommentId ? 'id' : 'input',
+                            item.id,
+                            { comment: item.id, plan: item.investmentPlanId }
+                          )
+                        }
+                        className="p-4 cursor-pointer text-cyan-600 font-semibold text-center"
+                      >
+                        {item.parentCommentId ? 'مشاهده' : 'ثبت پاسخ'}
+                      </Table.Cell>
+                      <Table.Cell
+                        onClick={() =>
+                          GenerateRelatedCursuor(
+                            index,
+                            'checkBox',
+                            item.commentState,
+                            item.id
+                          )
+                        }
+                        className={`p-4 cursor-pointer font-semibold text-center ${item.commentState && HandleCheckBoxDisplay(item.commentState)?.color
+                          }`}
+                      >
+                        {item.commentState && HandleCheckBoxDisplay(item.commentState)?.title}
+                      </Table.Cell>
+                      <Table.Cell
+                        onClick={() => RemoveComment(item.id)}
+                        className="p-4 cursor-pointer text-red-500 font-semibold text-center"
+                      >
+                        {isLoadingAction === item.id
+                          ? <BouncingDotsLoader />
+                          : 'حذف'}
+                      </Table.Cell>
+                      <Table.Cell
+                        onClick={() =>
+                          GenerateRelatedCursuor(
+                            index,
+                            'editinput',
+                            item.content,
+                            item.id
+                          )
+                        }
+                        className="p-4 cursor-pointer text-cyan-600 font-semibold text-center"
+                      >
+                        {item.parentCommentId ? 'ویرایش' : ''}
+                      </Table.Cell>
+                    </Table.Row>
+
+                    {/* Expanded Row */}
+                    <Table.Row className={`${expandedRow === index ? 'border-b border-accent-700' : ''}`}>
+                      <Table.Cell colSpan={10} className="p-0">
+                        <div
+                          ref={el => (contentRefs.current[index] = el)}
+                          className="overflow-hidden transition-all duration-500 ease-in-out text-xs text-gray-700 w-full"
+                          style={{
+                            maxHeight: expandedRow === index ? '1000px' : '0px',
+                            opacity: expandedRow === index ? 1 : 0
+                          }}
+                        >
+                          {expandedRow === index && HandleCursor()}
+                        </div>
+                      </Table.Cell>
+                    </Table.Row>
+                  </React.Fragment>
+                ))}
+              </Table.Body>
+            </Table>
 
             {isloading && (
-              <div className=" w-full flex-col flex items-center justify-center h-screen">
+              <div className="w-full flex-col flex items-center justify-center h-screen">
                 <BouncingDotsLoader />
               </div>
             )}
-            {comment?.pagination?.total == 0 && isloading == false && (
-              <span className=" w-full flex-col flex items-center py-5 text-caption font-medium text-gray-500">
+
+            {comment?.pagination?.total === 0 && !isloading && (
+              <span className="w-full flex-col flex items-center py-5 text-caption font-medium text-gray-500">
                 موردی یافت نشد
               </span>
             )}
-            <div className=" relative flex justify-center py-8">
-              {' '}
-              <PaginationComponet
-                total={comment?.pagination?.total}
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-              />
-            </div>
           </div>
         </div>
+
+        <div className="relative flex justify-center py-8">
+          <PaginationComponet
+            total={comment?.pagination?.total}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
+
       </div>
     </div>
   );

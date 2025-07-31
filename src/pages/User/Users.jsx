@@ -179,7 +179,7 @@ function Users() {
           className="relative w-full overflow-x-auto sm:rounded-lg mt-8 p-2"
         >
           {usertype ? (
-            <Table striped hoverable={false} className="min-w-full table-auto font-IRANYekanX">
+            <Table striped hoverable={false} className="min-w-full table-auto font-IRANYekanX whitespace-nowrap">
               {/* sticky header */}
               <Table.Head className="sticky top-0 z-10 bg-gray-100 border-b border-gray-300">
                 <Table.HeadCell className="px-4 py-2 text-right text-xs font-medium text-gray-700 uppercase tracking-wider">

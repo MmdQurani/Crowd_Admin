@@ -178,7 +178,7 @@ function PlanEvaluation() {
 
         <div className="relative overflow-x-auto md:rounded-lg mt-8 p-2 w-full">
           <div className="w-full min-w-max">
-            <Table className="table-auto font-IRANYekanX rounded-lg w-full">
+            <Table className="table-auto font-IRANYekanX rounded-lg w-full whitespace-nowrap">
               <Table.Head className="font-normal bg-white p-5 rounded-lg shadow-lg text-sm text-center text-dominant-500">
                 <Table.HeadCell className="rounded-r-lg p-4">ردیف</Table.HeadCell>
                 <Table.HeadCell className="p-4">ارزیابی</Table.HeadCell>

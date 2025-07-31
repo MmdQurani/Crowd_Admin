@@ -449,7 +449,7 @@ function CommentManagment() {
 
         <div className="relative overflow-x-auto md:rounded-lg mt-8 p-2 w-full">
           <div className="w-full min-w-max">
-            <Table className="table-auto font-IRANYekanX rounded-lg w-full">
+            <Table className="table-auto font-IRANYekanX rounded-lg w-full whitespace-nowrap">
               <Table.Head className="font-bold shadow-xl bg-white text-sm text-right text-gray-500">
                 <Table.HeadCell className="rounded-r-lg p-4">ردیف</Table.HeadCell>
                 <Table.HeadCell className="p-4 text-center">نام طرح</Table.HeadCell>

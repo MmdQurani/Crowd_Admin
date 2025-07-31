@@ -1,10 +1,12 @@
 import axios from 'axios';
 import getBaseUrl from 'component/Axios/getBaseUrl';
+import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
 import FileUploadPage from 'component/input/uploadInput';
 import Sidebar from 'component/layout/sidebar/SideBar';
 import BouncingDotsLoader from 'component/Loading/BouncingDotsLoader';
 import { getFromLocalStorage } from 'component/storage/localStorage';
 import React, { useState } from 'react';
+import { IoMdMenu } from 'react-icons/io';
 import { toast } from 'react-toastify';
 
 function SetBanner() {
@@ -40,29 +42,69 @@ function SetBanner() {
   };
   console.log(!file);
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   return (
     <div className="flex flex-row items-start h-full">
-      <div className="w-1/4 h-full bg-secondary fixed right-0 hidden lg:flex">
+
+      {/* سایدبار */}
+      <div className="min-w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-full max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex flex-col items-center align-middle p-10 h-full ">
-        <div className="w-full h-full flex flex-col items-center justify-center gap-y-5">
-          <span className="w-full flex justify-center items-center text-xl text-accent-500 font-semibold ">
+
+      {/* سایدبار برای اندازه های کوچکتر از لارج */}
+      <DrawerSidebar
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+
+      <div className="flex-1 min-w-0 w-full h-full flex flex-col items-center align-middle p-10 ">
+
+        {/* باز کردن سایدبار */}
+        <button className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <IoMdMenu className="text-2xl" />
+        </button>
+
+        <div dir="rtl" className="bg-white shadow-lg rounded-lg p-6 mb-8 w-full max-w-lg mx-auto">
+          <h2 className="text-center text-xl font-semibold text-gray-700 mb-6">
             بارگذاری بنر سامانه
-          </span>
-          <div className="w-[20%] flex justify-center items-center ">
-            {' '}
-            <FileUploadPage multiple={false} setFileAddress={setFile} id={1} />
+          </h2>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <div className="w-full sm:w-2/3">
+              <FileUploadPage
+                multiple={false}
+                setFileAddress={setFile}
+                id={1}
+                className="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+
+            <button
+              onClick={SetBanner}
+              disabled={!file || isloading}
+              className={`
+        w-full sm:w-auto
+        px-6 py-2
+        text-white font-medium rounded-md
+        transition-colors duration-200
+        ${isloading
+                  ? 'bg-indigo-400 cursor-wait'
+                  : file
+                    ? 'bg-indigo-600 hover:bg-indigo-700'
+                    : 'bg-gray-300 cursor-not-allowed'}
+        focus:outline-none focus:ring-2 focus:ring-indigo-500
+      `}
+            >
+              {isloading
+                ? <BouncingDotsLoader size="small" />
+                : 'ثبت'}
+            </button>
           </div>
-          <button
-            onClick={SetBanner}
-            disabled={!file}
-            className={`w-[20%] ${
-              isloading ? ' borde border-green-500' : 'bg-green-500'
-            } text-white rounded-lg h-[44px] tetx-sm   `}>
-            {isloading ? <BouncingDotsLoader /> : 'ثبت'}
-          </button>
         </div>
+
       </div>
     </div>
   );

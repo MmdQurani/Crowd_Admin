@@ -14,6 +14,9 @@ import Axios from 'component/Axios/Axios';
 import DataContext from 'comon/context/MainContext';
 import FindUser from 'component/AutoComplete/FindUser';
 import DownloadExcelBtn from 'component/GlobalyTools/DownloadExcelBtn';
+import { IoMdMenu } from 'react-icons/io';
+import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
+import { Table } from 'flowbite-react';
 
 function Complaints() {
   const { allPlans } = useContext(DataContext);
@@ -97,143 +100,207 @@ function Complaints() {
     setUserId();
   };
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   return (
     <div className="flex flex-row items-start h-auto">
-      <div className="w-1/4 h-full bg-secondary fixed right-0 hidden lg:flex">
+
+      {/* سایدبار */}
+      <div className="min-w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-full max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex flex-col items-center align-middle p-10 justify-start gap-y-5 ">
-        <div className="bg-gray-500 rounded-lg  w-full  flex flex-wrap justify-start gap-5 p-3 items-end  ">
-          <div className="w-[20%] flex gap-x-2 justify-start ">
-            <FindUser setUserId={setUserId} userId={userId} />
-          </div>
-          <DatePickerPersian
-            value={startDate}
-            onchange={setStartDate}
-            title="از تاریخ"
-            style="w-[200px]"
-          />
-          <DatePickerPersian
-            value={endDate}
-            onchange={setEndDate}
-            title="تا تاریخ"
-            style="w-[200px]"
-          />
-          <DropDown
-            arrey={allPlans}
-            select={planId}
-            setSelect={setPlanId}
-            height="h-[200px]"
-            width="w-[300px]"
-          />
-          <DownloadExcelBtn
-            Rout="ComplaintsManagement/GetAll"
-            filename="گزارش شکایات"
-            body={{
-              userId: response?.data?.id,
-              planId: planId?.key,
-              startDate: startDate,
-              endDate: endDate,
-              pagination: {
-                take: 100000,
-                skip: 0
-              }
-            }}
-          />
-          <button
-            onClick={HandelClearFilter}
-            className="w-[100px] h-10 text-white text-center flex justify-center items-center text-sm font-semibold  focus:outline-none focus:ring-0 border border-white rounded-md ">
-            حذف فیلتر{' '}
-          </button>
-        </div>
-        <div className=" overflow-x-auto md:rounded-lg flex item flex-col justify-start gap-y-5  w-full">
-          <table className="w-full min-w-[800px] h-auto rounded-t-sm">
-            <thead className="font-normal w-full  bg-white text-sm shadow-lg   text-center text-dominant-500 ">
-              <tr className="w-full h-12 rounded-t-sm shadow-lg">
-                {TableHeader?.map((item, index) => (
-                  <td
-                    className="text-start text-sm text-gray-170 font-semibold whitespace-pre-line p-3 h-10 rounded-t-sm"
-                    key={index}>
-                    {item?.name}
-                  </td>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {complaints?.data &&
-                complaints?.data?.length > 0 &&
-                complaints?.data?.map((item, index) => (
-                  <React.Fragment key={index}>
-                    {/* Main Row */}
-                    <tr className="text-start border-b border-gray-150 w-full ">
-                      <td
-                        className="lg:text-sm text-xs text-gray-700  w-auto text-wrap whitespace-pre-line text-start justify-start items-center p-3 cursor-pointer"
-                        onClick={() => toggleRow(index)}>
-                        {item?.plan?.title}
-                      </td>
-                      <td
-                        className="lg:text-sm text-xs text-gray-700 w-auto text-wrap whitespace-pre-line text-start justify-start items-center p-3 cursor-pointer"
-                        onClick={() => toggleRow(index)}>
-                        {item?.createDate && DateFunction2.getDate(item?.createDate)}
-                      </td>
-                      <td
-                        className="lg:text-sm text-xs text-gray-700 w-auto text-wrap whitespace-pre-line text-start justify-start items-center p-3 cursor-pointer"
-                        onClick={() => toggleRow(index)}>
-                        {item?.subject ?? 'ندارد '}
-                      </td>
-                      <td
-                        className="lg:text-sm text-xs text-gray-700 w-auto text-wrap whitespace-pre-line text-start justify-start items-center p-3 cursor-pointer"
-                        onClick={() => toggleRow(index)}>
-                        {item?.user?.name}
-                      </td>
-                      <td
-                        className="lg:text-sm text-xs text-gray-700 w-auto text-wrap whitespace-pre-line text-start justify-start items-center p-3 cursor-pointer"
-                        onClick={() => toggleRow(index)}>
-                        {item?.user?.username}
-                      </td>
-                      <td className="lg:text-sm text-xs text-gray-700 w-auto text-wrap whitespace-pre-line text-start flex justify-start items-center p-3">
-                        <InlineSVG
-                          src={arrowBlack}
-                          className={`cursor-pointer transition-transform scale-50 `}
-                          onClick={() => toggleRow(index)} // Toggle the row on arrow click
-                        />
-                      </td>
-                    </tr>
-                    {/* Expanded Row (Details) */}
-                    <tr
-                      className={`w-full ${
-                        expandedRow === index ? 'border-b border-accent-700' : ''
-                      }`}>
-                      <td colSpan={5} className="p-0">
-                        <div
-                          ref={(el) => (contentRefs.current[index] = el)} // Store refs for each row content
-                          className="overflow-hidden  flex flex-col  justify-start   gap-y-1 transition-all duration-500 ease-in-out  text-xs text-gray-170   w-full"
-                          style={{
-                            maxHeight: '0px',
-                            opacity: 0
-                          }}>
-                          <p className="p-3 border-b border-gray-150 w-full">
-                            {' '}
-                            {item?.content ? item?.content : 'توضیحاتی برای این مورد یافت نشده '}
-                          </p>
-                        </div>
-                      </td>
-                    </tr>
-                  </React.Fragment>
-                ))}
-            </tbody>
-          </table>
-          {(complaints?.data?.length == 0 || complaints?.length == 0) && (
-            <span className=" text-center justify-center flex w-full items-center text-gray-600 mt-16 font-bold text-sm">
-              موردی یافت نشد{' '}
-            </span>
-          )}
-          {isloading && (
-            <div className="w-full flex justify-center items-center h-auto py-2 mt-16">
-              <BouncingDotsLoader />
-            </div>
-          )}
 
+      {/* سایدبار برای اندازه های کوچکتر از لارج */}
+      <DrawerSidebar
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+
+      <div className="flex-1 min-w-0 w-full h-full flex flex-col items-center align-middle p-10 justify-start gap-y-5 ">
+
+        {/* باز کردن سایدبار */}
+        <button className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <IoMdMenu className="text-2xl" />
+        </button>
+
+        <div className="w-full flex flex-col items-center bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+          <div className="w-full flex flex-wrap items-end justify-start gap-6">
+
+            {/* جستجوی کاربر */}
+            <div className="w-full sm:w-[200px]">
+              <FindUser
+                setUserId={setUserId}
+                userId={userId}
+                className="w-full px-3 py-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+
+            {/* از تاریخ */}
+            <div className="w-full sm:w-[200px]">
+              <DatePickerPersian
+                value={startDate}
+                onchange={setStartDate}
+                title="از تاریخ"
+                titleStyle="block mb-1 text-sm text-gray-700 dark:text-gray-300"
+                className="w-full px-3 py-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+
+            {/* تا تاریخ */}
+            <div className="w-full sm:w-[200px]">
+              <DatePickerPersian
+                value={endDate}
+                onchange={setEndDate}
+                title="تا تاریخ"
+                titleStyle="block mb-1 text-sm text-gray-700 dark:text-gray-300"
+                className="w-full px-3 py-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+
+            {/* نام طرح */}
+            <div className="w-full sm:w-[200px] flex flex-col gap-1">
+              <label htmlFor="planId" className="text-sm text-gray-700 dark:text-gray-300">
+                نام طرح
+              </label>
+              <DropDown
+                arrey={allPlans}
+                select={planId}
+                setSelect={setPlanId}
+                height="h-[200px]"
+                className="w-full h-[200px] px-3 py-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+
+            {/* دانلود اکسل */}
+            <div className="w-full sm:w-auto">
+              <DownloadExcelBtn
+                Rout="ComplaintsManagement/GetAll"
+                filename="گزارش شکایات"
+                body={{
+                  userId: response?.data?.id,
+                  planId: planId?.key,
+                  startDate,
+                  endDate,
+                  pagination: { take: 100000, skip: 0 },
+                }}
+                className="w-full px-6 h-10 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors text-sm font-medium focus:outline-none"
+              />
+            </div>
+
+            {/* حذف فیلتر */}
+            <button
+              onClick={HandelClearFilter}
+              className="w-full sm:w-auto px-6 py-2.5 bg-red-50 text-red-600 border border-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium focus:outline-none"
+            >
+              حذف فیلتر
+            </button>
+
+          </div>
+        </div>
+
+
+
+        <div className="relative overflow-x-auto md:rounded-lg mt-8 p-2 w-full">
+          <div className="w-full min-w-max">
+            <Table className="table-auto font-IRANYekanX rounded-lg w-full">
+              <Table.Head className="font-bold  bg-white text-sm text-right text-gray-500">
+                {TableHeader?.map((item, index) => (
+                  <Table.HeadCell
+                    key={index}
+                    className="text-start text-sm text-gray-170 font-semibold whitespace-pre-line p-3 h-10"
+                  >
+                    {item?.name}
+                  </Table.HeadCell>
+                ))}
+              </Table.Head>
+
+              <Table.Body className="divide-y p-10 w-full">
+                {complaints?.data &&
+                  complaints.data.length > 0 &&
+                  complaints.data.map((item, idx) => (
+                    <React.Fragment key={idx}>
+                      {/* Main Row */}
+                      <Table.Row className="text-start border-b border-gray-150">
+                        <Table.Cell
+                          className="lg:text-sm text-xs text-gray-700 whitespace-pre-line p-3 cursor-pointer"
+                          onClick={() => toggleRow(idx)}
+                        >
+                          {item?.plan?.title}
+                        </Table.Cell>
+                        <Table.Cell
+                          className="lg:text-sm text-xs text-gray-700 whitespace-pre-line p-3 cursor-pointer"
+                          onClick={() => toggleRow(idx)}
+                        >
+                          {item?.createDate && DateFunction2.getDate(item.createDate)}
+                        </Table.Cell>
+                        <Table.Cell
+                          className="lg:text-sm text-xs text-gray-700 whitespace-pre-line p-3 cursor-pointer"
+                          onClick={() => toggleRow(idx)}
+                        >
+                          {item?.subject ?? 'ندارد'}
+                        </Table.Cell>
+                        <Table.Cell
+                          className="lg:text-sm text-xs text-gray-700 whitespace-pre-line p-3 cursor-pointer"
+                          onClick={() => toggleRow(idx)}
+                        >
+                          {item?.user?.name}
+                        </Table.Cell>
+                        <Table.Cell
+                          className="lg:text-sm text-xs text-gray-700 whitespace-pre-line p-3 cursor-pointer"
+                          onClick={() => toggleRow(idx)}
+                        >
+                          {item?.user?.username}
+                        </Table.Cell>
+                        <Table.Cell className="flex justify-start items-center p-3">
+                          <InlineSVG
+                            src={arrowBlack}
+                            className={`cursor-pointer transition-transform scale-50 ${expandedRow === idx ? 'rotate-180' : ''
+                              }`}
+                            onClick={() => toggleRow(idx)}
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+
+                      {/* Expanded Row */}
+                      <Table.Row
+                        className={`overflow-hidden transition-all duration-500 ease-in-out ${expandedRow === idx ? 'border-b border-accent-700' : ''
+                          }`}
+                      >
+                        <Table.Cell colSpan={6} className="p-0">
+                          <div
+                            ref={(el) => (contentRefs.current[idx] = el)}
+                            className={`overflow-hidden flex flex-col gap-y-1 text-xs text-gray-170 transition-all duration-500 ease-in-out ${expandedRow === idx ? 'opacity-100 max-h-40' : 'opacity-0 max-h-0'
+                              }`}
+                          >
+                            <p className="p-3 border-b border-gray-150 w-full">
+                              {item?.content
+                                ? item.content
+                                : 'توضیحاتی برای این مورد یافت نشده'}
+                            </p>
+                          </div>
+                        </Table.Cell>
+                      </Table.Row>
+                    </React.Fragment>
+                  ))}
+              </Table.Body>
+            </Table>
+
+            {(complaints?.data?.length == 0 || complaints?.length == 0) && (
+              <span className=" text-center justify-center flex w-full items-center text-gray-600 mt-16 font-bold text-sm">
+                موردی یافت نشد{' '}
+              </span>
+            )}
+
+            {isloading && (
+              <div className="w-full flex justify-center items-center py-8">
+                <BouncingDotsLoader />
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="relative flex justify-center py-8">
           <PaginationComponet
             total={complaints?.pagination?.total}
             currentPage={currentPage}

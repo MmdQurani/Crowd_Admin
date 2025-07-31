@@ -84,14 +84,33 @@ function ConsultingRequests() {
         <Sidebar />
       </div>
       <div className="w-full lg:w-full max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex flex-col items-center align-middle p-10 ">
-        <div className="bg-gray-500   rounded-lg  w-full flex justify-start gap-x-2 p-3 items-end">
-          <DatePickerPersian value={date} onchange={setDate} title=" تاریخ" style="w-[200px]" />{' '}
-          <button
-            onClick={() => setDate()}
-            className="w-[100px] h-10 text-white text-center flex justify-center items-center text-sm font-semibold  focus:outline-none focus:ring-0 border border-white rounded-md ">
-            حذف فیلتر{' '}
-          </button>
+
+        <div className="w-full flex flex-col items-center bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+          <div className="w-full flex flex-wrap items-end justify-start gap-6">
+
+            {/* تاریخ */}
+            <div className="w-full sm:w-[200px] flex flex-col gap-1">
+              <DatePickerPersian
+                value={date}
+                onchange={setDate}
+                title="تاریخ"
+                titleStyle="block mb-1 text-sm text-gray-700 dark:text-gray-300"
+                className="w-full px-3 py-2 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+
+            {/* حذف فیلتر */}
+            <button
+              onClick={() => setDate()}
+              className="w-full sm:w-auto px-6 h-10 bg-red-50 text-red-600 border border-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium focus:outline-none"
+            >
+              حذف فیلتر
+            </button>
+
+          </div>
         </div>
+
+
         <div className="relative overflow-x-auto md:rounded-lg mt-8  w-full ">
           <table className="table-auto bordered font-IRANYekanX w-full ">
             <thead className="font-normal w-full text-sm  text-right shadow-xl rounded-md  text-dominant-500">
@@ -116,9 +135,8 @@ function ConsultingRequests() {
                     </td>{' '}
                     <td className="p-2 font-normal h-[42px] ">{item?.phoneNumber || 'نامشخص'}</td>
                     <td
-                      className={`p-2 ${
-                        ItemsFinder(StatusEnum, item?.status, 'key')?.color
-                      } font-normal h-[42px] `}>
+                      className={`p-2 ${ItemsFinder(StatusEnum, item?.status, 'key')?.color
+                        } font-normal h-[42px] `}>
                       {(item?.status && ItemsFinder(StatusEnum, item?.status, 'key')?.name) ||
                         'نامشخص'}
                     </td>

@@ -64,10 +64,7 @@ const RoutsComponent = () => {
           <Route path="/plan_evaluation" element={<PlanEvaluation />} />
           <Route path="/comment_managment" element={<CommentManagment />} />
           <Route path="/complaints" element={<Complaints />} />
-          <Route
-            path="/Financial_Statements_Management"
-            element={<FinancialStatementsManagement />}
-          />
+          <Route path="/Financial_Statements_Management" element={<FinancialStatementsManagement />} />
           <Route path="/admin_accessibility" element={<AdminAndAccessibility />} />
           {Company == 'toranj' && (
             <Route path="/manage_project_review_form" element={<ManageProjectReviewForm />} />

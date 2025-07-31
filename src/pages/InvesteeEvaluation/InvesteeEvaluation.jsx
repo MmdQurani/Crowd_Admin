@@ -16,6 +16,9 @@ import DownloadExcelBtn from 'component/GlobalyTools/DownloadExcelBtn';
 import DataContext from 'comon/context/MainContext';
 import Tooltip from 'component/Tooltip/Tooltip';
 import { truncateDescription } from 'component/GlobalyTools/UseAbleFunction';
+import { Table } from 'flowbite-react';
+import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
+import { IoMdMenu } from 'react-icons/io';
 
 function InvesteeEvaluation() {
   const { allPlans } = useContext(DataContext);
@@ -92,152 +95,195 @@ function InvesteeEvaluation() {
     setUserId();
   };
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   return (
     <div className="flex flex-row items-start h-auto">
-      <div className="w-1/4 h-full bg-secondary fixed right-0 hidden lg:flex">
+
+      {/* سایدبار */}
+      <div className="min-w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-full max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex flex-col items-center align-middle p-10 ">
-        <div className="bg-gray-500 rounded-lg items-end w-full flex flex-wrap justify-start gap-x-5 p-3">
-          <div className="w-[20%] flex gap-x-2 justify-start ">
+
+      {/* سایدبار برای اندازه های کوچکتر از لارج */}
+      <DrawerSidebar
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+
+      <div className="flex-1 min-w-0 w-full h-full flex flex-col items-center align-middle p-10 ">
+
+        {/* باز کردن سایدبار */}
+        <button className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <IoMdMenu className="text-2xl" />
+        </button>
+
+        <div dir='rtl' className="bg-white dark:bg-gray-800 rounded-lg w-full flex flex-wrap justify-start gap-5 gap-x-10 p-4 items-end shadow-sm">
+
+          <div className="w-full sm:w-[250px]">
             <FindUser setUserId={setUserId} userId={userId} />
           </div>
-          <div className="w-[25%] flex  justify-center gap-y-1 items-start flex-col ">
-            <label className="text-xs text-white">نام طرح</label>
-            <DropDown arrey={allPlans} select={planId} setSelect={setPlanId} height="h-[200px]" />
+
+          <div className="w-full sm:w-[250px]">
+            <label className="block mb-1 text-sm text-gray-700">نام طرح</label>
+            <DropDown
+              arrey={allPlans}
+              select={planId}
+              setSelect={setPlanId}
+              height="h-[200px]"
+              className="w-full rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
           </div>
-          <CreateEvaluationModal isOpen={isOpen} setIsOpen={setIsOpen} allPlans={allPlans} />
+
           <DownloadExcelBtn
             Rout="InvesteeAssessments/GetAll"
             filename="ارزیابی ها"
             body={{
               userId,
               planId: planId?.key,
-              pagination: {
-                take: 1000000,
-                skip: 0
-              }
+              pagination: { take: 1000000, skip: 0 }
             }}
+            className="bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 text-sm font-medium py-2 px-4 rounded-lg"
           />
+
           <button
             onClick={HandelClearFilter}
-            className="w-[100px] h-10 text-white text-center flex justify-center items-center text-sm font-semibold  focus:outline-none focus:ring-0 border border-white rounded-md ">
-            حذف فیلتر{' '}
+            className="w-full md:w-auto py-2.5 px-4 bg-red-50 hover:bg-red-100 text-red-600 border border-red-600 rounded-lg font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-red-400 transition"
+          >
+            حذف فیلتر
           </button>
-        </div>
-        <div className=" w-full overflow-x-auto md:rounded-lg p-10 ">
-          <table className="table-auto  font-IRANYekanX w-full ">
-            <thead className="font-normal w-full  bg-white text-sm shadow-lg   text-center text-dominant-500 ">
-              <tr className="">
-                <th className="  bg-secondary p-2 ">ردیف</th>
-                <th className="  bg-secondary p-2 ">عنوان </th>
-                <th className="  bg-secondary p-2 ">تاریخ ایجاد </th>
-                <th className="  bg-secondary p-2 ">کاربر</th>
-                <th className="  bg-secondary p-2 ">نام کاربری </th>
-                <th className="  bg-secondary p-2 ">عملیات </th>
-              </tr>
-            </thead>
-            <tbody className="p-10 w-full">
-              {response &&
-                response?.data?.map((item, index) => (
-                  <tr
-                    key={index}
-                    className=" border-b border-gray-300 rounded-md  text-sm text-right text-gray-600  ">
-                    <td className="p-3 ">{Skip + index + 1}</td>
-                    <td className="p-3 text-center  ">
-                      {updateTitleId == item?.id ? (
-                        <form
-                          className="w-full flex justify-center items-center flex-col gap-y-1 "
-                          onSubmit={UpdateEvaluation}>
-                          <input
-                            autoFocus
-                            className=" w-full h-[40px] pr-1 text-sm  text-dominant-500 focus:outline-none focus:ring-0 focus:border-accent-500 border border-gray-600 rounded-md  "
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                          />
-                          <div className="flex w-full  justify-between items-center gap-x-2">
-                            {status ? (
-                              status == 'success' ? (
-                                <div className="w-full h-[38px] rounded-md  border border-green-500 text-center justify-center flex items-center  text-green-500  ">
-                                  ثبت شد
-                                </div>
-                              ) : (
-                                <div className="w-full h-[38px] rounded-md  border border-red-500 text-center justify-center flex items-center  text-red-500  ">
-                                  خطا ! ثبت ناموفق{' '}
-                                </div>
-                              )
-                            ) : (
-                              <div className=" flex w-full justify-between items-center h-auto">
-                                <button
-                                  type="submit"
-                                  className={`w-[40%] h-[35px] text-center flex justify-center rounded-md text-white text-sm items-center   ${
-                                    isLoading ? 'border border-accent-500' : 'bg-accent-500 '
-                                  } `}>
-                                  {isLoading ? <BouncingDotsLoader /> : 'ثبت'}
-                                </button>
-                                <button
-                                  onClick={() => setUpdateTitleId(null)}
-                                  className="w-[40%]  border border-accent-500 h-[35px] text-center flex justify-center rounded-md text-accent-500  text-sm items-center   ">
-                                  انصراف{' '}
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        </form>
-                      ) : (
-                        <Tooltip text={item?.title}>
-                          <span className="w-auto text-center ">
-                            {' '}
-                            {truncateDescription(item?.title)}
-                          </span>
-                        </Tooltip>
-                      )}
-                    </td>
-                    <td className="p-3 ">{DateFunction2.getDate(item?.createDate)}</td>
-                    <td className="p-3 ">{item?.user?.name}</td>
-                    <td className="p-3 ">{item?.user?.username}</td>
-                    <td className="p-3 ">
-                      <div className="w-auto flex justify-center gap-x-3">
-                        {' '}
-                        <button
-                          className="text-red-600 hover:text-red-800 font-medium"
-                          onClick={() => RemoveEvaluation(item?.id)}>
-                          حذف
-                        </button>
-                        <button
-                          className="text-accent-500 hover:text-accent-600 font-medium"
-                          onClick={() => setUpdateTitleId(item?.id)}>
-                          ویرایش
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-          {isloading && (
-            <div className=" w-full flex-col flex items-center justify-center h-screen">
-              <BouncingDotsLoader />
-            </div>
-          )}
 
-          {response?.pagination?.total == 0 && (
-            <div className=" w-full flex-col flex items-center py-5 text-caption font-medium text-dominant">
-              <p className="">موردی یافت نشد </p>
-            </div>
-          )}
+          <div className="w-auto">
+            <CreateEvaluationModal
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              allPlans={allPlans}
+            />
+          </div>
+
+        </div>
+
+        <div dir="rtl" className="relative w-full sm:w-[100%] mx-auto overflow-x-auto md:rounded-lg p-10">
+          <div className="min-w-max w-full">
+            <Table hoverable={false} className="whitespace-nowrap min-w-full">
+              <Table.Head className="bg-gray-200 border-b border-gray-400">
+                <Table.HeadCell className="text-right py-4 text-gray-700">ردیف</Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">عنوان</Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">تاریخ ایجاد</Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">کاربر</Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">نام کاربری</Table.HeadCell>
+                <Table.HeadCell className="text-right py-4 text-gray-700">عملیات</Table.HeadCell>
+              </Table.Head>
+
+              <Table.Body className="divide-y">
+                {response?.data?.length > 0 ? (
+                  response.data.map((item, index) => (
+                    <Table.Row key={item.id ?? index}>
+                      <Table.Cell className="text-right">{Skip + index + 1}</Table.Cell>
+                      <Table.Cell className="text-right">
+                        {updateTitleId === item?.id ? (
+                          <form
+                            className="w-full flex flex-col items-center gap-y-1"
+                            onSubmit={UpdateEvaluation}
+                          >
+                            <input
+                              autoFocus
+                              className="w-full h-[40px] pr-1 text-sm text-dominant-500 border border-gray-600 rounded-md focus:outline-none focus:ring-0 focus:border-accent-500"
+                              value={title}
+                              onChange={(e) => setTitle(e.target.value)}
+                            />
+                            <div className="flex w-full justify-between items-center gap-x-2">
+                              {status ? (
+                                status === 'success' ? (
+                                  <div className="w-full h-[38px] rounded-md border border-green-500 flex items-center justify-center text-green-500">
+                                    ثبت شد
+                                  </div>
+                                ) : (
+                                  <div className="w-full h-[38px] rounded-md border border-red-500 flex items-center justify-center text-red-500">
+                                    خطا ! ثبت ناموفق
+                                  </div>
+                                )
+                              ) : (
+                                <div className="flex w-full justify-between items-center">
+                                  <button
+                                    type="submit"
+                                    className={`w-[40%] h-[35px] flex items-center justify-center rounded-md text-white text-sm ${isLoading ? 'border border-accent-500' : 'bg-accent-500'
+                                      }`}
+                                  >
+                                    {isLoading ? <BouncingDotsLoader /> : 'ثبت'}
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setUpdateTitleId(null)}
+                                    className="w-[40%] h-[35px] border border-accent-500 flex items-center justify-center rounded-md text-accent-500 text-sm"
+                                  >
+                                    انصراف
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          </form>
+                        ) : (
+                          <Tooltip text={item?.title}>
+                            <span className="w-auto text-center">
+                              {truncateDescription(item?.title)}
+                            </span>
+                          </Tooltip>
+                        )}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">
+                        {DateFunction2.getDate(item?.createDate)}
+                      </Table.Cell>
+                      <Table.Cell className="text-right">{item?.user?.name}</Table.Cell>
+                      <Table.Cell className="text-right">{item?.user?.username}</Table.Cell>
+                      <Table.Cell className="text-right">
+                        <div className="flex justify-center gap-x-3">
+                          <button
+                            className="text-red-600 hover:text-red-800 font-medium"
+                            onClick={() => RemoveEvaluation(item?.id)}
+                          >
+                            حذف
+                          </button>
+                          <button
+                            className="text-accent-500 hover:text-accent-600 font-medium"
+                            onClick={() => setUpdateTitleId(item?.id)}
+                          >
+                            ویرایش
+                          </button>
+                        </div>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))
+                ) : (
+                  <Table.Row>
+                    <Table.Cell colSpan={6} className="text-center text-gray-500 py-4">
+                      موردی یافت نشد
+                    </Table.Cell>
+                  </Table.Row>
+                )}
+              </Table.Body>
+            </Table>
+
+            {isloading && (
+              <div className="w-full flex flex-col items-center justify-center h-screen">
+                <BouncingDotsLoader />
+              </div>
+            )}
+          </div>
 
           {response?.pagination?.total > 10 && (
-            <div className=" relative flex justify-center p-8">
-              {' '}
+            <div className="relative flex justify-center p-8">
               <PaginationComponet
-                total={response?.pagination?.total}
+                total={response.pagination.total}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
               />
             </div>
           )}
         </div>
+
       </div>
     </div>
   );

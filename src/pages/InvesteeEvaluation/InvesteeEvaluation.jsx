@@ -165,7 +165,7 @@ function InvesteeEvaluation() {
 
         </div>
 
-        <div dir="rtl" className="relative w-full sm:w-[100%] mx-auto overflow-x-auto md:rounded-lg p-10">
+        <div dir="rtl" className="relative w-full sm:w-[100%] mx-auto overflow-x-auto md:rounded-lg mt-8">
           <div className="min-w-max w-full">
             <Table hoverable={false} className="whitespace-nowrap min-w-full">
               <Table.Head className="bg-gray-200 border-b border-gray-400">
@@ -272,17 +272,16 @@ function InvesteeEvaluation() {
               </div>
             )}
           </div>
-
-          {response?.pagination?.total > 10 && (
-            <div className="relative flex justify-center p-8">
-              <PaginationComponet
-                total={response.pagination.total}
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-              />
-            </div>
-          )}
         </div>
+        {response?.pagination?.total > 10 && (
+          <div className="relative flex justify-center p-8">
+            <PaginationComponet
+              total={response.pagination.total}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        )}
 
       </div>
     </div>

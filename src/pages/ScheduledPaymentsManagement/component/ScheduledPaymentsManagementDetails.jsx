@@ -310,15 +310,26 @@ function ScheduledPaymentsManagementDetails() {
         {/* بخش هدر */}
         <div className="w-full grid grid-cols-12 gap-4 bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition">
           {/* بخش عنوان (Title) */}
-          <div className="col-span-12 lg:col-span-6 xl:col-span-5 flex items-center">
+          <div className="col-span-12 lg:col-span-7 xl:col-span-6 flex items-center">
             <span className="text-gray-500 text-sm ml-2">عنوان طرح:</span>
             <span className="text-gray-900 text-base font-semibold">
               {details?.planTitle}
             </span>
           </div>
 
+          {/* بخش آپلود فایل (Upload) */}
+          <div className="col-span-12 lg:col-span-12 xl:col-span-3 flex items-center justify-start">
+            <ExcelUpload
+              id={id}
+              filename={filename}
+              setFilename={setFilename}
+              placeholder="فایل را بارگذاری کنید"
+              title="بارگذاری اکسل وایز سود"
+            />
+          </div>
+
           {/* بخش دکمه‌ها (Actions) */}
-          <div className="col-span-12 lg:col-span-6 xl:col-span-4 flex items-center justify-start gap-x-4 space-x-2">
+          <div className="col-span-12 lg:col-span-6 xl:col-span-3 flex items-center justify-start gap-x-4 space-x-2">
             {response ? (
               response === "success" ? (
                 <span className="px-4 py-2 bg-green-100 text-green-700 rounded-md text-sm font-medium">
@@ -349,16 +360,6 @@ function ScheduledPaymentsManagementDetails() {
             />
           </div>
 
-          {/* بخش آپلود فایل (Upload) */}
-          <div className="col-span-12 lg:col-span-12 xl:col-span-3 flex items-center justify-start">
-            <ExcelUpload
-              id={id}
-              filename={filename}
-              setFilename={setFilename}
-              placeholder="فایل را بارگذاری کنید"
-              title="بارگذاری اکسل وایز سود"
-            />
-          </div>
         </div>
 
 

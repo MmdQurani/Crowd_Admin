@@ -130,18 +130,14 @@ function ScheduledPaymentsManagement() {
           <IoMdMenu className="text-2xl" />
         </button>
 
-        <div
-          dir="rtl"
-          className=" bg-white border border-gray-200 shadow-md rounded-lg min-w-full sm:min-w-[80%] p-4 flex flex-wrap items-end gap-4
-  "
-        >
+        <div dir="rtl" className=" bg-white border border-gray-200 shadow-md rounded-lg min-w-full sm:min-w-[80%] p-4 flex flex-wrap items-end gap-4">
           {/* از تاریخ */}
           <div className="w-full md:w-[200px]">
             <DatePickerPersian
               value={startDate}
               onchange={setStartDate}
               title="از تاریخ"
-              className="w-full"
+              className="w- full"
             />
           </div>
 
@@ -197,12 +193,7 @@ function ScheduledPaymentsManagement() {
           </div>
         </div>
 
-
-
-        <div
-          dir="rtl"
-          className="relative w-full md:w-[80%] mx-auto overflow-x-auto mt-8"
-        >
+        <div dir="rtl" className="relative w-full md:w-[80%] mx-auto overflow-x-auto mt-8" >
           <div className="w-max">
             <Table hoverable={false} className="whitespace-nowrap">
               <Table.Head className="bg-gray-200 border-b border-gray-400">

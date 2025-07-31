@@ -2,11 +2,14 @@
 import Axios from 'component/Axios/Axios';
 import DateFunction2 from 'component/DateFunctions/DateFunction2';
 import DatePickerPersian from 'component/Datepicker/datepicker';
+import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
 import DropDown from 'component/DropDown/DropDown';
 import Sidebar from 'component/layout/sidebar/SideBar';
 import BouncingDotsLoader from 'component/Loading/BouncingDotsLoader';
 import PaginationComponet from 'component/pagination/paginationComponent';
+import { Table } from 'flowbite-react';
 import React, { useEffect, useMemo, useState } from 'react';
+import { IoMdMenu } from 'react-icons/io';
 import { toast } from 'react-toastify';
 
 function ConsultingRequests() {
@@ -77,13 +80,31 @@ function ConsultingRequests() {
     { name: ' نیاز به مشاوره بیشتر', key: 5, color: 'text-yellow-500' }
   ];
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   const ItemsFinder = (array, id, key) => array?.find((item) => item?.[key] == id);
   return (
     <div className="flex flex-row items-start h-auto  w-full ">
-      <div className="w-1/4 h-full bg-secondary fixed right-0 hidden lg:flex">
+
+      {/* سایدبار */}
+      <div className="min-w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-full max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex flex-col items-center align-middle p-10 ">
+
+      {/* سایدبار برای اندازه های کوچکتر از لارج */}
+      <DrawerSidebar
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+
+      <div className="flex-1 min-w-0 w-full h-full flex flex-col items-center align-middle p-10 ">
+
+        {/* باز کردن سایدبار */}
+        <button className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <IoMdMenu className="text-2xl" />
+        </button>
 
         <div className="w-full flex flex-col items-center bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
           <div className="w-full flex flex-wrap items-end justify-start gap-6">
@@ -111,38 +132,50 @@ function ConsultingRequests() {
         </div>
 
 
-        <div className="relative overflow-x-auto md:rounded-lg mt-8  w-full ">
-          <table className="table-auto bordered font-IRANYekanX w-full ">
-            <thead className="font-normal w-full text-sm  text-right shadow-xl rounded-md  text-dominant-500">
-              <tr className=" text-center">
+
+        <div className="relative overflow-x-auto md:rounded-lg p-2 w-full">
+          <div className='w-full min-w-max'>
+            <Table className="table-auto font-IRANYekanX rounded-lg w-full whitespace-nowrap">
+              <Table.Head className="bg-secondary text-base text-right text-dominant-500">
                 {headers.map((item, index) => (
-                  <th key={index} className=" p-4 text-xs  whitespace-nowrap">
-                    {item?.name}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="p-5 w-full">
-              {response &&
-                response?.data?.map((item, index) => (
-                  <tr
+                  <Table.HeadCell
                     key={index}
-                    className=" border-b text-center  border-gray-300 rounded-md font-semibold text-xs items-end text-dominant-500  ">
-                    <td className="p-2 font-normal h-[42px] ">{Skip + index + 1}</td>
-                    <td className="p-2 font-normal h-[42px] ">{item?.fullName || 'نامشخص'}</td>
-                    <td className="p-2 font-normal h-[42px] ">
-                      {(item?.date && DateFunction2.getDate(item?.date)) || 'نامشخص'}
-                    </td>{' '}
-                    <td className="p-2 font-normal h-[42px] ">{item?.phoneNumber || 'نامشخص'}</td>
-                    <td
-                      className={`p-2 ${ItemsFinder(StatusEnum, item?.status, 'key')?.color
-                        } font-normal h-[42px] `}>
-                      {(item?.status && ItemsFinder(StatusEnum, item?.status, 'key')?.name) ||
+                    className="p-3 text-center text-xs whitespace-nowrap"
+                  >
+                    {item.name}
+                  </Table.HeadCell>
+                ))}
+              </Table.Head>
+
+              <Table.Body className="divide-y bg-white dark:bg-gray-800">
+                {response?.data?.map((item, index) => (
+                  <Table.Row
+                    key={item.id || index}
+                    className="text-center text-xs font-medium text-dominant-500"
+                  >
+                    <Table.Cell className="p-3 border-b border-gray-300">
+                      {Skip + index + 1}
+                    </Table.Cell>
+                    <Table.Cell className="p-3 border-b border-gray-300">
+                      {item.fullName || 'نامشخص'}
+                    </Table.Cell>
+                    <Table.Cell className="p-3 border-b border-gray-300">
+                      {(item.date && DateFunction2.getDate(item.date)) || 'نامشخص'}
+                    </Table.Cell>
+                    <Table.Cell className="p-3 border-b border-gray-300">
+                      {item.phoneNumber || 'نامشخص'}
+                    </Table.Cell>
+                    <Table.Cell
+                      className={`p-3 border-b border-gray-300 ${ItemsFinder(StatusEnum, item.status, 'key')?.color
+                        }`}
+                    >
+                      {(item.status &&
+                        ItemsFinder(StatusEnum, item.status, 'key')?.name) ||
                         'نامشخص'}
-                    </td>
-                    <td className="p-2 w-[200px] font-normal h-[42px] ">
-                      {selectedId == item?.id ? (
-                        <div className="w-full flex h-auto flex-col gap-y-3 items-center justify-center">
+                    </Table.Cell>
+                    <Table.Cell className="p-3 border-b border-gray-300">
+                      {selectedId === item.id ? (
+                        <div className="flex flex-col items-center gap-y-3">
                           <DropDown
                             width="w-[200px]"
                             arrey={StatusEnum}
@@ -150,53 +183,59 @@ function ConsultingRequests() {
                             setSelect={setStatus}
                             height="h-[100px]"
                           />
-                          <div className="w-full gap-x-3 flex justify-between items-center">
-                            {' '}
+                          <div className="flex w-full justify-between items-center gap-x-3">
                             <button
                               onClick={UpdateRequestStaus}
-                              className="w-[50%] rounded-md h-[28px] items-center flex justify-center text-center text-green-700 border border-green-600  text-sm  font-bold">
-                              ثبت{' '}
+                              className="w-1/2 h-7 flex items-center justify-center bg-green-50 hover:bg-green-100 text-green-700 text-sm font-bold rounded-md"
+                            >
+                              ثبت
                             </button>
                             <button
                               onClick={() => {
                                 setSelectedId();
                                 setStatus();
                               }}
-                              className="w-[50%] rounded-md h-[28px] items-center flex justify-center text-center text-gray-500 border border-gray-500  text-sm  font-bold">
-                              انصراف{' '}
+                              className="w-1/2 h-7 flex items-center justify-center bg-red-50 hover:bg-red-100 text-red-700 text-sm font-bold rounded-md"
+                            >
+                              انصراف
                             </button>
                           </div>
                         </div>
                       ) : (
                         <button
                           onClick={() => setSelectedId(item.id)}
-                          className="w-[80%] rounded-md h-[28px] items-center flex justify-center text-center text-green-700  text-xs font-medium border border-green-700  ">
-                          تغییر وضعیت{' '}
+                          className="w-4/5 h-7 flex items-center justify-center text-green-700 border border-green-700 text-xs font-medium rounded-md"
+                        >
+                          تغییر وضعیت
                         </button>
                       )}
-                    </td>
-                  </tr>
+                    </Table.Cell>
+                  </Table.Row>
                 ))}
-            </tbody>
-          </table>
-          {isloading?.main && (
-            <div className=" w-full justify-center py-3 flex items-center">
-              <BouncingDotsLoader />
-            </div>
-          )}
-          {(!response || response?.data?.length == 0) && (
-            <span className=" w-full  flex items-center justify-center  py-5 text-base  font-medium text-gray-600">
-              گزارشی یافت نشد
-            </span>
-          )}
-          <div className=" relative flex justify-center py-5">
-            <PaginationComponet
-              total={response?.pagination?.total}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-            />
+              </Table.Body>
+            </Table>
+
+            {isloading?.main && (
+              <div className="w-full flex justify-center py-8">
+                <BouncingDotsLoader />
+              </div>
+            )}
+
+            {(!response || response?.data?.length === 0) && !isloading?.main && (
+              <div className="w-full flex justify-center py-5 text-sm font-medium text-dominant-500">
+                گزارشی یافت نشد
+              </div>
+            )}
           </div>
         </div>
+        <div className="relative flex justify-center py-5">
+          <PaginationComponet
+            total={response?.pagination?.total}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
+
       </div>
     </div>
   );

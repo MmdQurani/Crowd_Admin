@@ -23,7 +23,7 @@ const DatePickerPersian = ({ value, onchange, title, name, style, titleStyle }) 
     <div className={` h-full  relative ${style ? style : ' w-full '}  flex flex-col z-[1000] `}>
       {title && (
         <p
-          className={`font-IRANYekanX font-normal text-xs   rounded-md  ${titleStyle ? titleStyle : 'text-white'
+          className={`font-IRANYekanX font-normal text-xs mb-2  rounded-md  ${titleStyle ? titleStyle : 'text-white'
             } mr-3 w-fit z-10`}>
           {title}
         </p>

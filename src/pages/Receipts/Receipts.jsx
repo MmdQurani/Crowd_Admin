@@ -12,6 +12,9 @@ import DownloadExcelBtn from 'component/GlobalyTools/DownloadExcelBtn';
 import BouncingDotsLoader from 'component/Loading/BouncingDotsLoader';
 import DataContext from 'comon/context/MainContext';
 import getBaseUrl from 'component/Axios/getBaseUrl';
+import { IoMdMenu } from 'react-icons/io';
+import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
+import { Table } from 'flowbite-react';
 
 function InvestmentCalendar() {
   const { allPlans } = useContext(DataContext);
@@ -133,138 +136,221 @@ function InvestmentCalendar() {
   //     status: item?.payStatus && GetPayStatus(item?.payStatus)
   //   }));
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   return (
     <div className="flex flex-row items-start h-auto  ">
-      <div className="w-1/4 h-full bg-secondary fixed right-0 hidden lg:flex">
+
+      {/* سایدبار */}
+      <div className="min-w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-full max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex flex-col items-center align-middle p-10 ">
-        <div className="bg-gray-500   rounded-lg  w-full flex justify-between  flex-wrap gap-x-5 p-3 items-end">
-          <div className="w-[30%] flex justify-between items-end gap-x-5">
-            {' '}
-            <DatePickerPersian value={startDate} onchange={setStartDate} title="از تاریخ" />
-            <DatePickerPersian value={EndDate} onchange={setEndDate} title="تا تاریخ" />
+
+      {/* سایدبار برای اندازه های کوچکتر از لارج */}
+      <DrawerSidebar
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+
+      <div className="flex-1 min-w-0 w-full h-full flex flex-col items-center align-middle p-10 ">
+
+        {/* باز کردن سایدبار */}
+        <button className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <IoMdMenu className="text-2xl" />
+        </button>
+
+        <div dir="rtl" className="bg-white shadow-md rounded-lg w-full p-6 flex flex-wrap items-end gap-6">
+          {/* تاریخ‌ها */}
+          <div className="flex flex-col sm:flex-row gap-4 w-full lg:w-1/2 xl:w-1/4">
+            <div className="w-full sm:w-1/2">
+              <DatePickerPersian
+                value={startDate}
+                onchange={setStartDate}
+                titleStyle={'text-gray-700'}
+                title="از تاریخ"
+                className="w-full bg-gray-50 border border-gray-200 rounded-md shadow-sm focus:ring-2 focus:ring-primary-300"
+              />
+            </div>
+            <div className="w-full sm:w-1/2">
+              <DatePickerPersian
+                value={EndDate}
+                onchange={setEndDate}
+                titleStyle={'text-gray-700'}
+                title="تا تاریخ"
+                className="w-full bg-gray-50 border border-gray-200 rounded-md shadow-sm focus:ring-2 focus:ring-primary-300"
+              />
+            </div>
           </div>
-          <div className="w-[200px] flex flex-col gap-y-1 items-start ">
-            <label className="   text-white  text-sm   text-start">طرح </label>
+
+          {/* فیلتر طرح */}
+          <div className="flex flex-col gap-1 w-full md:w-1/4 lg:w-1/3 xl:w-1/4">
+            <label className="text-gray-600 text-sm">طرح</label>
             <DropDown
               arrey={allPlans}
               select={investmentPlanId}
               setSelect={setInvestmentPlanId}
               height="h-[200px]"
+              className="w-full bg-gray-50 border border-gray-200 rounded-md shadow-sm focus:ring-2 focus:ring-primary-300"
             />
           </div>
-          <div className="w-[50%] flex gap-x-2 justify-end items-end ">
+
+          {/* اکشن‌ها */}
+          <div className="flex flex-wrap gap-3 justify-end w-full sm:w-auto">
             <button
               onClick={HandelClearFilter}
-              className="w-[100px] h-10 text-white text-center flex justify-center items-center text-sm font-semibold  focus:outline-none focus:ring-0 border border-white rounded-md ">
-              حذف فیلتر{' '}
+              className="inline-flex md:w-max w-full justify-center items-center px-4 py-2.5 border bg-red-50  border-red-300 text-red-700 text-sm font-semibold rounded-lg hover:bg-red-100"
+            >
+              حذف فیلتر
             </button>
+
             <DownloadExcelBtn
               Rout="OfflinePaymentManagement/GetAll"
-              filename=" رسیدها"
+              filename="رسیدها"
               body={{
                 userId: userId,
                 startDate: startDate?.split('T')?.[0],
                 endDate: EndDate?.split('T')?.[0],
                 planId: investmentPlanId?.key,
                 payerId: payerId?.key,
-                pagination: {
-                  take: 1000000,
-                  skip: 0
-                }
+                pagination: { take: 1000000, skip: 0 }
               }}
-            />
-            <CreateOredrForUserModal type={1} isOpen={isOpen} setIsOpen={setIsOpen} />
-          </div>{' '}
-        </div>
-        <div className="relative overflow-x-auto md:rounded-lg mt-8 p-2  w-full">
-          <table className="table-auto bordered font-IRANYekanX w-full ">
-            <thead className="font-normal w-full text-sm  text-right shadow-xl rounded-md p-5 text-dominant-500">
-              <tr className=" text-center ">
-                <th className=" whitespace-nowrap p-3">ردیف</th>
-                <th className=" whitespace-nowrap p-3"> کاربر</th>
-                <th className=" whitespace-nowrap p-3"> نام کاربری </th>
-                <th className=" whitespace-nowrap p-3">نام طرح </th>
-                <th className=" whitespace-nowrap p-3">مبلغ </th>
-                <th className=" whitespace-nowrap p-3">واحد </th>
-                <th className=" whitespace-nowrap p-3">تاریخ </th>
-                <th className=" whitespace-nowrap p-3">شناسه واریزی </th>
-                <th className=" whitespace-nowrap p-3">وضعیت </th>
-                <th className=" whitespace-nowrap p-3">فایل </th>
-                <th className=" whitespace-nowrap p-3">عملیات </th>
-              </tr>
-            </thead>
-            <tbody className="p-10 w-full">
-              {response &&
-                response?.data?.map((item, index) => (
-                  <tr
-                    key={index}
-                    className=" border-b text-center  border-gray-300 rounded-md  text-xs items-end text-dominant-500  ">
-                    <td className="p-3 ">{Skip + index + 1}</td>
-                    <td className="p-3 ">{item?.user?.name}</td>
-                    <td className="p-3 ">{item?.user?.username}</td>
-                    <td className="p-3 ">{item?.planTitle ? item?.planTitle : '-'}</td>
-                    <td className="p-3 ">
-                      {item?.totalValue && Number(item?.totalValue).toLocaleString()}
-                    </td>
-                    <td className="p-3 ">{item?.totalUnit}</td>
-                    <td className="p-3 ">
-                      {item?.createDate && DateFunction2.getDate(item?.createDate)}
-                    </td>
-                    <td className="p-3 ">{item?.payerId}</td>
-                    <td className={`p-3 ${GetPayStatus(item?.payStatus)?.color} `}>
-                      {item?.payStatus && GetPayStatus(item?.payStatus)?.name}
-                    </td>
-                    <td className="p-3 ">
-                      {item?.filePath ? (
-                        <a
-                          href={getBaseUrl() + '/' + item?.filePath}
-                          className="text-xs  text-accent-500 hover:underline underline-offset-8 hover:font-semibold font-normal whitespace-nowrap  cursor-pointer "
-                          target="_blank"
-                          rel="noreferrer">
-                          مشاهده فایل{' '}
-                        </a>
-                      ) : (
-                        'فایل بارگذاری نشده'
-                      )}
-                    </td>
-
-                    <td className="p-3 gap-x-2 flex justify-center ">
-                      {item?.payStatus == 1 ? (
-                        <RecieptUpdateStatusModal
-                          id={item?.id}
-                          isOpen={!!openModals[item.id]}
-                          setIsOpen={() => toggleModal(item.id)}
-                        />
-                      ) : (
-                        '-'
-                      )}
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-          {isloading && (
-            <div className=" w-full p-3 flex items-center justify-center">
-              {' '}
-              <BouncingDotsLoader />
-            </div>
-          )}
-          {response?.pagination?.total == 0 && isloading === false && (
-            <span className=" w-full flex-col flex items-center pt-5 text-caption font-medium text-gray-600">
-              گزارشی یافت نشد
-            </span>
-          )}
-          <div className=" relative flex justify-center p-8">
-            {' '}
-            <PaginationComponet
-              total={response?.pagination?.total}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
+              className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition"
             />
           </div>
+          <div className="flex flex-wrap gap-3 justify-end w-full sm:w-auto">
+            <CreateOredrForUserModal type={1} isOpen={isOpen} setIsOpen={setIsOpen}>
+              <button className="px-4 py-2 bg-primary-500 text-white rounded-md hover:bg-primary-600 transition">
+                ایجاد سفارش
+              </button>
+            </CreateOredrForUserModal>
+          </div>
         </div>
+
+        <div dir="rtl" className="relative w-full mx-auto overflow-x-auto mt-8">
+          <div className="min-w-max w-full">
+            <Table hoverable={false} className="whitespace-nowrap">
+
+              {/* header */}
+              <Table.Head className="bg-gray-200 border-b border-gray-400">
+                <Table.HeadCell className="text-center text-sm text-gray-700 p-3 whitespace-nowrap">
+                  ردیف
+                </Table.HeadCell>
+                <Table.HeadCell className="text-center text-sm text-gray-700 p-3 whitespace-nowrap">
+                  کاربر
+                </Table.HeadCell>
+                <Table.HeadCell className="text-center text-sm text-gray-700 p-3 whitespace-nowrap">
+                  نام کاربری
+                </Table.HeadCell>
+                <Table.HeadCell className="text-center text-sm text-gray-700 p-3 whitespace-nowrap">
+                  نام طرح
+                </Table.HeadCell>
+                <Table.HeadCell className="text-center text-sm text-gray-700 p-3 whitespace-nowrap">
+                  مبلغ
+                </Table.HeadCell>
+                <Table.HeadCell className="text-center text-sm text-gray-700 p-3 whitespace-nowrap">
+                  واحد
+                </Table.HeadCell>
+                <Table.HeadCell className="text-center text-sm text-gray-700 p-3 whitespace-nowrap">
+                  تاریخ
+                </Table.HeadCell>
+                <Table.HeadCell className="text-center text-sm text-gray-700 p-3 whitespace-nowrap">
+                  شناسه واریزی
+                </Table.HeadCell>
+                <Table.HeadCell className="text-center text-sm text-gray-700 p-3 whitespace-nowrap">
+                  وضعیت
+                </Table.HeadCell>
+                <Table.HeadCell className="text-center text-sm text-gray-700 p-3 whitespace-nowrap">
+                  فایل
+                </Table.HeadCell>
+                <Table.HeadCell className="text-center text-sm text-gray-700 p-3 whitespace-nowrap">
+                  عملیات
+                </Table.HeadCell>
+              </Table.Head>
+
+              {/* body */}
+              <Table.Body className="divide-y">
+                {response?.data?.length > 0 ? (
+                  response.data.map((item, idx) => (
+                    <Table.Row
+                      key={item.id ?? idx}
+                      className="border-b border-gray-300 text-center text-xs text-dominant-500"
+                    >
+                      <Table.Cell className="p-3">{Skip + idx + 1}</Table.Cell>
+                      <Table.Cell className="p-3">{item.user?.name}</Table.Cell>
+                      <Table.Cell className="p-3">{item.user?.username}</Table.Cell>
+                      <Table.Cell className="p-3">{item.planTitle ?? '-'}</Table.Cell>
+                      <Table.Cell className="p-3">
+                        {item.totalValue
+                          ? Number(item.totalValue).toLocaleString('fa-IR')
+                          : '-'}
+                      </Table.Cell>
+                      <Table.Cell className="p-3">{item.totalUnit ?? '-'}</Table.Cell>
+                      <Table.Cell className="p-3">
+                        {item.createDate && DateFunction2.getDate(item.createDate)}
+                      </Table.Cell>
+                      <Table.Cell className="p-3">{item.payerId ?? '-'}</Table.Cell>
+                      <Table.Cell
+                        className={`p-3 font-medium ${GetPayStatus(item.payStatus)?.color
+                          }`}
+                      >
+                        {GetPayStatus(item.payStatus)?.name ?? '-'}
+                      </Table.Cell>
+                      <Table.Cell className="p-3">
+                        {item.filePath ? (
+                          <a
+                            href={`${getBaseUrl()}/${item.filePath}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-xs text-accent-500 hover:underline hover:font-semibold whitespace-nowrap"
+                          >
+                            مشاهده فایل
+                          </a>
+                        ) : (
+                          <span className="text-xs text-gray-400">فایل ندارد</span>
+                        )}
+                      </Table.Cell>
+                      <Table.Cell className="p-3 flex justify-center gap-x-2">
+                        {item.payStatus === 1 ? (
+                          <RecieptUpdateStatusModal
+                            id={item.id}
+                            isOpen={!!openModals[item.id]}
+                            setIsOpen={() => toggleModal(item.id)}
+                          />
+                        ) : (
+                          <span className="text-gray-400">–</span>
+                        )}
+                      </Table.Cell>
+                    </Table.Row>
+                  ))
+                ) : (
+                  <Table.Row>
+                    <Table.Cell colSpan={11} className="text-center text-gray-500 py-4">
+                      گزارشی یافت نشد
+                    </Table.Cell>
+                  </Table.Row>
+                )}
+              </Table.Body>
+            </Table>
+
+            {/* loading */}
+            {isloading && (
+              <div className="w-full flex items-center justify-center py-8">
+                <BouncingDotsLoader />
+              </div>
+            )}
+          </div>
+        </div>
+        {/* pagination */}
+        <div className="flex justify-center py-6">
+          <PaginationComponet
+            total={response?.pagination?.total}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
+
       </div>
     </div>
   );

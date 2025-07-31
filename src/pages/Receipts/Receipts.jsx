@@ -308,7 +308,7 @@ function InvestmentCalendar() {
                             مشاهده فایل
                           </a>
                         ) : (
-                          <span className="text-xs text-gray-400">فایل ندارد</span>
+                          <span className="text-xs text-red-400">فایل ندارد</span>
                         )}
                       </Table.Cell>
                       <Table.Cell className="p-3 flex justify-center gap-x-2">

@@ -11,6 +11,9 @@ import FindUser from 'component/AutoComplete/FindUser';
 import DownloadExcelBtn from 'component/GlobalyTools/DownloadExcelBtn';
 import BouncingDotsLoader from 'component/Loading/BouncingDotsLoader';
 import DataContext from 'comon/context/MainContext';
+import { IoMdMenu } from 'react-icons/io';
+import DrawerSidebar from 'component/DrawerSidebar/DrawerSidebar';
+import { Table } from 'flowbite-react';
 
 function IPGPayment() {
   const { allPlans } = useContext(DataContext);
@@ -99,30 +102,64 @@ function IPGPayment() {
     setEndDate();
   };
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   return (
     <div className="flex flex-row items-start h-auto ">
-      <div className="w-1/4 h-full  fixed right-0 hidden lg:flex">
+
+      {/* سایدبار */}
+      <div className="min-w-[350px] bg-white sticky top-0 right-0 hidden lg:flex">
         <Sidebar />
       </div>
-      <div className="w-full lg:w-full max-w-[1355px] lg:mr-[calc(25%_+_40px)] flex flex-col items-center align-middle p-10 ">
-        <div className="bg-gray-500 rounded-lg  w-full flex  flex-wrap justify-center gap-5 p-3 items-end">
-          <div className="w-[20%] justify-start items-end ">
-            <FindUser setUserId={setUserId} userId={userId} />
-          </div>{' '}
+
+      {/* سایدبار برای اندازه های کوچکتر از لارج */}
+      <DrawerSidebar
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+
+      <div className="flex-1 min-w-0 w-full h-full flex flex-col items-center align-middle p-10 ">
+
+        {/* باز کردن سایدبار */}
+        <button className="lg:hidden flex justify-center items-center w-full self-end mb-4 p-2 border border-1 border-gray-300 text-gray-700 hover:bg-white transition-colors duration-300 rounded"
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <IoMdMenu className="text-2xl" />
+        </button>
+
+        <div className="bg-white dark:bg-gray-800 rounded-lg w-full flex flex-wrap gap-6 p-4 items-end shadow-sm">
+
+          <div className="w-full sm:w-1/5 flex justify-start items-end">
+            <FindUser
+              setUserId={setUserId}
+              userId={userId}
+              className="w-full"
+            />
+          </div>
+
           <DatePickerPersian
             value={startDate}
             onchange={setStartDate}
+            titleStyle='text-gray-700'
             title="از تاریخ"
             style="w-[200px]"
+            className="rounded border border-gray-300 dark:border-gray-600 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
+
           <DatePickerPersian
             value={endDate}
             onchange={setEndDate}
+            titleStyle='text-gray-700'
             title="تا تاریخ"
             style="w-[200px]"
+            className="rounded border border-gray-300 dark:border-gray-600 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
-          <div className="w-[200px] flex flex-col justify-center items-center gap-y-1 ">
-            <label htmlFor="operationType" className=" text-start w-[90%] text-xs text-white">
+
+          <div className="w-[200px] flex flex-col justify-center items-start gap-2">
+            <label
+              htmlFor="operationType"
+              className="block text-sm text-gray-700 dark:text-gray-300 mb-1"
+            >
               طرح
             </label>
             <DropDown
@@ -131,8 +168,10 @@ function IPGPayment() {
               setSelect={setPlanId}
               height="h-[200px]"
               width="w-[200px]"
+              className="w-full rounded border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
+
           <DownloadExcelBtn
             Rout="PaymentManagement/GetAll"
             filename="گزارش پرداختی های درگاه"
@@ -141,90 +180,103 @@ function IPGPayment() {
               planId: planId?.key,
               startDate: startDate?.split('/')?.[0],
               endDate: endDate?.split('/')?.[0],
-              pagination: {
-                take: 10000000,
-                skip: 0
-              }
+              pagination: { take: 10000000, skip: 0 },
             }}
           />
+
           <button
             onClick={HandelClearFilter}
-            className="w-[100px] h-10 text-white text-center flex justify-center items-center text-sm font-semibold  focus:outline-none focus:ring-0 border border-white rounded-md ">
-            حذف فیلتر{' '}
+            className="w-full md:w-auto py-2.5 px-4 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 border border-red-600 font-semibold text-sm flex justify-center items-center focus:outline-none transition"
+          >
+            حذف فیلتر
           </button>
         </div>
 
-        <div className="relative overflow-x-auto md:rounded-lg mt-8 p-2 w-full ">
-          <table className="table-auto  font-IRANYekanX rounded-lg w-full ">
-            <thead className="font-normal w-full  bg-white p-5 rounded-lg shadow-lg text-sm text-center text-dominant-500">
-              <tr className="">
-                <th className="  rounded-r-lg p-4">ردیف</th>
-                <th className=" whitespace-nowrap p-4">نام </th>
-                <th className=" whitespace-nowrap p-4">نام کاربری</th>
-                <th className=" whitespace-nowrap p-4">نوع کاربری</th>
-                <th className=" whitespace-nowrap p-4">طرح</th>
-                <th className=" whitespace-nowrap p-4">تاریخ پرداخت</th>
-                <th className=" whitespace-nowrap p-4">زمان پرداخت</th>
-                <th className=" whitespace-nowrap p-4">مبلغ پرداخت</th>
-                <th className=" whitespace-nowrap p-4">وضعیت پرداخت</th>
-                <th className=" whitespace-nowrap p-4">درگاه پرداخت</th>
-                <th className=" whitespace-nowrap p-4">شناسه پرداخت</th>
-                <th className=" whitespace-nowrap p-4"> کد رهگیری فرابورس</th>
-                <th className=" rounded-l-lg  whitespace-nowrap p-4">شناسه پرداخت کننده</th>
-              </tr>
-            </thead>
-            <tbody className="p-10 w-full">
-              {response &&
-                response?.data?.map((item, index) => (
-                  <tr
-                    key={index}
-                    className=" border-b  border-gray-300 text-center   p-3 rounded-md font-semibold text-sm items-end text-gray-500  ">
-                    <td className="p-3 ">{Skip + index + 1}</td>
-                    <td className="p-3 whitespace-nowrap">{item?.user?.name}</td>
-                    <td className="p-3 whitespace-nowrap">{item?.user?.username}</td>
-                    <td className="p-3 whitespace-nowrap ">
-                      {item?.user?.type == 1 || item?.user?.type == 3 ? 'حقیقی' : 'حقوقی'}
-                    </td>
-                    <td className="p-3 text-xs whitespace-nowrap">{item?.planTitle}</td>
 
-                    <td className="p-3 ">{item?.createDate && getDate(item?.createDate)}</td>
-                    <td className="p-3 ">{item?.createDate && item?.createDate?.split('T')[1]}</td>
-                    <td className="p-3 ">
-                      {item?.amount && Number(item?.amount)?.toLocaleString()} ریال
-                    </td>
-                    <td className={`p-3 ${fundPayStatus(item?.payStatus)?.textColor}`}>
-                      {item?.payStatus && fundPayStatus(item?.payStatus)?.name}
-                    </td>
-                    <td className="p-3">
-                      {' '}
-                      {GatWay?.filter((g) => g?.id == item?.gatewayId)[0]?.title}
-                    </td>
-                    {/* new */}
-                    <td className="p-3"> {item?.id}</td>
-                    <td className="p-3"> {item?.ifbTrackingCode || '_'}</td>
-                    <td className="p-3"> {item?.payerId}</td>
-                  </tr>
+        <div className="relative overflow-x-auto md:rounded-lg mt-8 p-2 w-full">
+          <div className='w-max'>
+            <Table className="table-auto font-IRANYekanX rounded-lg w-full">
+              <Table.Head className="font-normal w-full bg-white p-5 rounded-lg shadow-lg text-sm text-center text-dominant-500">
+                <Table.HeadCell className="rounded-r-lg p-4">ردیف</Table.HeadCell>
+                <Table.HeadCell className="whitespace-nowrap p-4">نام</Table.HeadCell>
+                <Table.HeadCell className="whitespace-nowrap p-4">نام کاربری</Table.HeadCell>
+                <Table.HeadCell className="whitespace-nowrap p-4">نوع کاربری</Table.HeadCell>
+                <Table.HeadCell className="whitespace-nowrap p-4">طرح</Table.HeadCell>
+                <Table.HeadCell className="whitespace-nowrap p-4">تاریخ پرداخت</Table.HeadCell>
+                <Table.HeadCell className="whitespace-nowrap p-4">زمان پرداخت</Table.HeadCell>
+                <Table.HeadCell className="whitespace-nowrap p-4">مبلغ پرداخت</Table.HeadCell>
+                <Table.HeadCell className="whitespace-nowrap p-4">وضعیت پرداخت</Table.HeadCell>
+                <Table.HeadCell className="whitespace-nowrap p-4">درگاه پرداخت</Table.HeadCell>
+                <Table.HeadCell className="whitespace-nowrap p-4">شناسه پرداخت</Table.HeadCell>
+                <Table.HeadCell className="whitespace-nowrap p-4">کد رهگیری فرابورس</Table.HeadCell>
+                <Table.HeadCell className="rounded-l-lg whitespace-nowrap p-4">شناسه پرداخت‌کننده</Table.HeadCell>
+              </Table.Head>
+
+              <Table.Body className="divide-y p-10 w-full">
+                {response?.data?.map((item, index) => (
+                  <Table.Row
+                    key={index}
+                    className="border-b border-gray-300 text-center p-3 rounded-md font-semibold text-sm text-gray-500"
+                  >
+                    <Table.Cell className="p-3">{Skip + index + 1}</Table.Cell>
+                    <Table.Cell className="p-3 whitespace-nowrap">
+                      {item.user?.name}
+                    </Table.Cell>
+                    <Table.Cell className="p-3 whitespace-nowrap">
+                      {item.user?.username}
+                    </Table.Cell>
+                    <Table.Cell className="p-3 whitespace-nowrap">
+                      {(item.user?.type === 1 || item.user?.type === 3) ? 'حقیقی' : 'حقوقی'}
+                    </Table.Cell>
+                    <Table.Cell className="p-3 text-xs whitespace-nowrap">
+                      {item.planTitle}
+                    </Table.Cell>
+                    <Table.Cell className="p-3">
+                      {item.createDate && getDate(item.createDate)}
+                    </Table.Cell>
+                    <Table.Cell className="p-3">
+                      {item.createDate?.split('T')[1]}
+                    </Table.Cell>
+                    <Table.Cell className="p-3">
+                      {item.amount && Number(item.amount).toLocaleString()} ریال
+                    </Table.Cell>
+                    <Table.Cell className={`p-3 ${fundPayStatus(item.payStatus)?.textColor}`}>
+                      {fundPayStatus(item.payStatus)?.name}
+                    </Table.Cell>
+                    <Table.Cell className="p-3">
+                      {
+                        GatWay?.find(g => g.id === item.gatewayId)?.title
+                      }
+                    </Table.Cell>
+                    <Table.Cell className="p-3">{item.id}</Table.Cell>
+                    <Table.Cell className="p-3">{item.ifbTrackingCode || '_'}</Table.Cell>
+                    <Table.Cell className="p-3">{item.payerId}</Table.Cell>
+                  </Table.Row>
                 ))}
-            </tbody>
-          </table>
-          {isloading && (
-            <div className=" w-full justify-center flex items-center py-8">
-              <BouncingDotsLoader />
-            </div>
-          )}
-          {response?.pagination?.total == 0 && isloading === false && (
-            <span className=" w-full flex items-center py-5 text-base font-medium justify-center  text-gray-500">
-              گزارشی یافت نشد
-            </span>
-          )}
-          <div className=" relative flex justify-center py-8">
-            <PaginationComponet
-              total={response?.pagination?.total}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-            />
+              </Table.Body>
+            </Table>
+
+            {isloading && (
+              <div className="w-full justify-center flex items-center py-8">
+                <BouncingDotsLoader />
+              </div>
+            )}
+
+            {response?.pagination?.total === 0 && !isloading && (
+              <span className="w-full flex items-center py-5 text-base font-medium justify-center text-gray-500">
+                گزارشی یافت نشد
+              </span>
+            )}
           </div>
         </div>
+        <div className="relative flex justify-center py-8">
+          <PaginationComponet
+            total={response?.pagination?.total}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
+
       </div>
     </div>
   );
